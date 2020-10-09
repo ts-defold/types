@@ -37,22 +37,23 @@ declare function pprint(...v: any[]): void
 
 declare namespace vmath {
 
-    type matrix4 = {}
+    type matrix4 = number & {
+	}
 
-    interface vector3 {
+    type vector3 = number & {
         x: number
         y: number
         z: number
     }
 
-    interface vector4 {
+    type vector4 = number & {
         x: number
         y: number
         z: number
         w: number
 	}
 	
-	interface quaternion {
+	type quaternion = number & {
         x: number
         y: number
         z: number
