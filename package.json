@@ -1,0 +1,16 @@
+{
+  "name": "defold-types",
+  "version": "1.2.137",
+  "description": "",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": ["**/*.d.ts"],
+  "scripts": {
+    "bindings":  "cd build && python defold_json_to_ts.py"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lua-types": "^2.8.0"
+  }
+}
