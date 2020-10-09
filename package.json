@@ -1,7 +1,7 @@
 {
   "name": "defold-types",
-  "version": "1.2.137",
-  "description": "",
+  "version": "1.0.0",
+  "description": "TypeScript definitions for Defold",
   "main": "index.js",
   "types": "index.d.ts",
   "files": ["**/*.d.ts"],
