@@ -1,14 +1,15 @@
 {
   "name": "defold-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript definitions for Defold",
+  "repository": "github:thejustinwalsh/defold-types",
   "main": "index.js",
   "types": "index.d.ts",
   "files": ["**/*.d.ts"],
   "scripts": {
     "bindings":  "cd build && python defold_json_to_ts.py"
   },
-  "author": "",
+  "author": "Justin Walsh (https://thejustinwalsh.com/)",
   "license": "MIT",
   "dependencies": {
     "lua-types": "^2.8.0"
