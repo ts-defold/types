@@ -26,6 +26,6 @@
     "lua-types": "^2.8.0"
   },
   "devDependencies": {
-    "@ts-defold/type-gen": "^0.1.5"
+    "@ts-defold/type-gen": "^0.1.6"
   }
 }
