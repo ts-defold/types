@@ -1,6 +1,6 @@
 {
   "name": "@ts-defold/types",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "TypeScript definitions for Defold",
   "repository": "github:ts-defold/types",
   "keywords": [
@@ -23,7 +23,7 @@
     "version": "latest"
   },
   "dependencies": {
-    "@ts-defold/type-gen": "^0.1.2",
+    "@ts-defold/type-gen": "^0.1.4",
     "lua-types": "^2.8.0"
   },
   "devDependencies": {}
