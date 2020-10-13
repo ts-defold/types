@@ -1,18 +1,30 @@
 {
-  "name": "defold-types",
-  "version": "1.0.3",
+  "name": "@ts-defold/types",
+  "version": "1.1.2",
   "description": "TypeScript definitions for Defold",
-  "repository": "github:thejustinwalsh/defold-types",
-  "keywords": ["typescript", "lua", "defold"],
+  "repository": "github:ts-defold/types",
+  "keywords": [
+    "typescript",
+    "lua",
+    "defold"
+  ],
   "author": "Justin Walsh (https://thejustinwalsh.com/)",
   "license": "MIT",
-  "main": "index.js",
   "types": "index.d.ts",
-  "files": ["**/*.d.ts"],
+  "files": [
+    "**/*.d.ts"
+  ],
   "scripts": {
-    "bindings":  "cd build && python defold_json_to_ts.py"
+    "build": "npm run ./node_modules/.bin/type-gen",
+    "check-env": "node -e \"console.log(process.env);\""
+  },
+  "ts-defold": {
+    "channel": "stable",
+    "version": "latest"
   },
   "dependencies": {
+    "@ts-defold/type-gen": "^0.1.2",
     "lua-types": "^2.8.0"
-  }
+  },
+  "devDependencies": {}
 }
