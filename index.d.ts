@@ -309,13 +309,6 @@ declare namespace go {
 	*/
 	export let euler: any
 
-	/**
-	* This is a callback-function, which is called by the engine when a script component is finalized (destroyed). It can
-	* be used to e.g. take some last action, report the finalization to other game object instances, delete spawned objects
-	* or release user input focus (see release_input_focus).
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function final(self: object): void
 
 	/**
 	* in-back
@@ -756,177 +749,9 @@ The id of the animated property.
 	*/
 	export function set_scale(scale: any, id?: any): void
 
-	/**
-	* This is a callback-function, which is called by the engine when a script component is initialized. It can be used
-	* to set the initial state of the script.
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function init(self: object): void
 
-	/**
-	* This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
-	* It can be used to take action on the input, e.g. move the instance according to the input.
-	* For an instance to obtain user input, it must first acquire input focus
-	* through the message `acquire_input_focus`.
-	* Any instance that has obtained input will be put on top of an
-	* input stack. Input is sent to all listeners on the stack until the
-	* end of stack is reached, or a listener returns `true`
-	* to signal that it wants input to be consumed.
-	* See the documentation of acquire_input_focus for more
-	* information.
-	* The `action` parameter is a table containing data about the input mapped to the
-	* `action_id`.
-	* For mapped actions it specifies the value of the input and if it was just pressed or released.
-	* Actions are mapped to input in an input_binding-file.
-	* Mouse movement is specifically handled and uses `nil` as its `action_id`.
-	* The `action` only contains positional parameters in this case, such as x and y of the pointer.
-	* Here is a brief description of the available table fields:
-	* 
-	* 
-	* 
-	* Field
-	* Description
-	* 
-	* 
-	* 
-	* 
-	* `value`
-	* The amount of input given by the user. This is usually 1 for buttons and 0-1 for analogue inputs. This is not present for mouse movement.
-	* 
-	* 
-	* `pressed`
-	* If the input was pressed this frame. This is not present for mouse movement.
-	* 
-	* 
-	* `released`
-	* If the input was released this frame. This is not present for mouse movement.
-	* 
-	* 
-	* `repeated`
-	* If the input was repeated this frame. This is similar to how a key on a keyboard is repeated when you hold it down. This is not present for mouse movement.
-	* 
-	* 
-	* `x`
-	* The x value of a pointer device, if present.
-	* 
-	* 
-	* `y`
-	* The y value of a pointer device, if present.
-	* 
-	* 
-	* `screen_x`
-	* The screen space x value of a pointer device, if present.
-	* 
-	* 
-	* `screen_y`
-	* The screen space y value of a pointer device, if present.
-	* 
-	* 
-	* `dx`
-	* The change in x value of a pointer device, if present.
-	* 
-	* 
-	* `dy`
-	* The change in y value of a pointer device, if present.
-	* 
-	* 
-	* `screen_dx`
-	* The change in screen space x value of a pointer device, if present.
-	* 
-	* 
-	* `screen_dy`
-	* The change in screen space y value of a pointer device, if present.
-	* 
-	* 
-	* `gamepad`
-	* The index of the gamepad device that provided the input.
-	* 
-	* 
-	* `touch`
-	* List of touch input, one element per finger, if present. See table below about touch input
-	* 
-	* 
-	* 
-	* Touch input table:
-	* 
-	* 
-	* 
-	* Field
-	* Description
-	* 
-	* 
-	* 
-	* 
-	* `id`
-	* A number identifying the touch input during its duration.
-	* 
-	* 
-	* `pressed`
-	* True if the finger was pressed this frame.
-	* 
-	* 
-	* `released`
-	* True if the finger was released this frame.
-	* 
-	* 
-	* `tap_count`
-	* Number of taps, one for single, two for double-tap, etc
-	* 
-	* 
-	* `x`
-	* The x touch location.
-	* 
-	* 
-	* `y`
-	* The y touch location.
-	* 
-	* 
-	* `dx`
-	* The change in x value.
-	* 
-	* 
-	* `dy`
-	* The change in y value.
-	* 
-	* 
-	* `acc_x`
-	* Accelerometer x value (if present).
-	* 
-	* 
-	* `acc_y`
-	* Accelerometer y value (if present).
-	* 
-	* 
-	* `acc_z`
-	* Accelerometer z value (if present).
-	* 
-	* 
-	* 
-	* @param self  reference to the script state to be used for storing data
-	* @param action_id  id of the received input action, as mapped in the input_binding-file
-	* @param action  a table containing the input data, see above for a description
-	* @return consume  optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
-	*/
-	export function on_input(self: object, action_id: hash, action: any): boolean | undefined
 
-	/**
-	* This is a callback-function, which is called by the engine whenever a message has been sent to the script component.
-	* It can be used to take action on the message, e.g. send a response back to the sender of the message.
-	* The `message` parameter is a table containing the message data. If the message is sent from the engine, the
-	* documentation of the message specifies which data is supplied.
-	* @param self  reference to the script state to be used for storing data
-	* @param message_id  id of the received message
-	* @param message  a table containing the message data
-	* @param sender  address of the sender
-	*/
-	export function on_message(self: object, message_id: hash, message: any, sender: url): void
 
-	/**
-	* This is a callback-function, which is called by the engine when the script component is reloaded, e.g. from the editor.
-	* It can be used for live development, e.g. to tweak constants or set up the state properly for the instance.
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function on_reload(self: object): void
 
 	/**
 	* The position of the game object.
@@ -960,13 +785,6 @@ The id of the animated property.
 	*/
 	export type set_parent = "set_parent"
 
-	/**
-	* This is a callback-function, which is called by the engine every frame to update the state of a script component.
-	* It can be used to perform any kind of game related tasks, e.g. moving the game object instance.
-	* @param self  reference to the script state to be used for storing data
-	* @param dt  the time-step of the frame update
-	*/
-	export function update(self: object, dt: number): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -974,14 +792,6 @@ The id of the animated property.
 
 declare namespace gui {
 
-	/**
-	* This is a callback-function, which is called by the engine when a gui component is finalized (destroyed). It can
-	* be used to e.g. take some last action, report the finalization to other game object instances
-	* or release user input focus (see `release_input_focus`). There is no use in starting any animations or similar
-	* from this function since the gui component is about to be destroyed.
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function final(self: object): void
 
 	/**
 	* fit adjust mode
@@ -2608,12 +2418,6 @@ The rate with which the animation will be played. Must be positive
 	*/
 	export function stop_particlefx(node: node): void
 
-	/**
-	* This is a callback-function, which is called by the engine when a gui component is initialized. It can be used
-	* to set the initial state of the script and gui scene.
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function init(self: object): void
 
 	/**
 	* This message is broadcast to every GUI component when a layout change has been initiated
@@ -2626,180 +2430,9 @@ The rate with which the animation will be played. Must be positive
 	*/
 	export let material: any
 
-	/**
-	* This is a callback-function, which is called by the engine when user input is sent to the instance of the gui component.
-	* It can be used to take action on the input, e.g. modify the gui according to the input.
-	* For an instance to obtain user input, it must first acquire input
-	* focus through the message `acquire_input_focus`.
-	* Any instance that has obtained input will be put on top of an
-	* input stack. Input is sent to all listeners on the stack until the
-	* end of stack is reached, or a listener returns `true`
-	* to signal that it wants input to be consumed.
-	* See the documentation of acquire_input_focus for more
-	* information.
-	* The `action` parameter is a table containing data about the input mapped to the
-	* `action_id`.
-	* For mapped actions it specifies the value of the input and if it was just pressed or released.
-	* Actions are mapped to input in an input_binding-file.
-	* Mouse movement is specifically handled and uses `nil` as its `action_id`.
-	* The `action` only contains positional parameters in this case, such as x and y of the pointer.
-	* Here is a brief description of the available table fields:
-	* 
-	* 
-	* 
-	* Field
-	* Description
-	* 
-	* 
-	* 
-	* 
-	* `value`
-	* The amount of input given by the user. This is usually 1 for buttons and 0-1 for analogue inputs. This is not present for mouse movement.
-	* 
-	* 
-	* `pressed`
-	* If the input was pressed this frame. This is not present for mouse movement.
-	* 
-	* 
-	* `released`
-	* If the input was released this frame. This is not present for mouse movement.
-	* 
-	* 
-	* `repeated`
-	* If the input was repeated this frame. This is similar to how a key on a keyboard is repeated when you hold it down. This is not present for mouse movement.
-	* 
-	* 
-	* `x`
-	* The x value of a pointer device, if present.
-	* 
-	* 
-	* `y`
-	* The y value of a pointer device, if present.
-	* 
-	* 
-	* `screen_x`
-	* The screen space x value of a pointer device, if present.
-	* 
-	* 
-	* `screen_y`
-	* The screen space y value of a pointer device, if present.
-	* 
-	* 
-	* `dx`
-	* The change in x value of a pointer device, if present.
-	* 
-	* 
-	* `dy`
-	* The change in y value of a pointer device, if present.
-	* 
-	* 
-	* `screen_dx`
-	* The change in screen space x value of a pointer device, if present.
-	* 
-	* 
-	* `screen_dy`
-	* The change in screen space y value of a pointer device, if present.
-	* 
-	* 
-	* `gamepad`
-	* The index of the gamepad device that provided the input.
-	* 
-	* 
-	* `touch`
-	* List of touch input, one element per finger, if present. See table below about touch input
-	* 
-	* 
-	* 
-	* Touch input table:
-	* 
-	* 
-	* 
-	* Field
-	* Description
-	* 
-	* 
-	* 
-	* 
-	* `id`
-	* A number identifying the touch input during its duration.
-	* 
-	* 
-	* `pressed`
-	* True if the finger was pressed this frame.
-	* 
-	* 
-	* `released`
-	* True if the finger was released this frame.
-	* 
-	* 
-	* `tap_count`
-	* Number of taps, one for single, two for double-tap, etc
-	* 
-	* 
-	* `x`
-	* The x touch location.
-	* 
-	* 
-	* `y`
-	* The y touch location.
-	* 
-	* 
-	* `dx`
-	* The change in x value.
-	* 
-	* 
-	* `dy`
-	* The change in y value.
-	* 
-	* 
-	* `acc_x`
-	* Accelerometer x value (if present).
-	* 
-	* 
-	* `acc_y`
-	* Accelerometer y value (if present).
-	* 
-	* 
-	* `acc_z`
-	* Accelerometer z value (if present).
-	* 
-	* 
-	* 
-	* @param self  reference to the script state to be used for storing data
-	* @param action_id  id of the received input action, as mapped in the input_binding-file
-	* @param action  a table containing the input data, see above for a description
-	* @return consume  optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
-	*/
-	export function on_input(self: object, action_id: hash, action: any): boolean | undefined
 
-	/**
-	* This is a callback-function, which is called by the engine whenever a message has been sent to the gui component.
-	* It can be used to take action on the message, e.g. update the gui or send a response back to the sender of the message.
-	* The `message` parameter is a table containing the message data. If the message is sent from the engine, the
-	* documentation of the message specifies which data is supplied.
-	* See the update function for examples on how to use this callback-function.
-	* @param self  reference to the script state to be used for storing data
-	* @param message_id  id of the received message
-	* @param message  a table containing the message data
-	*/
-	export function on_message(self: object, message_id: hash, message: any): void
 
-	/**
-	* 
-	* This is a callback-function, which is called by the engine when the gui script is reloaded, e.g. from the editor.
-	* It can be used for live development, e.g. to tweak constants or set up the state properly for the script.
-	* 
-	* @param self  reference to the script state to be used for storing data
-	*/
-	export function on_reload(self: object): void
 
-	/**
-	* This is a callback-function, which is called by the engine every frame to update the state of a gui component.
-	* It can be used to perform any kind of gui related tasks, e.g. animating nodes.
-	* @param self  reference to the script state to be used for storing data
-	* @param dt  the time-step of the frame update
-	*/
-	export function update(self: object, dt: number): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
