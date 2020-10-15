@@ -4724,14 +4724,14 @@ declare namespace vmath {
 	* @param v  value of which to calculate the length
 	* @return n  length
 	*/
-	export function length(v: any): number
+	export function length(v: vmath.vector3 | vmath.vector4 | vmath.quaternion): number
 
 	/**
 	* Returns the squared length of the supplied vector or quaternion.
 	* @param v  value of which to calculate the squared length
 	* @return n  squared length
 	*/
-	export function length_sqr(v: any): number
+	export function length_sqr(v: vmath.vector3 | vmath.vector4 | vmath.quaternion): number
 
 	/**
 	* Linearly interpolate between two vectors. The function
@@ -4901,7 +4901,7 @@ declare namespace vmath {
 	* @param v1  vector to normalize
 	* @return v  new normalized vector
 	*/
-	export function normalize(v1: any): any
+	export function normalize(v1: vmath.vector3 | vmath.vector4 | vmath.quaternion): vmath.vector3 | vmath.vector4 | vmath.quaternion
 
 	/**
 	* The resulting matrix is the inverse of the supplied matrix.
