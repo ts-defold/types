@@ -589,7 +589,7 @@ The id of the animated property.
 
 
 	*/
-	export function animate(url: any, property: any, playback: any, to: any, easing: any, duration: number, delay?: number, complete_function?: any): void
+	export function animate(url: string | hash | url, property: string | hash, playback: any, to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion, easing: any, duration: number, delay?: number, complete_function?: any): void
 
 	/**
 	* By calling this function, all stored animations of the given property will be canceled.
@@ -597,7 +597,7 @@ The id of the animated property.
 	* @param url  url of the game object or component having the property
 	* @param property  ide of the property to animate
 	*/
-	export function cancel_animations(url: any, property: any): void
+	export function cancel_animations(url: string | hash | url, property: string | hash): void
 
 	/**
 	* Delete one or more game objects identified by id. Deletion is asynchronous meaning that
@@ -618,7 +618,7 @@ The id of the animated property.
 	* @param property  id of the property to retrieve
 	* @return value  the value of the specified property
 	*/
-	export function get(url: any, property: any): any
+	export function get(url: string | hash | url, property: string | hash): any
 
 	/**
 	* Returns or constructs an instance identifier. The instance id is a hash
@@ -637,42 +637,42 @@ The id of the animated property.
 	* @param id  optional id of the game object instance to get the position for, by default the instance of the calling script
 	* @return position  instance position
 	*/
-	export function get_position(id?: any): any
+	export function get_position(id?: string | hash | url): vmath.vector3
 
 	/**
 	* The rotation is relative to the parent (if any). Use go.get_world_rotation to retrieve the global world rotation.
 	* @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
 	* @return rotation  instance rotation
 	*/
-	export function get_rotation(id?: any): any
+	export function get_rotation(id?: string | hash | url): vmath.quaternion
 
 	/**
 	* The scale is relative the parent (if any). Use go.get_world_scale to retrieve the global world 3D scale factor.
 	* @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
 	* @return scale  instance scale factor
 	*/
-	export function get_scale(id?: any): any
+	export function get_scale(id?: string | hash | url): vmath.vector3
 
 	/**
 	* The uniform scale is relative the parent (if any). If the underlying scale vector is non-uniform the min element of the vector is returned as the uniform scale factor.
 	* @param id  optional id of the game object instance to get the uniform scale for, by default the instance of the calling script
 	* @return scale  uniform instance scale factor
 	*/
-	export function get_scale_uniform(id?: any): number
+	export function get_scale_uniform(id?: string | hash | url): number
 
 	/**
 	* Use go.get_position to retrieve the position relative to the parent.
 	* @param id  optional id of the game object instance to get the world position for, by default the instance of the calling script
 	* @return position  instance world position
 	*/
-	export function get_world_position(id?: any): any
+	export function get_world_position(id?: string | hash | url): vmath.vector3
 
 	/**
 	* Use `go.get_rotation` to retrieve the rotation relative to the parent.
 	* @param id  optional id of the game object instance to get the world rotation for, by default the instance of the calling script
 	* @return rotation  instance world rotation
 	*/
-	export function get_world_rotation(id?: any): any
+	export function get_world_rotation(id?: string | hash | url): vmath.quaternion
 
 	/**
 	* Use `go.get_scale` to retrieve the 3D scale factor relative to the parent.
@@ -681,21 +681,21 @@ The id of the animated property.
 	* @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	* @return scale  instance world 3D scale factor
 	*/
-	export function get_world_scale(id?: any): any
+	export function get_world_scale(id?: string | hash | url): vmath.vector3
 
 	/**
 	* Use `go.get_scale_uniform` to retrieve the scale factor relative to the parent.
 	* @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	* @return scale  instance world scale factor
 	*/
-	export function get_world_scale_uniform(id?: any): number
+	export function get_world_scale_uniform(id?: string | hash | url): number
 
 	/**
 	* gets the game object instance world transform matrix
 	* @param id  optional id of the game object instance to get the world transform for, by default the instance of the calling script
 	* @return transform  instance world transform
 	*/
-	export function get_world_transform(id?: any): any
+	export function get_world_transform(id?: string | hash | url): vmath.matrix4
 
 	/**
 	* This function defines a property which can then be used in the script through the self-reference.
@@ -712,7 +712,7 @@ The id of the animated property.
 	* @param property  id of the property to set
 	* @param value  the value to set
 	*/
-	export function set(url: any, property: any, value: any): void
+	export function set(url: string | hash | url, property: string | hash, value: any): void
 
 	/**
 	* Sets the parent for a game object instance. This means that the instance will exist in the geometrical space of its parent,
@@ -725,21 +725,21 @@ The id of the animated property.
 	* @param parent_id  optional id of the new parent game object, defaults to detaching game object from its parent
 	* @param keep_world_transform  optional boolean, set to true to maintain the world transform when changing spaces. Defaults to false.
 	*/
-	export function set_parent(id?: any, parent_id?: any, keep_world_transform?: boolean): void
+	export function set_parent(id?: string | hash | url, parent_id?: string | hash | url, keep_world_transform?: boolean): void
 
 	/**
 	* The position is relative to the parent (if any). The global world position cannot be manually set.
 	* @param position  position to set
 	* @param id  optional id of the game object instance to set the position for, by default the instance of the calling script
 	*/
-	export function set_position(position: any, id?: any): void
+	export function set_position(position: vmath.vector3, id?: string | hash | url): void
 
 	/**
 	* The rotation is relative to the parent (if any). The global world rotation cannot be manually set.
 	* @param rotation  rotation to set
 	* @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
 	*/
-	export function set_rotation(rotation: any, id?: any): void
+	export function set_rotation(rotation: vmath.quaternion, id?: string | hash | url): void
 
 	/**
 	* The scale factor is relative to the parent (if any). The global world scale factor cannot be manually set.
@@ -747,7 +747,7 @@ The id of the animated property.
 	* @param scale  vector or uniform scale factor, must be greater than 0
 	* @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
 	*/
-	export function set_scale(scale: any, id?: any): void
+	export function set_scale(scale: number | vmath.vector3, id?: string | hash | url): void
 
 
 
@@ -1294,7 +1294,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.PLAYBACK_LOOP_PINGPONG`
 
 	*/
-	export function animate(node: node, property: any, to: any, easing: any, duration: number, delay?: number, complete_function?: any, playback?: any): void
+	export function animate(node: node, property: any, to: vmath.vector3 | vmath.vector4, easing: any, duration: number, delay?: number, complete_function?: any, playback?: any): void
 
 	/**
 	* If an animation of the specified node is currently running (started by `gui.animate`), it will immediately be canceled.
@@ -1355,7 +1355,7 @@ with a custom curve. See the animation guide for more information.
 	* Delete a dynamically created texture.
 	* @param texture  texture id
 	*/
-	export function delete_texture(texture: any): void
+	export function delete_texture(texture: string | hash): void
 
 	/**
 	* Returns the adjust mode of a node.
@@ -1442,7 +1442,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the color from
 	* @return color  node color
 	*/
-	export function get_color(node: node): any
+	export function get_color(node: node): vmath.vector4
 
 	/**
 	* Returns the sector angle of a pie node.
@@ -1548,7 +1548,7 @@ with a custom curve. See the animation guide for more information.
 	* @param id  id of the node to retrieve
 	* @return instance  a new node instance
 	*/
-	export function get_node(id: any): node
+	export function get_node(id: string | hash): node
 
 	/**
 	* Returns the outer bounds mode for a pie node.
@@ -1567,7 +1567,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the outline color from
 	* @return color  outline color
 	*/
-	export function get_outline(node: node): any
+	export function get_outline(node: node): vmath.vector4
 
 	/**
 	* Returns the parent node of the specified node.
@@ -1615,7 +1615,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the position from
 	* @return position  node position
 	*/
-	export function get_position(node: node): any
+	export function get_position(node: node): vmath.vector3
 
 	/**
 	* Returns the rotation of the supplied node.
@@ -1623,14 +1623,14 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the rotation from
 	* @return rotation  node rotation
 	*/
-	export function get_rotation(node: node): any
+	export function get_rotation(node: node): vmath.vector3
 
 	/**
 	* Returns the scale of the supplied node.
 	* @param node  node to get the scale from
 	* @return scale  node scale
 	*/
-	export function get_scale(node: node): any
+	export function get_scale(node: node): vmath.vector3
 
 	/**
 	* Returns the screen position of the supplied node. This function returns the
@@ -1639,7 +1639,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the screen position from
 	* @return position  node screen position
 	*/
-	export function get_screen_position(node: node): any
+	export function get_screen_position(node: node): vmath.vector3
 
 	/**
 	* Returns the shadow color of the supplied node.
@@ -1647,14 +1647,14 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the shadow color from
 	* @return color  node shadow color
 	*/
-	export function get_shadow(node: node): any
+	export function get_shadow(node: node): vmath.vector4
 
 	/**
 	* Returns the size of the supplied node.
 	* @param node  node to get the size from
 	* @return size  node size
 	*/
-	export function get_size(node: node): any
+	export function get_size(node: node): vmath.vector3
 
 	/**
 	* Returns the size of a node.
@@ -1677,7 +1677,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to manipulate
 	* @return values  configuration values
 	*/
-	export function get_slice9(node: node): any
+	export function get_slice9(node: node): vmath.vector4
 
 	/**
 	* Gets the playing animation on a spine node
@@ -1693,7 +1693,7 @@ with a custom curve. See the animation guide for more information.
 	* @param bone_id  id of the corresponding bone
 	* @return bone  node corresponding to the spine bone
 	*/
-	export function get_spine_bone(node: node, bone_id: any): node
+	export function get_spine_bone(node: node, bone_id: string | hash): node
 
 	/**
 	* This is only useful for spine nodes. Gets the normalized cursor of the animation on a spine node.
@@ -1748,7 +1748,7 @@ with a custom curve. See the animation guide for more information.
 - max_descent
 
 	*/
-	export function get_text_metrics(font: any, text: string, width: number, line_break: boolean, leading: number, tracking: number): any
+	export function get_text_metrics(font: string | hash, text: string, width: number, line_break: boolean, leading: number, tracking: number): any
 
 	/**
 	* Get the text metrics from a text node.
@@ -1846,7 +1846,7 @@ with a custom curve. See the animation guide for more information.
 	* @param size  node size
 	* @return node  new box node
 	*/
-	export function new_box_node(pos: any, size: any): node
+	export function new_box_node(pos: vmath.vector3 | vmath.vector4, size: vmath.vector3): node
 
 	/**
 	* Dynamically create a particle fx node.
@@ -1854,7 +1854,7 @@ with a custom curve. See the animation guide for more information.
 	* @param particlefx  particle fx resource name
 	* @return node  new particle fx node
 	*/
-	export function new_particlefx_node(pos: any, particlefx: any): node
+	export function new_particlefx_node(pos: vmath.vector3 | vmath.vector4, particlefx: hash | string): node
 
 	/**
 	* Dynamically create a new pie node.
@@ -1862,7 +1862,7 @@ with a custom curve. See the animation guide for more information.
 	* @param size  node size
 	* @return node  new pie node
 	*/
-	export function new_pie_node(pos: any, size: any): node
+	export function new_pie_node(pos: vmath.vector3 | vmath.vector4, size: vmath.vector3): node
 
 	/**
 	* Dynamically create a new spine node.
@@ -1870,7 +1870,7 @@ with a custom curve. See the animation guide for more information.
 	* @param spine_scene  spine scene id
 	* @return node  new spine node
 	*/
-	export function new_spine_node(pos: any, spine_scene: any): node
+	export function new_spine_node(pos: vmath.vector3 | vmath.vector4, spine_scene: string | hash): node
 
 	/**
 	* Dynamically create a new text node.
@@ -1878,7 +1878,7 @@ with a custom curve. See the animation guide for more information.
 	* @param text  node text
 	* @return node  new text node
 	*/
-	export function new_text_node(pos: any, text: string): node
+	export function new_text_node(pos: vmath.vector3 | vmath.vector4, text: string): node
 
 	/**
 	* Dynamically create a new texture.
@@ -1895,7 +1895,7 @@ with a custom curve. See the animation guide for more information.
 	* @param flip  flip texture vertically
 	* @return success  texture creation was successful
 	*/
-	export function new_texture(texture: any, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
+	export function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
 
 	/**
 	* Tests whether a coordinate is within the bounding box of a
@@ -1932,7 +1932,7 @@ The normalized initial value of the animation cursor when the animation starts p
 The rate with which the animation will be played. Must be positive
 
 	*/
-	export function play_flipbook(node: node, animation: any, complete_function?: any, play_properties?: any): void
+	export function play_flipbook(node: node, animation: string | hash, complete_function?: any, play_properties?: any): void
 
 	/**
 	* Plays the paricle fx for a gui node
@@ -1981,7 +1981,7 @@ The rate with which the animation will be played. Must be positive
 
 	* @param complete_function  function to call when the animation has completed
 	*/
-	export function play_spine_anim(node: node, animation_id: any, playback: any, play_properties?: any, complete_function?: any): void
+	export function play_spine_anim(node: node, animation_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
 
 	/**
 	* Resets the input context of keyboard. This will clear marked text.
@@ -2080,7 +2080,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the color for
 	* @param color  new color
 	*/
-	export function set_color(node: node, color: any): void
+	export function set_color(node: node, color: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets a node to the disabled or enabled state.
@@ -2117,7 +2117,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node for which to set the font
 	* @param font  font id
 	*/
-	export function set_font(node: node, font: any): void
+	export function set_font(node: node, font: string | hash): void
 
 	/**
 	* Set the id of the specicied node to a new value.
@@ -2129,7 +2129,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the id for
 	* @param id  id to set
 	*/
-	export function set_id(node: node, id: any): void
+	export function set_id(node: node, id: string | hash): void
 
 	/**
 	* sets the node inherit alpha state
@@ -2151,7 +2151,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node for which to set the layer
 	* @param layer  layer id
 	*/
-	export function set_layer(node: node, layer: any): void
+	export function set_layer(node: node, layer: string | hash): void
 
 	/**
 	* Sets the leading value for a text node. This value is used to
@@ -2186,7 +2186,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the outline color for
 	* @param color  new outline color
 	*/
-	export function set_outline(node: node, color: any): void
+	export function set_outline(node: node, color: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets the parent node of the specified node.
@@ -2201,7 +2201,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set particle fx for
 	* @param particlefx  particle fx id
 	*/
-	export function set_particlefx(node: node, particlefx: any): void
+	export function set_particlefx(node: node, particlefx: hash | string): void
 
 	/**
 	* Sets the number of generated vertices around the perimeter of a pie node.
@@ -2233,7 +2233,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the position for
 	* @param position  new position
 	*/
-	export function set_position(node: node, position: any): void
+	export function set_position(node: node, position: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Set the order number for the current GUI scene.
@@ -2251,14 +2251,14 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the rotation for
 	* @param rotation  new rotation
 	*/
-	export function set_rotation(node: node, rotation: any): void
+	export function set_rotation(node: node, rotation: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets the scaling of the supplied node.
 	* @param node  node to set the scale for
 	* @param scale  new scale
 	*/
-	export function set_scale(node: node, scale: any): void
+	export function set_scale(node: node, scale: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets the shadow color of the supplied node.
@@ -2266,7 +2266,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the shadow color for
 	* @param color  new shadow color
 	*/
-	export function set_shadow(node: node, color: any): void
+	export function set_shadow(node: node, color: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets the size of the supplied node.
@@ -2274,7 +2274,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set the size for
 	* @param size  new size
 	*/
-	export function set_size(node: node, size: any): void
+	export function set_size(node: node, size: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Sets the size mode of a node.
@@ -2297,7 +2297,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to manipulate
 	* @param values  new values
 	*/
-	export function set_slice9(node: node, values: any): void
+	export function set_slice9(node: node, values: vmath.vector4): void
 
 	/**
 	* This is only useful for spine nodes. The cursor is normalized.
@@ -2318,7 +2318,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set spine scene for
 	* @param spine_scene  spine scene id
 	*/
-	export function set_spine_scene(node: node, spine_scene: any): void
+	export function set_spine_scene(node: node, spine_scene: string | hash): void
 
 	/**
 	* Sets the spine skin on a spine node.
@@ -2326,7 +2326,7 @@ The rate with which the animation will be played. Must be positive
 	* @param spine_skin  spine skin id
 	* @param spine_slot  optional slot id to only change a specific slot
 	*/
-	export function set_spine_skin(node: node, spine_skin: any, spine_slot?: any): void
+	export function set_spine_skin(node: node, spine_skin: string | hash, spine_slot?: string | hash): void
 
 	/**
 	* Set the text value of a text node. This is only useful for text nodes.
@@ -2345,7 +2345,7 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to set texture for
 	* @param texture  texture id
 	*/
-	export function set_texture(node: node, texture: any): void
+	export function set_texture(node: node, texture: string | hash): void
 
 	/**
 	* Set the texture buffer data for a dynamically created texture.
@@ -2362,7 +2362,7 @@ The rate with which the animation will be played. Must be positive
 	* @param flip  flip texture vertically
 	* @return success  setting the data was successful
 	*/
-	export function set_texture_data(texture: any, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
+	export function set_texture_data(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
 
 	/**
 	* Sets the tracking value of a text node. This value is used to
@@ -2531,7 +2531,7 @@ declare namespace physics {
 See each joint type for possible properties field. The one field that is accepted for all joint types is:
 `collide_connected`: Set this flag to true if the attached bodies should collide.
 	*/
-	export function create_joint(joint_type: number, collisionobject_a: any, joint_id: any, position_a: any, collisionobject_b: any, position_b: any, properties?: any): void
+	export function create_joint(joint_type: number, collisionobject_a: string | hash | url, joint_id: string | hash, position_a: vmath.vector3, collisionobject_b: string | hash | url, position_b: vmath.vector3, properties?: any): void
 
 	/**
 	* Destroy an already physics joint. The joint has to be created before a
@@ -2540,7 +2540,7 @@ See each joint type for possible properties field. The one field that is accepte
 	* @param collisionobject  collision object where the joint exist
 	* @param joint_id  id of the joint
 	*/
-	export function destroy_joint(collisionobject: any, joint_id: any): void
+	export function destroy_joint(collisionobject: string | hash | url, joint_id: string | hash): void
 
 	/**
 	* Get the gravity in runtime. The gravity returned is not global, it will return
@@ -2561,7 +2561,7 @@ See each joint type for possible properties field. The one field that is accepte
 `collide_connected`: Set this flag to true if the attached bodies should collide.
 
 	*/
-	export function get_joint_properties(collisionobject: any, joint_id: any): boolean | undefined
+	export function get_joint_properties(collisionobject: string | hash | url, joint_id: string | hash): boolean | undefined
 
 	/**
 	* Get the reaction force for a joint. The joint has to be created before
@@ -2571,7 +2571,7 @@ See each joint type for possible properties field. The one field that is accepte
 	* @param joint_id  id of the joint
 	* @return force  reaction force for the joint
 	*/
-	export function get_joint_reaction_force(collisionobject: any, joint_id: any): any
+	export function get_joint_reaction_force(collisionobject: string | hash | url, joint_id: string | hash): vmath.vector3
 
 	/**
 	* Get the reaction torque for a joint. The joint has to be created before
@@ -2581,7 +2581,7 @@ See each joint type for possible properties field. The one field that is accepte
 	* @param joint_id  id of the joint
 	* @return torque  the reaction torque on bodyB in N*m.
 	*/
-	export function get_joint_reaction_torque(collisionobject: any, joint_id: any): any
+	export function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): any
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -2599,7 +2599,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 
 	* @return result  It returns a list. If missed it returns nil. See `ray_cast_response` for details on the returned values.
 	*/
-	export function raycast(from: any, to: any, groups: any, options: any): any
+	export function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): any
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -2617,7 +2617,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
 	* @param request_id  a number between [0,-255]. It will be sent back in the response for identification, 0 by default
 	*/
-	export function raycast_async(from: any, to: any, groups: any, request_id?: number): void
+	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number): void
 
 	/**
 	* Set the gravity in runtime. The gravity change is not global, it will only affect
@@ -2625,14 +2625,14 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* Note: For 2D physics the z component of the gravity vector will be ignored.
 	* @param gravity  the new gravity vector
 	*/
-	export function set_gravity(gravity: any): void
+	export function set_gravity(gravity: vmath.vector3): void
 
 	/**
 	* Flips the collision shapes horizontally for a collision object
 	* @param url  the collision object that should flip its shapes
 	* @param flip  `true` if the collision object should flip its shapes, `false` if not
 	*/
-	export function set_hflip(url: any, flip: boolean): void
+	export function set_hflip(url: string | hash | url, flip: boolean): void
 
 	/**
 	* Updates the properties for an already connected joint. The joint has to be created before
@@ -2643,14 +2643,14 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* @param properties  joint specific properties table
 Note: The `collide_connected` field cannot be updated/changed after a connection has been made.
 	*/
-	export function set_joint_properties(collisionobject: any, joint_id: any, properties: any): void
+	export function set_joint_properties(collisionobject: string | hash | url, joint_id: string | hash, properties: any): void
 
 	/**
 	* Flips the collision shapes vertically for a collision object
 	* @param url  the collision object that should flip its shapes
 	* @param flip  `true` if the collision object should flip its shapes, `false` if not
 	*/
-	export function set_vflip(url: any, flip: boolean): void
+	export function set_vflip(url: string | hash | url, flip: boolean): void
 
 	/**
 	* This message is sent back to the sender of a `ray_cast_request`, if the ray didn't hit any
@@ -3202,7 +3202,7 @@ declare namespace render {
 	* in the "game.project" setting.
 	* @param material_id  material id to enable
 	*/
-	export function enable_material(material_id: any): void
+	export function enable_material(material_id: string | hash): void
 
 	/**
 	* Enables a particular render state. The state will be enabled until disabled.
@@ -3533,7 +3533,7 @@ declare namespace render {
 	* Sets the projection matrix to use when rendering.
 	* @param matrix  projection matrix
 	*/
-	export function set_projection(matrix: any): void
+	export function set_projection(matrix: vmath.matrix4): void
 
 	/**
 	* Sets a render target. Subsequent draw operations will be to the
@@ -3637,7 +3637,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	* Sets the view matrix to use when rendering.
 	* @param matrix  view matrix to set
 	*/
-	export function set_view(matrix: any): void
+	export function set_view(matrix: vmath.matrix4): void
 
 	/**
 	* Set the render viewport to the specified rectangle.
@@ -3763,7 +3763,7 @@ declare namespace resource {
 	* @param path  The path to the resource
 	* @return buffer  The resource buffer
 	*/
-	export function get_buffer(path: any): buffer
+	export function get_buffer(path: hash | string): buffer
 
 	/**
 	* Return a reference to the Manifest that is currently loaded.
@@ -3794,14 +3794,14 @@ declare namespace resource {
 	* @param path  The path to the resource
 	* @param buffer  The buffer of precreated data, suitable for the intended resource type
 	*/
-	export function set(path: any, buffer: buffer): void
+	export function set(path: string | hash, buffer: buffer): void
 
 	/**
 	* sets the buffer of a resource
 	* @param path  The path to the resource
 	* @param buffer  The resource buffer
 	*/
-	export function set_buffer(path: any, buffer: buffer): void
+	export function set_buffer(path: hash | string, buffer: buffer): void
 
 	/**
 	* Sets the pixel data for a specific texture.
@@ -3830,7 +3830,7 @@ The texture format. Supported values:
 	* @param buffer  The buffer of precreated pixel data
 ⚠ Currently, only 1 mipmap is generated.
 	*/
-	export function set_texture(path: any, table: any, buffer: buffer): void
+	export function set_texture(path: hash | string, table: any, buffer: buffer): void
 
 	/**
 	* Create a new manifest from a buffer. The created manifest is verified
@@ -4459,7 +4459,7 @@ declare namespace buffer {
 	* @param stream_name  the stream name
 	* @return stream  the data stream
 	*/
-	export function get_stream(buffer: buffer, stream_name: any): bufferstream
+	export function get_stream(buffer: buffer, stream_name: hash | string): bufferstream
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4584,7 +4584,7 @@ declare namespace msg {
 	* @param message_id  The id must be a string or a hashed string.
 	* @param message  a lua table with message parameters to send.
 	*/
-	export function post(receiver: any, message_id: any, message?: any): void
+	export function post(receiver: string | url | hash, message_id: string | hash, message?: any): void
 
 	/**
 	* This is equivalent to `msg.url(nil)` or `msg.url("#")`, which creates an url to the current
@@ -4618,7 +4618,7 @@ declare namespace msg {
 	* @param fragment  fragment of the URL
 	* @return url  a new URL
 	*/
-	export function url(socket?: any, path?: any, fragment?: any): url
+	export function url(socket?: string | hash, path?: string | hash, fragment?: string | hash): url
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4688,7 +4688,7 @@ declare namespace vmath {
 	* @param v2  second vector
 	* @return v  a new vector representing the cross product
 	*/
-	export function cross(v1: any, v2: any): any
+	export function cross(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3
 
 	/**
 	* The returned value is a scalar defined as:
@@ -4703,7 +4703,7 @@ declare namespace vmath {
 	* @param v2  second vector
 	* @return n  dot product
 	*/
-	export function dot(v1: any, v2: any): number
+	export function dot(v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): number
 
 	/**
 	* The resulting matrix is the inverse of the supplied matrix.
@@ -4714,7 +4714,7 @@ declare namespace vmath {
 	* @param m1  matrix to invert
 	* @return m  inverse of the supplied matrix
 	*/
-	export function inv(m1: any): any
+	export function inv(m1: vmath.matrix4): vmath.matrix4
 
 	/**
 	* Returns the length of the supplied vector or quaternion.
@@ -4744,7 +4744,7 @@ declare namespace vmath {
 	* @param v2  vector to lerp to
 	* @return v  the lerped vector
 	*/
-	export function lerp(t: number, v1: any, v2: any): any
+	export function lerp(t: number, v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
 
 	/**
 	* Linearly interpolate between two quaternions. Linear
@@ -4757,7 +4757,7 @@ declare namespace vmath {
 	* @param q2  quaternion to lerp to
 	* @return q  the lerped quaternion
 	*/
-	export function lerp(t: number, q1: any, q2: any): any
+	export function lerp(t: number, q1: vmath.quaternion, q2: vmath.quaternion): vmath.quaternion
 
 	/**
 	* Linearly interpolate between two values. Lerp is useful
@@ -4775,7 +4775,7 @@ declare namespace vmath {
 	* no translation or rotation.
 	* @return m  identity matrix
 	*/
-	export function matrix4(): any
+	export function matrix4(): vmath.matrix4
 
 	/**
 	* Creates a new matrix with all components set to the
@@ -4784,7 +4784,7 @@ declare namespace vmath {
 	* @param m1  existing matrix
 	* @return m  matrix which is a copy of the specified matrix
 	*/
-	export function matrix4(m1: any): any
+	export function matrix4(m1: vmath.matrix4): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a rotation around the axis by the specified angle.
@@ -4792,14 +4792,14 @@ declare namespace vmath {
 	* @param angle  angle in radians
 	* @return m  matrix represented by axis and angle
 	*/
-	export function matrix4_axis_angle(v: any, angle: number): any
+	export function matrix4_axis_angle(v: vmath.vector3, angle: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
 	* @param q  quaternion to create matrix from
 	* @return m  matrix represented by quaternion
 	*/
-	export function matrix4_from_quat(q: any): any
+	export function matrix4_from_quat(q: vmath.quaternion): vmath.matrix4
 
 	/**
 	* Constructs a frustum matrix from the given values. The left, right,
@@ -4814,7 +4814,7 @@ declare namespace vmath {
 	* @param far  coordinate for far clipping plane
 	* @return m  matrix representing the frustum
 	*/
-	export function matrix4_frustum(left: number, right: number, bottom: number, top: number, near: number, far: number): any
+	export function matrix4_frustum(left: number, right: number, bottom: number, top: number, near: number, far: number): vmath.matrix4
 
 	/**
 	* The resulting matrix is created from the supplied look-at parameters.
@@ -4825,7 +4825,7 @@ declare namespace vmath {
 	* @param up  up vector
 	* @return m  look-at matrix
 	*/
-	export function matrix4_look_at(eye: any, look_at: any, up: any): any
+	export function matrix4_look_at(eye: vmath.vector3, look_at: vmath.vector3, up: vmath.vector3): vmath.matrix4
 
 	/**
 	* Creates an orthographic projection matrix.
@@ -4838,7 +4838,7 @@ declare namespace vmath {
 	* @param far  coordinate for far clipping plane
 	* @return m  orthographic projection matrix
 	*/
-	export function matrix4_orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): any
+	export function matrix4_orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): vmath.matrix4
 
 	/**
 	* Creates a perspective projection matrix.
@@ -4849,7 +4849,7 @@ declare namespace vmath {
 	* @param far  coordinate for far clipping plane
 	* @return m  perspective projection matrix
 	*/
-	export function matrix4_perspective(fov: number, aspect: number, near: number, far: number): any
+	export function matrix4_perspective(fov: number, aspect: number, near: number, far: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a rotation around the x-axis
@@ -4857,7 +4857,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around x-axis
 	* @return m  matrix from rotation around x-axis
 	*/
-	export function matrix4_rotation_x(angle: number): any
+	export function matrix4_rotation_x(angle: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a rotation around the y-axis
@@ -4865,7 +4865,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around y-axis
 	* @return m  matrix from rotation around y-axis
 	*/
-	export function matrix4_rotation_y(angle: number): any
+	export function matrix4_rotation_y(angle: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a rotation around the z-axis
@@ -4873,7 +4873,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around z-axis
 	* @return m  matrix from rotation around z-axis
 	*/
-	export function matrix4_rotation_z(angle: number): any
+	export function matrix4_rotation_z(angle: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a translation of a point
@@ -4881,7 +4881,7 @@ declare namespace vmath {
 	* @param position  position vector to create matrix from
 	* @return m  matrix from the supplied position vector
 	*/
-	export function matrix4_translation(position: any): any
+	export function matrix4_translation(position: any): vmath.matrix4
 
 	/**
 	* Performs an element wise multiplication between two vectors of the same type
@@ -4891,7 +4891,7 @@ declare namespace vmath {
 	* @param v2  second vector
 	* @return v  multiplied vector
 	*/
-	export function mul_per_elem(v1: any, v2: any): any
+	export function mul_per_elem(v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
 
 	/**
 	* Normalizes a vector, i.e. returns a new vector with the same
@@ -4912,7 +4912,7 @@ declare namespace vmath {
 	* @param m1  ortho-normalized matrix to invert
 	* @return m  inverse of the supplied matrix
 	*/
-	export function ortho_inv(m1: any): any
+	export function ortho_inv(m1: vmath.matrix4): vmath.matrix4
 
 	/**
 	* Calculates the extent the projection of the first vector onto the second.
@@ -4923,7 +4923,7 @@ declare namespace vmath {
 	* @param v2  vector onto which the first will be projected, must not have zero length
 	* @return n  the projected extent of the first vector onto the second
 	*/
-	export function project(v1: any, v2: any): number
+	export function project(v1: vmath.vector3, v2: vmath.vector3): number
 
 	/**
 	* Creates a new identity quaternion. The identity
@@ -4931,7 +4931,7 @@ declare namespace vmath {
 	* `vmath.quat(0, 0, 0, 1)`
 	* @return q  new identity quaternion
 	*/
-	export function quat(): any
+	export function quat(): vmath.quaternion
 
 	/**
 	* Creates a new quaternion with all components set to the
@@ -4940,7 +4940,7 @@ declare namespace vmath {
 	* @param q1  existing quaternion
 	* @return q  new quaternion
 	*/
-	export function quat(q1: any): any
+	export function quat(q1: vmath.quaternion): vmath.quaternion
 
 	/**
 	* Creates a new quaternion with the components set
@@ -4951,7 +4951,7 @@ declare namespace vmath {
 	* @param w  w coordinate
 	* @return q  new quaternion
 	*/
-	export function quat(x: number, y: number, z: number, w: number): any
+	export function quat(x: number, y: number, z: number, w: number): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes a rotation of `angle`
@@ -4960,7 +4960,7 @@ declare namespace vmath {
 	* @param angle  angle
 	* @return q  quaternion representing the axis-angle rotation
 	*/
-	export function quat_axis_angle(v: any, angle: number): any
+	export function quat_axis_angle(v: vmath.vector3, angle: number): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes the rotation from the
@@ -4971,7 +4971,7 @@ declare namespace vmath {
 	* @param z  z base vector
 	* @return q  quaternion representing the rotation of the specified base vectors
 	*/
-	export function quat_basis(x: any, y: any, z: any): any
+	export function quat_basis(x: vmath.vector3, y: vmath.vector3, z: vmath.vector3): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes the rotation that,
@@ -4983,7 +4983,7 @@ declare namespace vmath {
 	* @param v2  second unit vector, after rotation
 	* @return q  quaternion representing the rotation from first to second vector
 	*/
-	export function quat_from_to(v1: any, v2: any): any
+	export function quat_from_to(v1: vmath.vector3, v2: vmath.vector3): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes a rotation of `angle`
@@ -4991,7 +4991,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around x-axis
 	* @return q  quaternion representing the rotation around the x-axis
 	*/
-	export function quat_rotation_x(angle: number): any
+	export function quat_rotation_x(angle: number): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes a rotation of `angle`
@@ -4999,7 +4999,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around y-axis
 	* @return q  quaternion representing the rotation around the y-axis
 	*/
-	export function quat_rotation_y(angle: number): any
+	export function quat_rotation_y(angle: number): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes a rotation of `angle`
@@ -5007,7 +5007,7 @@ declare namespace vmath {
 	* @param angle  angle in radians around z-axis
 	* @return q  quaternion representing the rotation around the z-axis
 	*/
-	export function quat_rotation_z(angle: number): any
+	export function quat_rotation_z(angle: number): vmath.quaternion
 
 	/**
 	* Returns a new vector from the supplied vector that is
@@ -5017,7 +5017,7 @@ declare namespace vmath {
 	* @param v1  vector to rotate
 	* @return v  the rotated vector
 	*/
-	export function rotate(q: any, v1: any): any
+	export function rotate(q: any, v1: vmath.vector3): vmath.vector3
 
 	/**
 	* Spherically interpolates between two vectors. The difference to
@@ -5033,7 +5033,7 @@ declare namespace vmath {
 	* @param v2  vector to slerp to
 	* @return v  the slerped vector
 	*/
-	export function slerp(t: number, v1: any, v2: any): any
+	export function slerp(t: number, v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
 
 	/**
 	* Slerp travels the torque-minimal path maintaining constant
@@ -5048,7 +5048,7 @@ declare namespace vmath {
 	* @param q2  quaternion to slerp to
 	* @return q  the slerped quaternion
 	*/
-	export function slerp(t: number, q1: any, q2: any): any
+	export function slerp(t: number, q1: vmath.quaternion, q2: vmath.quaternion): vmath.quaternion
 
 	/**
 	* Creates a vector of arbitrary size. The vector is initialized
@@ -5065,7 +5065,7 @@ declare namespace vmath {
 	* Creates a new zero vector with all components set to 0.
 	* @return v  new zero vector
 	*/
-	export function vector3(): any
+	export function vector3(): vmath.vector3
 
 	/**
 	* Creates a new vector with all components set to the
@@ -5073,7 +5073,7 @@ declare namespace vmath {
 	* @param n  scalar value to splat
 	* @return v  new vector
 	*/
-	export function vector3(n: number): any
+	export function vector3(n: number): vmath.vector3
 
 	/**
 	* Creates a new vector with all components set to the
@@ -5082,7 +5082,7 @@ declare namespace vmath {
 	* @param v1  existing vector
 	* @return v  new vector
 	*/
-	export function vector3(v1: any): any
+	export function vector3(v1: vmath.vector3): vmath.vector3
 
 	/**
 	* Creates a new vector with the components set to the
@@ -5092,13 +5092,13 @@ declare namespace vmath {
 	* @param z  z coordinate
 	* @return v  new vector
 	*/
-	export function vector3(x: number, y: number, z: number): any
+	export function vector3(x: number, y: number, z: number): vmath.vector3
 
 	/**
 	* Creates a new zero vector with all components set to 0.
 	* @return v  new zero vector
 	*/
-	export function vector4(): any
+	export function vector4(): vmath.vector4
 
 	/**
 	* Creates a new vector with all components set to the
@@ -5106,7 +5106,7 @@ declare namespace vmath {
 	* @param n  scalar value to splat
 	* @return v  new vector
 	*/
-	export function vector4(n: number): any
+	export function vector4(n: number): vmath.vector4
 
 	/**
 	* Creates a new vector with all components set to the
@@ -5115,7 +5115,7 @@ declare namespace vmath {
 	* @param v1  existing vector
 	* @return v  new vector
 	*/
-	export function vector4(v1: any): any
+	export function vector4(v1: vmath.vector4): vmath.vector4
 
 	/**
 	* Creates a new vector with the components set to the
@@ -5126,7 +5126,7 @@ declare namespace vmath {
 	* @param w  w coordinate
 	* @return v  new vector
 	*/
-	export function vector4(x: number, y: number, z: number, w: number): any
+	export function vector4(x: number, y: number, z: number, w: number): vmath.vector4
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5220,7 +5220,7 @@ declare namespace collectionfactory {
 	* @param scale  uniform scaling to apply to the newly spawned collection (must be greater than 0).
 	* @return ids  a table mapping the id:s from the collection to the new instance id:s
 	*/
-	export function create(url: any, position?: any, rotation?: any, properties?: any, scale?: number): any
+	export function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): any
 
 	/**
 	* This returns status of the collection factory.
@@ -5233,7 +5233,7 @@ declare namespace collectionfactory {
 - `collectionfactory.STATUS_LOADED`
 
 	*/
-	export function get_status(url?: any): any
+	export function get_status(url?: string | hash | url): any
 
 	/**
 	* Resources loaded are referenced by the collection factory component until the existing (parent) collection is destroyed or collectionfactory.unload is called.
@@ -5249,14 +5249,14 @@ url of the collection factory component
 True if resource were loaded successfully
 
 	*/
-	export function load(url?: any, complete_function?: any): void
+	export function load(url?: string | hash | url, complete_function?: any): void
 
 	/**
 	* This decreases the reference count for each resource loaded with collectionfactory.load. If reference is zero, the resource is destroyed.
 	* Calling this function when the factory is not marked as dynamic loading does nothing.
 	* @param url  the collection factory component to unload
 	*/
-	export function unload(url?: any): void
+	export function unload(url?: string | hash | url): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5380,7 +5380,7 @@ declare namespace factory {
 	* @param scale  the scale of the new game object (must be greater than 0), the scale of the game object containing the factory is used by default, or if the value is `nil`
 	* @return id  the global id of the spawned game object
 	*/
-	export function create(url: any, position?: any, rotation?: any, properties?: any, scale?: any): hash
+	export function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number | vmath.vector3): hash
 
 	/**
 	* This returns status of the factory.
@@ -5394,7 +5394,7 @@ declare namespace factory {
 - `factory.STATUS_LOADED`
 
 	*/
-	export function get_status(url?: any): any
+	export function get_status(url?: string | hash | url): any
 
 	/**
 	* Resources are referenced by the factory component until the existing (parent) collection is destroyed or factory.unload is called.
@@ -5410,14 +5410,14 @@ url of the factory component
 True if resources were loaded successfully
 
 	*/
-	export function load(url?: any, complete_function?: any): void
+	export function load(url?: string | hash | url, complete_function?: any): void
 
 	/**
 	* This decreases the reference count for each resource loaded with factory.load. If reference is zero, the resource is destroyed.
 	* Calling this function when the factory is not marked as dynamic loading does nothing.
 	* @param url  the factory component to unload
 	*/
-	export function unload(url?: any): void
+	export function unload(url?: string | hash | url): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5440,7 +5440,7 @@ declare namespace label {
 	* @param url  the label to get the text from
 	* @return metrics  the label text
 	*/
-	export function get_text(url: any): string
+	export function get_text(url: string | hash | url): string
 
 	/**
 	* Gets the text metrics from a label component
@@ -5453,7 +5453,7 @@ declare namespace label {
 - max_descent
 
 	*/
-	export function get_text_metrics(url: any): any
+	export function get_text_metrics(url: string | hash | url): any
 
 	/**
 	* Sets the text of a label component
@@ -5462,7 +5462,7 @@ declare namespace label {
 	* @param url  the label that should have a constant set
 	* @param text  the text
 	*/
-	export function set_text(url: any, text: string): void
+	export function set_text(url: string | hash | url, text: string): void
 
 	/**
 	* The material used when rendering the label. The type of the property is hash.
@@ -5517,7 +5517,7 @@ declare namespace model {
 	* Cancels all animation on a model component.
 	* @param url  the model for which to cancel the animation
 	*/
-	export function cancel(url: any): void
+	export function cancel(url: string | hash | url): void
 
 	/**
 	* Gets the id of the game object that corresponds to a model skeleton bone.
@@ -5528,7 +5528,7 @@ declare namespace model {
 	* @param bone_id  id of the corresponding bone
 	* @return id  id of the game object
 	*/
-	export function get_go(url: any, bone_id: any): hash
+	export function get_go(url: string | hash | url, bone_id: string | hash): hash
 
 	/**
 	* Plays an animation on a model component with specified playback
@@ -5583,7 +5583,7 @@ Information about the completion:
 The invoker of the callback: the model component.
 
 	*/
-	export function play_anim(url: any, anim_id: any, playback: any, play_properties?: any, complete_function?: any): void
+	export function play_anim(url: string | hash | url, anim_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
 
 	/**
 	* This message is sent when a Model animation has finished playing back to the script
@@ -5660,7 +5660,7 @@ the new state of the emitter:
 - `particlefx.EMITTER_STATE_POSTSPAWN`
 
 	*/
-	export function play(url: any, emitter_state_function?: any): void
+	export function play(url: string | hash | url, emitter_state_function?: any): void
 
 	/**
 	* Resets a shader constant for a particle FX component emitter.
@@ -5671,7 +5671,7 @@ the new state of the emitter:
 	* @param emitter  the id of the emitter
 	* @param constant  the name of the constant
 	*/
-	export function reset_constant(url: any, emitter: any, constant: any): void
+	export function reset_constant(url: string | hash | url, emitter: string | hash, constant: string | hash): void
 
 	/**
 	* Sets a shader constant for a particle FX component emitter.
@@ -5684,7 +5684,7 @@ the new state of the emitter:
 	* @param constant  the name of the constant
 	* @param value  the value of the constant
 	*/
-	export function set_constant(url: any, emitter: any, constant: any, value: any): void
+	export function set_constant(url: string | hash | url, emitter: string | hash, constant: string | hash, value: vmath.vector4): void
 
 	/**
 	* Stops a particle FX component from playing.
@@ -5692,7 +5692,7 @@ the new state of the emitter:
 	* Which particle FX to stop is identified by the URL.
 	* @param url  the particle fx that should stop playing
 	*/
-	export function stop(url: any): void
+	export function stop(url: string | hash | url): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5728,7 +5728,7 @@ declare namespace sound {
 	* @param group  group name
 	* @return gain  gain in linear scale
 	*/
-	export function get_group_gain(group: any): number
+	export function get_group_gain(group: string | hash): number
 
 	/**
 	* Get a mixer group name as a string.
@@ -5738,7 +5738,7 @@ declare namespace sound {
 	* @param group  group name
 	* @return name  group name
 	*/
-	export function get_group_name(group: any): string
+	export function get_group_name(group: string | hash): string
 
 	/**
 	* Get a table of all mixer group names (hashes).
@@ -5759,7 +5759,7 @@ declare namespace sound {
 	* @return peak_l  peak value for left channel
 	* @return peak_r  peak value for right channel
 	*/
-	export function get_peak(group: any, window: number): number
+	export function get_peak(group: string | hash, window: number): number
 
 	/**
 	* Get RMS (Root Mean Square) value from mixer group. This value is the
@@ -5774,7 +5774,7 @@ declare namespace sound {
 	* @return rms_l  RMS value for left channel
 	* @return rms_r  RMS value for right channel
 	*/
-	export function get_rms(group: any, window: number): number
+	export function get_rms(group: string | hash, window: number): number
 
 	/**
 	* Checks if background music is playing, e.g. from iTunes.
@@ -5809,7 +5809,7 @@ declare namespace sound {
 	* @param url  the sound that should pause
 	* @param pause  true if the sound should pause
 	*/
-	export function pause(url: any, pause: any): void
+	export function pause(url: string | hash | url, pause: any): void
 
 	/**
 	* Make the sound component play its sound. Multiple voices are supported. The limit is set to 32 voices per sound component.
@@ -5847,7 +5847,7 @@ Information about the completion:
 The invoker of the callback: the sound component.
 
 	*/
-	export function play(url: any, play_properties?: any, complete_function?: any): void
+	export function play(url: string | hash | url, play_properties?: any, complete_function?: any): void
 
 	/**
 	* Set gain on all active playing voices of a sound.
@@ -5858,7 +5858,7 @@ The invoker of the callback: the sound component.
 	* @param url  the sound to set the gain of
 	* @param gain  sound gain between 0 and 1. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
 	*/
-	export function set_gain(url: any, gain?: number): void
+	export function set_gain(url: string | hash | url, gain?: number): void
 
 	/**
 	* Set mixer group gain
@@ -5869,7 +5869,7 @@ The invoker of the callback: the sound component.
 	* @param group  group name
 	* @param gain  gain in linear scale
 	*/
-	export function set_group_gain(group: any, gain: number): void
+	export function set_group_gain(group: string | hash, gain: number): void
 
 	/**
 	* Set panning on all active playing voices of a sound.
@@ -5877,13 +5877,13 @@ The invoker of the callback: the sound component.
 	* @param url  the sound to set the panning value to
 	* @param pan  sound panning between -1.0 and 1.0
 	*/
-	export function set_pan(url: any, pan?: number): void
+	export function set_pan(url: string | hash | url, pan?: number): void
 
 	/**
 	* Stop playing all active voices
 	* @param url  the sound that should stop
 	*/
-	export function stop(url: any): void
+	export function stop(url: string | hash | url): void
 
 	/**
 	* This message is sent back to the sender of a `play_sound` message, if the sound
@@ -5936,7 +5936,7 @@ declare namespace spine {
 	* Cancels all running animations on a specified spine model component.
 	* @param url  the spine model for which to cancel the animation
 	*/
-	export function cancel(url: any): void
+	export function cancel(url: string | hash | url): void
 
 	/**
 	* Returns the id of the game object that corresponds to a specified skeleton bone.
@@ -5947,7 +5947,7 @@ declare namespace spine {
 	* @param bone_id  id of the corresponding bone
 	* @return id  id of the game object
 	*/
-	export function get_go(url: any, bone_id: any): hash
+	export function get_go(url: string | hash | url, bone_id: string | hash): hash
 
 	/**
 	* Plays a specified animation on a spine model component with specified playback
@@ -6001,7 +6001,7 @@ Information about the completion:
 The invoker of the callback: the spine model component.
 
 	*/
-	export function play_anim(url: any, anim_id: any, playback: any, play_properties?: any, complete_function?: any): void
+	export function play_anim(url: string | hash | url, anim_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
 
 	/**
 	* Resets any previously set IK target of a spine model, the position will be reset
@@ -6009,7 +6009,7 @@ The invoker of the callback: the spine model component.
 	* @param url  the spine model containing the object
 	* @param ik_constraint_id  id of the corresponding IK constraint object
 	*/
-	export function reset_ik_target(url: any, ik_constraint_id: any): void
+	export function reset_ik_target(url: string | hash | url, ik_constraint_id: string | hash): void
 
 	/**
 	* Sets a game object as target position of an inverse kinematic (IK) object. As the
@@ -6019,7 +6019,7 @@ The invoker of the callback: the spine model component.
 	* @param ik_constraint_id  id of the corresponding IK constraint object
 	* @param target_url  target game object
 	*/
-	export function set_ik_target(url: any, ik_constraint_id: any, target_url: any): void
+	export function set_ik_target(url: string | hash | url, ik_constraint_id: string | hash, target_url: string | hash | url): void
 
 	/**
 	* Sets a static (vector3) target position of an inverse kinematic (IK) object.
@@ -6027,7 +6027,7 @@ The invoker of the callback: the spine model component.
 	* @param ik_constraint_id  id of the corresponding IK constraint object
 	* @param position  target position
 	*/
-	export function set_ik_target_position(url: any, ik_constraint_id: any, position: any): void
+	export function set_ik_target_position(url: string | hash | url, ik_constraint_id: string | hash, position: vmath.vector3): void
 
 	/**
 	* Sets the spine skin on a spine model.
@@ -6035,7 +6035,7 @@ The invoker of the callback: the spine model component.
 	* @param spine_skin  spine skin id
 	* @param spine_slot  optional slot id to only change a specific slot
 	*/
-	export function set_skin(url: any, spine_skin: any, spine_slot?: any): void
+	export function set_skin(url: string | hash | url, spine_skin: string | hash, spine_slot?: string | hash): void
 
 	/**
 	* This message is sent when a Spine animation has finished playing back to the script
@@ -6149,7 +6149,7 @@ the normalized initial value of the animation cursor when the animation starts p
 the rate with which the animation will be played. Must be positive.
 
 	*/
-	export function play_flipbook(url: any, id: any, complete_function?: any, play_properties?: any): void
+	export function play_flipbook(url: string | hash | url, id: any, complete_function?: any, play_properties?: any): void
 
 	/**
 	* Sets horizontal flipping of the provided sprite's animations.
@@ -6158,7 +6158,7 @@ the rate with which the animation will be played. Must be positive.
 	* @param url  the sprite that should flip its animations
 	* @param flip  `true` if the sprite should flip its animations, `false` if not
 	*/
-	export function set_hflip(url: any, flip: boolean): void
+	export function set_hflip(url: string | hash | url, flip: boolean): void
 
 	/**
 	* Sets vertical flipping of the provided sprite's animations.
@@ -6167,7 +6167,7 @@ the rate with which the animation will be played. Must be positive.
 	* @param url  the sprite that should flip its animations
 	* @param flip  `true` if the sprite should flip its animations, `false` if not
 	*/
-	export function set_vflip(url: any, flip: boolean): void
+	export function set_vflip(url: string | hash | url, flip: boolean): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6197,7 +6197,7 @@ declare namespace tilemap {
 	* @return w  number of columns (width) in the tile map
 	* @return h  number of rows (height) in the tile map
 	*/
-	export function get_bounds(url: any): number
+	export function get_bounds(url: string | hash | url): number
 
 	/**
 	* Get the tile set at the specified position in the tilemap.
@@ -6211,7 +6211,7 @@ declare namespace tilemap {
 	* @param y  y-coordinate of the tile
 	* @return tile  index of the tile
 	*/
-	export function get_tile(url: any, layer: any, x: number, y: number): number
+	export function get_tile(url: string | hash | url, layer: string | hash, x: number, y: number): number
 
 	/**
 	* Replace a tile in a tile map with a new tile.
@@ -6241,7 +6241,7 @@ declare namespace tilemap {
 	* @param h_flipped  optional if the tile should be horizontally flipped
 	* @param v_flipped  optional i the tile should be vertically flipped
 	*/
-	export function set_tile(url: any, layer: any, x: number, y: number, tile: number, h_flipped?: boolean, v_flipped?: boolean): void
+	export function set_tile(url: string | hash | url, layer: string | hash, x: number, y: number, tile: number, h_flipped?: boolean, v_flipped?: boolean): void
 
 	/**
 	* Sets the visibility of the tilemap layer
@@ -6249,7 +6249,7 @@ declare namespace tilemap {
 	* @param layer  name of the layer for the tile
 	* @param visible  should the layer be visible
 	*/
-	export function set_visible(url: any, layer: any, visible: boolean): void
+	export function set_visible(url: string | hash | url, layer: string | hash, visible: boolean): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
