@@ -4675,7 +4675,7 @@ declare namespace vmath {
 	* @param q1  quaternion of which to calculate the conjugate
 	* @return q  the conjugate
 	*/
-	export function conj(q1: any): any
+	export function conj(q1: vmath.quaternion): vmath.quaternion
 
 	/**
 	* Given two linearly independent vectors P and Q, the cross product,
@@ -4744,7 +4744,8 @@ declare namespace vmath {
 	* @param v2  vector to lerp to
 	* @return v  the lerped vector
 	*/
-	export function lerp(t: number, v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
+	export function lerp(t: number, v1: vmath.vector3, v2: vmath.vector3): vmath.vector3
+	export function lerp(t: number, v1: vmath.vector4, v2: vmath.vector4): vmath.vector4
 
 	/**
 	* Linearly interpolate between two quaternions. Linear
@@ -4891,7 +4892,8 @@ declare namespace vmath {
 	* @param v2  second vector
 	* @return v  multiplied vector
 	*/
-	export function mul_per_elem(v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
+	export function mul_per_elem(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3
+	export function mul_per_elem(v1: vmath.vector4, v2: vmath.vector4): vmath.vector4
 
 	/**
 	* Normalizes a vector, i.e. returns a new vector with the same
@@ -4901,7 +4903,9 @@ declare namespace vmath {
 	* @param v1  vector to normalize
 	* @return v  new normalized vector
 	*/
-	export function normalize(v1: vmath.vector3 | vmath.vector4 | vmath.quaternion): vmath.vector3 | vmath.vector4 | vmath.quaternion
+	export function normalize(v1: vmath.vector3): vmath.vector3
+	export function normalize(v1: vmath.vector4): vmath.vector4
+	export function normalize(v1: vmath.quaternion): vmath.quaternion
 
 	/**
 	* The resulting matrix is the inverse of the supplied matrix.
@@ -5017,7 +5021,7 @@ declare namespace vmath {
 	* @param v1  vector to rotate
 	* @return v  the rotated vector
 	*/
-	export function rotate(q: any, v1: vmath.vector3): vmath.vector3
+	export function rotate(q: vmath.quaternion, v1: vmath.vector3): vmath.vector3
 
 	/**
 	* Spherically interpolates between two vectors. The difference to
@@ -5033,7 +5037,8 @@ declare namespace vmath {
 	* @param v2  vector to slerp to
 	* @return v  the slerped vector
 	*/
-	export function slerp(t: number, v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): vmath.vector3 | vmath.vector4
+	export function slerp(t: number, v1: vmath.vector3, v2: vmath.vector3): vmath.vector3
+	export function slerp(t: number, v1: vmath.vector4, v2: vmath.vector4): vmath.vector4
 
 	/**
 	* Slerp travels the torque-minimal path maintaining constant
