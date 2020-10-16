@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: NPM Publish
+name: Publish Package
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -23,8 +23,16 @@ jobs:
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
-
+          scope: '@ts-defold'
       - run: npm install
-      - run: npm publish
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@ts-defold'
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
