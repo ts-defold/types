@@ -6,9 +6,9 @@
 1. Get this package from npm
 
 ```bash
-yarn add -D defold-types
+yarn add @ts-defold/types --dev
 # or
-npm install -D defold-types
+npm install @ts-defold/types --save-dev 
 ```
 
 2. Modify your `tsconfig.json`
@@ -16,7 +16,7 @@ npm install -D defold-types
 ```diff
 {
   "compilerOptions": {
-+    "types": ["defold-types"]
++    "types": ["@ts-defold/types"]
   }
 }
 ```
