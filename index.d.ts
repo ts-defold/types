@@ -17,7 +17,7 @@ declare type node = {
 declare type buffer = {
 }
 
-declare type bufferstream = {
+declare type bufferstream = Array<number> & {
 }
 
 declare namespace vmath {
@@ -4442,8 +4442,9 @@ declare namespace buffer {
 `type`: The data type of the stream
 `count`: The number of values each element should hold
 
+	* @return buffer  The new buffer
 	*/
-	export function create(element_count: number, declaration: any): void
+	export function create(element_count: number, declaration: any): buffer
 
 	/**
 	* Get a copy of all the bytes from a specified stream as a Lua string.
