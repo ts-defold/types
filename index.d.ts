@@ -17,7 +17,7 @@ declare type node = {
 declare type buffer = {
 }
 
-declare type bufferstream = Array<number> & {
+declare type bufferstream = Array<number> & LuaUserdata & {
 }
 
 declare namespace vmath {
