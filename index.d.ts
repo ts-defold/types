@@ -3732,9 +3732,10 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function atlas(): hash
+	export function atlas(path?: string): hash
 
 	/**
 	* Constructor-like function with two purposes:
@@ -3754,9 +3755,10 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function font(): hash
+	export function font(path?: string): hash
 
 	/**
 	* gets the buffer from a resource
@@ -3785,9 +3787,10 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function material(): hash
+	export function material(path?: string): hash
 
 	/**
 	* Sets the resource data for a specific resource
@@ -3890,9 +3893,10 @@ Whether or not the resource was successfully stored.
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function texture(): hash
+	export function texture(path?: string): hash
 
 	/**
 	* Constructor-like function with two purposes:
