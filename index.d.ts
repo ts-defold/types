@@ -1,7 +1,7 @@
 /** @noSelfInFile */
 /// <reference types="lua-types/5.1" />
 
-// DEFOLD. stable version 1.2.174 (8f3e864464062e1b35c207521dc65dfd77899cdf)
+// DEFOLD. stable version 1.2.185 (0a8d3e879724132afb18d47e0040c2034be07504)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -198,10 +198,10 @@ declare namespace crash {
 	/**
 	* reads a system field from a loaded crash dump
 	* @param handle  crash dump handle
-	* @param index  system field enum. Must be less than crash.SYSFIELD_MAX
+	* @param index  
 	* @return value  value recorded in the crash dump, or nil if it didn't exist
 	*/
-	export function get_sys_field(handle: number, index: number): string
+	export function get_sys_field(handle: number, index: any): string
 
 	/**
 	* reads user field from a loaded crash dump
@@ -633,6 +633,13 @@ The id of the animated property.
 	export function get_id(path?: string): hash
 
 	/**
+	* Get the parent for a game object instance.
+	* @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
+	* @return parent_id  parent instance or nil
+	*/
+	export function get_parent(id?: string | hash | url): hash
+
+	/**
 	* The position is relative the parent (if any). Use go.get_world_position to retrieve the global world position.
 	* @param id  optional id of the game object instance to get the position for, by default the instance of the calling script
 	* @return position  instance position
@@ -661,6 +668,7 @@ The id of the animated property.
 	export function get_scale_uniform(id?: string | hash | url): number
 
 	/**
+	* The function will return the world position calculated at the end of the previous frame.
 	* Use go.get_position to retrieve the position relative to the parent.
 	* @param id  optional id of the game object instance to get the world position for, by default the instance of the calling script
 	* @return position  instance world position
@@ -668,14 +676,16 @@ The id of the animated property.
 	export function get_world_position(id?: string | hash | url): vmath.vector3
 
 	/**
-	* Use `go.get_rotation` to retrieve the rotation relative to the parent.
+	* The function will return the world rotation calculated at the end of the previous frame.
+	* Use go.get_rotation to retrieve the rotation relative to the parent.
 	* @param id  optional id of the game object instance to get the world rotation for, by default the instance of the calling script
 	* @return rotation  instance world rotation
 	*/
 	export function get_world_rotation(id?: string | hash | url): vmath.quaternion
 
 	/**
-	* Use `go.get_scale` to retrieve the 3D scale factor relative to the parent.
+	* The function will return the world 3D scale factor calculated at the end of the previous frame.
+	* Use go.get_scale to retrieve the 3D scale factor relative to the parent.
 	* This vector is derived by decomposing the transformation matrix and should be used with care.
 	* For most cases it should be fine to use go.get_world_scale_uniform instead.
 	* @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
@@ -684,14 +694,15 @@ The id of the animated property.
 	export function get_world_scale(id?: string | hash | url): vmath.vector3
 
 	/**
-	* Use `go.get_scale_uniform` to retrieve the scale factor relative to the parent.
+	* The function will return the world scale factor calculated at the end of the previous frame.
+	* Use go.get_scale_uniform to retrieve the scale factor relative to the parent.
 	* @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	* @return scale  instance world scale factor
 	*/
 	export function get_world_scale_uniform(id?: string | hash | url): number
 
 	/**
-	* gets the game object instance world transform matrix
+	* The function will return the world transform matrix calculated at the end of the previous frame.
 	* @param id  optional id of the game object instance to get the world transform for, by default the instance of the calling script
 	* @return transform  instance world transform
 	*/
@@ -1224,6 +1235,21 @@ declare namespace gui {
 	export let PROP_SLICE9: any
 
 	/**
+	* data error
+	*/
+	export let RESULT_DATA_ERROR: any
+
+	/**
+	* out of resource
+	*/
+	export let RESULT_OUT_OF_RESOURCES: any
+
+	/**
+	* texture already exists
+	*/
+	export let RESULT_TEXTURE_ALREADY_EXISTS: any
+
+	/**
 	* automatic size mode
 	*/
 	export let SIZE_MODE_AUTO: any
@@ -1393,7 +1419,7 @@ with a custom curve. See the animation guide for more information.
 	export function get_clipping_inverted(node: node): boolean
 
 	/**
-	* Clipping mode defines how the node will clipping it's children nodes
+	* Clipping mode defines how the node will clip it's children nodes
 	* @param node  node from which to get the clipping mode
 	* @return clipping_mode  clipping mode
 
@@ -1463,7 +1489,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the cursor for (node)
 	* @return cursor  cursor value
 	*/
-	export function get_flipbook_cursor(node: any): number
+	export function get_flipbook_cursor(node: node): any
 
 	/**
 	* This is only useful nodes with flipbook animations. Gets the playback rate of the flipbook animation on a node.
@@ -1493,7 +1519,7 @@ with a custom curve. See the animation guide for more information.
 	export function get_id(node: node): hash
 
 	/**
-	* Retrieve the index of the specified node.
+	* Retrieve the index of the specified node among its siblings.
 	* The index defines the order in which a node appear in a GUI scene.
 	* Higher index means the node is drawn on top of lower indexed nodes.
 	* @param node  the node to retrieve the id from
@@ -1580,9 +1606,9 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* Get the paricle fx for a gui node
 	* @param node  node to get particle fx for
-	* @return type_hash  particle fx id
+	* @return   particle fx id
 	*/
-	export function get_particlefx(node: node): any | undefined
+	export function get_particlefx(node: node): hash
 
 	/**
 	* Returns the number of generated vertices around the perimeter
@@ -1700,7 +1726,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  spine node to get the cursor for (node)
 	* @return cursor  cursor value
 	*/
-	export function get_spine_cursor(node: any): number
+	export function get_spine_cursor(node: node): any
 
 	/**
 	* This is only useful for spine nodes. Gets the playback rate of the animation on a spine node.
@@ -1818,9 +1844,10 @@ with a custom curve. See the animation guide for more information.
 	* Returns `true` if a node is enabled and `false` if it's not.
 	* Disabled nodes are not rendered and animations acting on them are not evaluated.
 	* @param node  node to query
+	* @param recursive  check hierarchy recursively
 	* @return enabled  whether the node is enabled or not
 	*/
-	export function is_enabled(node: node): boolean
+	export function is_enabled(node: node, recursive: boolean): boolean
 
 	/**
 	* Alters the ordering of the two supplied nodes by moving the first node
@@ -1894,6 +1921,7 @@ with a custom curve. See the animation guide for more information.
 	* @param buffer  texture data
 	* @param flip  flip texture vertically
 	* @return success  texture creation was successful
+	* @return code  one of the gui.RESULT_* codes if unsuccessful
 	*/
 	export function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
 
@@ -2031,7 +2059,7 @@ The rate with which the animation will be played. Must be positive
 	export function set_clipping_inverted(node: node, inverted: boolean): void
 
 	/**
-	* Clipping mode defines how the node will clipping it's children nodes
+	* Clipping mode defines how the node will clip it's children nodes
 	* @param node  node to set clipping mode for
 	* @param clipping_mode  clipping mode to set
 
@@ -2488,7 +2516,7 @@ declare namespace physics {
 	export let linear_damping: any
 
 	/**
-	* READ ONLY Returns the current linear velocity of the collision object component as a vector3.
+	* The current linear velocity of the collision object component as a vector3.
 	* The velocity is measured in units/s (pixels/s).
 	*/
 	export let linear_velocity: any
@@ -2519,6 +2547,11 @@ declare namespace physics {
 	export let JOINT_TYPE_SPRING: any
 
 	/**
+	* weld joint type
+	*/
+	export let JOINT_TYPE_WELD: any
+
+	/**
 	* Create a physics joint between two collision object components.
 	* Note: Currently only supported in 2D physics.
 	* @param joint_type  the joint type
@@ -2546,9 +2579,9 @@ See each joint type for possible properties field. The one field that is accepte
 	* Get the gravity in runtime. The gravity returned is not global, it will return
 	* the gravity for the collection that the function is called from.
 	* Note: For 2D physics the z component will always be zero.
-	* @return type_vector3  gravity vector of collection
+	* @return   gravity vector of collection
 	*/
-	export function get_gravity(): any | undefined
+	export function get_gravity(): vmath.vector3
 
 	/**
 	* Get a table for properties for a connected joint. The joint has to be created before
@@ -2556,12 +2589,12 @@ See each joint type for possible properties field. The one field that is accepte
 	* Note: Currently only supported in 2D physics.
 	* @param collisionobject  collision object where the joint exist
 	* @param joint_id  id of the joint
-	* @return type_table  properties table. See the joint types for what fields are available, the only field available for all types is:
+	* @return   properties table. See the joint types for what fields are available, the only field available for all types is:
 
 `collide_connected`: Set this flag to true if the attached bodies should collide.
 
 	*/
-	export function get_joint_properties(collisionobject: string | hash | url, joint_id: string | hash): boolean | undefined
+	export function get_joint_properties(collisionobject: string | hash | url, joint_id: string | hash): any
 
 	/**
 	* Get the reaction force for a joint. The joint has to be created before
@@ -2615,9 +2648,9 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
-	* @param request_id  a number between [0,-255]. It will be sent back in the response for identification, 0 by default
+	* @param request_id  . It will be sent back in the response for identification, 0 by default
 	*/
-	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number): void
+	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: any): void
 
 	/**
 	* Set the gravity in runtime. The gravity change is not global, it will only affect
@@ -2651,6 +2684,19 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	* @param flip  `true` if the collision object should flip its shapes, `false` if not
 	*/
 	export function set_vflip(url: string | hash | url, flip: boolean): void
+
+	/**
+	* Collision objects tend to fall asleep when inactive for a small period of time for
+	* efficiency reasons. This function wakes them up.
+	* @param url  the collision object to wake.
+function on_input(self, action_id, action)
+    if action_id == hash(&quot;test&quot;) and action.pressed then
+        physics.wakeup(&quot;#collisionobject&quot;)
+    end
+end
+
+	*/
+	export function wakeup(url: string | hash | url): void
 
 	/**
 	* This message is sent back to the sender of a `ray_cast_request`, if the ray didn't hit any
@@ -3732,7 +3778,7 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
-	* @param path  resource path string to the resource
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
 	export function atlas(path?: string): hash
@@ -3744,9 +3790,10 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function buffer(): hash
+	export function buffer(path?: string): hash
 
 	/**
 	* Constructor-like function with two purposes:
@@ -3755,7 +3802,7 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
-	* @param path  resource path string to the resource
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
 	export function font(path?: string): hash
@@ -3774,6 +3821,13 @@ declare namespace resource {
 	export function get_current_manifest(): number
 
 	/**
+	* Is any liveupdate data mounted and currently in use?
+	* This can be used to determine if a new manifest or zip file should be downloaded.
+	* @return bool  true if a liveupdate archive (any format) has been loaded
+	*/
+	export function is_using_liveupdate_data(): any
+
+	/**
 	* Loads the resource data for a specific resource.
 	* @param path  The path to the resource
 	* @return buffer  Returns the buffer stored on disc
@@ -3787,7 +3841,7 @@ declare namespace resource {
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
-	* @param path  resource path string to the resource
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
 	export function material(path?: string): hash
@@ -3805,6 +3859,13 @@ declare namespace resource {
 	* @param buffer  The resource buffer
 	*/
 	export function set_buffer(path: hash | string, buffer: buffer): void
+
+	/**
+	* Update internal sound resource (wavc/oggc) with new data
+	* @param path  The path to the resource
+	* @param buffer  A lua string containing the binary sound data
+	*/
+	export function set_sound(path: hash | string, buffer: string): void
 
 	/**
 	* Sets the pixel data for a specific texture.
@@ -3834,6 +3895,21 @@ The texture format. Supported values:
 ⚠ Currently, only 1 mipmap is generated.
 	*/
 	export function set_texture(path: hash | string, table: any, buffer: buffer): void
+
+	/**
+	* Stores a zip file and uses it for live update content.
+	* The path is renamed and stored in the (internal) live update location
+	* @param path  the path to the original file on disc
+	* @param callback  the callback function
+executed after the storage has completed
+
+`self`
+The current object.
+`status`
+the status of the store operation (See resource.store_manifest)
+
+	*/
+	export function store_archive(path: string, callback: any): void
 
 	/**
 	* Create a new manifest from a buffer. The created manifest is verified
@@ -3893,7 +3969,7 @@ Whether or not the resource was successfully stored.
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
-	* @param path  resource path string to the resource
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
 	export function texture(path?: string): hash
@@ -3905,9 +3981,10 @@ Whether or not the resource was successfully stored.
 	* - Return a hash to the run-time version of the resource
 	* 
 	* ⚠ This function can only be called within go.property function calls.
+	* @param path  optional resource path string to the resource
 	* @return path  a path hash to the binary version of the resource
 	*/
-	export function tile_source(): hash
+	export function tile_source(path?: string): hash
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4214,7 +4291,7 @@ The stack traceback.
 	* guarantee that the frame cap will be achieved depending on platform specifics and hardware settings.
 	* @param frequency  target frequency. 60 for 60 fps
 	*/
-	export function set_update_frequency(frequency: any): void
+	export function set_update_frequency(frequency: number): void
 
 	/**
 	* Set the vsync swap interval. The interval with which to swap the front and back buffers
@@ -4228,7 +4305,7 @@ The stack traceback.
 	* This setting may be overridden by driver settings.
 	* @param swap_interval  target swap interval.
 	*/
-	export function set_vsync_swap_interval(swap_interval: any): void
+	export function set_vsync_swap_interval(swap_interval: number): void
 
 	/**
 	* Toggles the on-screen physics visual debugging mode which is very useful for
@@ -4446,7 +4523,7 @@ declare namespace buffer {
 `type`: The data type of the stream
 `count`: The number of values each element should hold
 
-	* @return buffer  The new buffer
+	* @return buffer  the new buffer
 	*/
 	export function create(element_count: number, declaration: any): buffer
 
@@ -4495,7 +4572,7 @@ declare namespace http {
 	* @param callback  response callback function
 
 `self`
-The current object
+The script instance
 `id`
 Internal message identifier. Do not use!
 `response`
@@ -4503,14 +4580,18 @@ The response data. Contains the fields:
 
 
 `status`: the status of the response
-`response`: the response data
+`response`: the response data (if not saved on disc)
 `headers`: all the returned headers
+`path`: the stored path (if saved to disc)
+`error`: if any unforeseen errors occurred (e.g. file I/O)
 
 	* @param headers  optional table with custom headers
 	* @param post_data  optional data to send
 	* @param options  optional table with request parameters. Supported entries:
 
 `timeout`: timeout in seconds
+`path`: path on disc where to download the file. Only overwrites the path if status is 200
+`ignore_cache`: don't return cached data if we get a 304
 
 	*/
 	export function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any): void
@@ -4642,7 +4723,7 @@ declare namespace timer {
 	* @param handle  the timer handle returned by timer.delay()
 	* @return true  if the timer was active, false if the timer is already cancelled / complete
 	*/
-	export function cancel(handle: any): any
+	export function cancel(handle: hash): boolean
 
 	/**
 	* Adds a timer and returns a unique handle
@@ -4662,9 +4743,9 @@ The handle of the timer
 `time_elapsed`
 The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
-	* @return handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
+	* @return   handle identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
-	export function delay(delay: any, repeat: any, callback: any): any
+	export function delay(delay: number, repeat: boolean, callback: any): hash
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4887,7 +4968,7 @@ declare namespace vmath {
 	* @param position  position vector to create matrix from
 	* @return m  matrix from the supplied position vector
 	*/
-	export function matrix4_translation(position: any): vmath.matrix4
+	export function matrix4_translation(position: vmath.vector3 | vmath.vector4): vmath.matrix4
 
 	/**
 	* Performs an element wise multiplication between two vectors of the same type
@@ -5711,6 +5792,18 @@ the new state of the emitter:
 declare namespace sound {
 
 	/**
+	* The gain on the sound-component. Note that gain is in linear scale,
+	* between 0 and 1.
+	*/
+	export let gain: any
+
+	/**
+	* The pan on the sound-component. The valid range is from -1.0 to 1.0,
+	* representing -45 degrees left, to +45 degrees right.
+	*/
+	export let pan: any
+
+	/**
 	* Post this message to a sound-component to make it play its sound. Multiple voices is supported. The limit is set to 32 voices per sound component.
 	* ⚠ Note that gain is in linear scale, between 0 and 1.
 	* To get the dB value from the gain, use the formula `20 * log(gain)`.
@@ -5728,6 +5821,11 @@ declare namespace sound {
 	* `10db/20`.
 	*/
 	export type set_gain = "set_gain"
+
+	/**
+	* The sound data used when playing the sound. The type of the property is hash.
+	*/
+	export let sound: any
 
 	/**
 	* Get mixer group gain
@@ -5900,6 +5998,12 @@ The invoker of the callback: the sound component.
 	* could be played to completion.
 	*/
 	export type sound_done = "sound_done"
+
+	/**
+	* The speed on the sound-component where 1.0 is normal speed, 0.5 is half
+	* speed and 2.0 is double speed.
+	*/
+	export let speed: any
 
 	/**
 	* Post this message to a sound-component to make it stop playing all active voices
@@ -6211,7 +6315,7 @@ declare namespace tilemap {
 
 	/**
 	* Get the tile set at the specified position in the tilemap.
-	* The position is identified by the tile index starting at origo
+	* The position is identified by the tile index starting at origin
 	* with index 1, 1. (see tilemap.set_tile())
 	* Which tile map and layer to query is identified by the URL and the
 	* layer name parameters.
@@ -6226,8 +6330,8 @@ declare namespace tilemap {
 	/**
 	* Replace a tile in a tile map with a new tile.
 	* The coordinates of the tiles are indexed so that the "first" tile just
-	* above and to the right of origo has coordinates 1,1.
-	* Tiles to the left of and below origo are indexed 0, -1, -2 and so forth.
+	* above and to the right of origin has coordinates 1,1.
+	* Tiles to the left of and below origin are indexed 0, -1, -2 and so forth.
 	* 
 	* +-------+-------+------+------+
 	* |  0,3  |  1,3  | 2,3  | 3,3  |
@@ -6247,7 +6351,7 @@ declare namespace tilemap {
 	* @param layer  name of the layer for the tile
 	* @param x  x-coordinate of the tile
 	* @param y  y-coordinate of the tile
-	* @param tile  index of new tile to set
+	* @param tile  index of new tile to set. 0 resets the cell
 	* @param h_flipped  optional if the tile should be horizontally flipped
 	* @param v_flipped  optional i the tile should be vertically flipped
 	*/
