@@ -23,7 +23,7 @@
     "version": "latest"
   },
   "dependencies": {
-    "lua-types": "^2.8.0"
+    "lua-types": "2.8.0"
   },
   "devDependencies": {
     "@ts-defold/type-gen": "^0.2.10"
