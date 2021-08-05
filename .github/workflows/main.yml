@@ -20,4 +20,4 @@ jobs:
         with:
           url: http://d.defold.com/stable/info.json    
       - run: echo ${{ steps.defold.outputs.data }}
-      - run: sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/\2 \3/p' ./index.d.ts
+      - run: sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/\2 \3/p' '$GITHUB_WORKSPACE/index.d.ts'
