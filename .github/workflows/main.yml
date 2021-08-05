@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-  defold-version-check:
+  get-defold-version:
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -20,3 +20,4 @@ jobs:
         with:
           url: http://d.defold.com/stable/info.json    
       - run: echo ${{ steps.defold.outputs.data }}
+      - run: sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/\2 \3/p' ./index.d.ts
