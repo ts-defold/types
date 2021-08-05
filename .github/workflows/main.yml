@@ -16,7 +16,7 @@ jobs:
         uses: actionsflow/axios@v1
         with:
           url: http://d.defold.com/stable/info.json    
-      - run: echo TARGET_VERSION=${{ steps.defold.outputs.data }} >> $GITHUB_ENV
+      - run: echo TARGET_VERSION='${{ steps.defold.outputs.data }}' >> $GITHUB_ENV
       - run: echo CURRENT_VERSION=$(sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/{"version":"\2","sha1":"\3"}/p' './index.d.ts') >> $GITHUB_ENV
       - name: 'Update Types'
         if: ${{ env.TARGET_VERSION != env.CURRENT_VERSION }}
