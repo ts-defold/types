@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
+      - name: 'Setup Node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@ts-defold'
       - name: 'Fetch Defold Version'
         id: defold
         uses: actionsflow/axios@v1
@@ -20,11 +26,6 @@ jobs:
       - run: echo CURRENT_VERSION=$(sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/{"version":"\2","sha1":"\3"}/p' './index.d.ts') >> $GITHUB_ENV
       - name: 'Update Types'
         if: ${{ env.TARGET_VERSION != env.CURRENT_VERSION }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@ts-defold'
         run: |
           npm install
           npm run build
