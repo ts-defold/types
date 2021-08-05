@@ -1,4 +1,4 @@
-name: CI
+name: Defold Stable Releases
 
 on:
   schedule:
@@ -20,4 +20,22 @@ jobs:
       - run: echo CURRENT_VERSION=$(sed -nr 's/^\/\/ DEFOLD\. ([A-Za-z]+) version ([0-9\.]+) \(([a-z0-9]+)\)/{"version":"\2","sha1":"\3"}/p' './index.d.ts') >> $GITHUB_ENV
       - name: 'Update Types'
         if: ${{ env.TARGET_VERSION != env.CURRENT_VERSION }}
-        run: echo "NEEDS NEW TYPES"
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@ts-defold'
+        run: |
+          npm install
+          npm run build
+          npm run check
+          npm version patch
+          npm publish --access public
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ./index.d.ts
+          git commit -m "Defold Release" -m '${{ steps.defold.outputs.data }}'
+          git push
+          git push --tags
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
