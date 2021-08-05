@@ -27,7 +27,7 @@ jobs:
       - name: 'Update Types'
         if: ${{ env.TARGET_VERSION != env.CURRENT_VERSION }}
         run: |
-          npm install
+          npm ci
           npm run build
           npm run check
           npm version patch
