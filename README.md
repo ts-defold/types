@@ -22,3 +22,11 @@ npm install @ts-defold/types --save-dev
   }
 }
 ```
+
+### Shoutouts 📢
+[@dasannikov](https://github.com/dasannikov) and [DefoldTypescript](https://github.com/dasannikov/DefoldTypeScript) for a starting point and inspiration
+[TypeScriptToLua](https://github.com/TypeScriptToLua/TypeScriptToLua) for the awesome community and tools
+[@hazzard993](https://github.com/hazzard993), [@ark120202](https://github.com/ark120202), [@Perryvw](https://github.com/Perryvw) and all the fine folks over on the [tstl discord server](https://discord.gg/BWAq58Y).
+<p align="center" class="h4">
+  TypeScript :heart: Defold
+</p>
