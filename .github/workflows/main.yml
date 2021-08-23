@@ -33,11 +33,9 @@ jobs:
           npm run build
           npm run check
           git add --all
-          git commit -m "chore: update types"
+          git commit -m "Defold Release" -m '${{ steps.defold.outputs.data }}'
           npm version patch
           npm publish --access public
-          git add --all
-          git commit -m "Defold Release" -m '${{ steps.defold.outputs.data }}'
           git push
           git push --tags
         env:
