@@ -1,7 +1,7 @@
 /** @noSelfInFile */
 /// <reference types="lua-types/5.1" />
 
-// DEFOLD. stable version 1.2.185 (0a8d3e879724132afb18d47e0040c2034be07504)
+// DEFOLD. stable version 1.2.186 (1f748d5b0a84e8b5c58bf747e4c48d153ef77a52)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
