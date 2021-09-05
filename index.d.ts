@@ -1,5 +1,6 @@
 /** @noSelfInFile */
 /// <reference types="lua-types/5.1" />
+/// <reference types="typescript-to-lua/language-extensions" />
 
 // DEFOLD. stable version 1.2.186 (1f748d5b0a84e8b5c58bf747e4c48d153ef77a52)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -1923,7 +1924,7 @@ with a custom curve. See the animation guide for more information.
 	* @return success  texture creation was successful
 	* @return code  one of the gui.RESULT_* codes if unsuccessful
 	*/
-	export function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): boolean
+	export function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>
 
 	/**
 	* Tests whether a coordinate is within the bounding box of a
@@ -4215,7 +4216,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	* @return data  loaded data, or `nil` if the resource could not be loaded
 	* @return error  the error message, or `nil` if no error occurred
 	*/
-	export function load_resource(filename: string): string
+	export function load_resource(filename: string): LuaMultiReturn<[string, string]>
 
 	/**
 	* Open URL in default application, typically a browser
@@ -4394,7 +4395,7 @@ declare namespace window {
 	* @return width  The window width
 	* @return height  The window height
 	*/
-	export function get_size(): number
+	export function get_size(): LuaMultiReturn<[number, number]>
 
 	/**
 	* 🤖 Sets the dimming mode on a mobile device.
@@ -5867,7 +5868,7 @@ declare namespace sound {
 	* @return peak_l  peak value for left channel
 	* @return peak_r  peak value for right channel
 	*/
-	export function get_peak(group: string | hash, window: number): number
+	export function get_peak(group: string | hash, window: number): LuaMultiReturn<[number, number]>
 
 	/**
 	* Get RMS (Root Mean Square) value from mixer group. This value is the
@@ -5882,7 +5883,7 @@ declare namespace sound {
 	* @return rms_l  RMS value for left channel
 	* @return rms_r  RMS value for right channel
 	*/
-	export function get_rms(group: string | hash, window: number): number
+	export function get_rms(group: string | hash, window: number): LuaMultiReturn<[number, number]>
 
 	/**
 	* Checks if background music is playing, e.g. from iTunes.
@@ -6311,7 +6312,7 @@ declare namespace tilemap {
 	* @return w  number of columns (width) in the tile map
 	* @return h  number of rows (height) in the tile map
 	*/
-	export function get_bounds(url: string | hash | url): number
+	export function get_bounds(url: string | hash | url): LuaMultiReturn<[number, number, number, number]>
 
 	/**
 	* Get the tile set at the specified position in the tilemap.
