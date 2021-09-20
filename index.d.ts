@@ -98,6 +98,130 @@ declare function pprint(v: any): void
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
+declare namespace socket {
+
+	/**
+	* max numbers of sockets the select function can handle
+	*/
+	export let _SETSIZE: any
+
+	/**
+	* the current LuaSocket version
+	*/
+	export let _VERSION: any
+
+	/**
+	* This function is a shortcut that creates and returns a TCP client object connected to a remote
+	* address at a given port. Optionally, the user can also specify the local address and port to
+	* bind (`locaddr` and `locport`), or restrict the socket family to `"inet"` or `"inet6"`.
+	* Without specifying family to connect, whether a tcp or tcp6 connection is created depends on
+	* your system configuration.
+	* @param address  the address to connect to.
+	* @param port  the port to connect to.
+	* @param locaddr  optional local address to bind to.
+	* @param locport  optional local port to bind to.
+	* @param family  optional socket family to use, `"inet"` or `"inet6"`.
+	* @return tcp_client  a new IPv6 TCP client object, or `nil` in case of error.
+	* @return error  the error message, or `nil` if no error occurred.
+	*/
+	export function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, string]>
+
+	/**
+	* Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
+	* You should use the values returned by this function for relative measurements only.
+	* @return seconds  the number of seconds elapsed.
+	*/
+	export function gettime(): number
+
+	/**
+	* This function creates and returns a clean try function that allows for cleanup before the exception is raised.
+	* The `finalizer` function will be called in protected mode (see protect).
+	* @param finalizer  a function that will be called before the try throws the exception.
+	* @return try  the customized try function.
+	*/
+	export function newtry(finalizer: any): any
+
+	/**
+	* Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
+	* ⚠ Beware that if your function performs some illegal operation that raises an error, the protected function will catch the error and return it as a string. This is because try functions uses errors as the mechanism to throw exceptions.
+	* @param func  a function that calls a try function (or assert, or error) to throw exceptions.
+	* @return safe_func  an equivalent function that instead of throwing exceptions, returns `nil` followed by an error message.
+	*/
+	export function protect(func: any): any
+
+	/**
+	* The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and nil otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
+	* `Recvt` and `sendt` parameters can be empty tables or `nil`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
+	* The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
+	* ⚠ This function can monitor a limited number of sockets, as defined by the constant socket._SETSIZE. This number may be as high as 1024 or as low as 64 by default, depending on the system. It is usually possible to change this at compile time. Invoking select with a larger number of sockets will raise an error.
+	* ⚠ A known bug in WinSock causes select to fail on non-blocking TCP sockets. The function may return a socket as writable even though the socket is not ready for sending.
+	* ⚠ Calling select with a server socket in the receive parameter before a call to accept does not guarantee accept will return immediately. Use the settimeout method or accept might block forever.
+	* ⚠ If you close a socket and pass it to select, it will be ignored.
+	* (Using select with non-socket objects: Any object that implements `getfd` and `dirty` can be used with select, allowing objects from other libraries to be used within a socket.select driven loop.)
+	* @param recvt  array with the sockets to test for characters available for reading.
+	* @param sendt  array with sockets that are watched to see if it is OK to immediately write on them.
+	* @param timeout  the maximum amount of time (in seconds) to wait for a change in status. Nil, negative or omitted timeout value allows the function to block indefinitely.
+	* @return sockets_r  a list with the sockets ready for reading.
+	* @return sockets_w  a list with the sockets ready for writing.
+	* @return error  an error message. "timeout" if a timeout condition was met, otherwise `nil`.
+	*/
+	export function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string]>
+
+	/**
+	* This function drops a number of arguments and returns the remaining.
+	* It is useful to avoid creation of dummy variables:
+	* `D` is the number of arguments to drop. `Ret1` to `retN` are the arguments.
+	* The function returns `retD+1` to `retN`.
+	* @param d  the number of arguments to drop.
+	* @param ret1  argument 1.
+	* @param ret2  argument 2.
+	* @param retN  argument N.
+	* @return retD_1  argument D+1.
+	* @return retD_2  argument D+2.
+	* @return retN  argument N.
+	*/
+	export function skip(d: number, ret1?: any, ret2?: any, retN?: any): LuaMultiReturn<[any, any, any]> | undefined
+
+	/**
+	* Freezes the program execution during a given amount of time.
+	* @param time  the number of seconds to sleep for.
+	*/
+	export function sleep(time: number): void
+
+	/**
+	* Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
+	* @return tcp_master  a new IPv4 TCP master object, or `nil` in case of error.
+	* @return error  the error message, or `nil` if no error occurred.
+	*/
+	export function tcp(): LuaMultiReturn<[any, string]>
+
+	/**
+	* Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
+	* Note: The TCP object returned will have the option "ipv6-v6only" set to true.
+	* @return tcp_master  a new IPv6 TCP master object, or `nil` in case of error.
+	* @return error  the error message, or `nil` if no error occurred.
+	*/
+	export function tcp6(): LuaMultiReturn<[any, string]>
+
+	/**
+	* Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
+	* @return udp_unconnected  a new unconnected IPv4 UDP object, or `nil` in case of error.
+	* @return error  the error message, or `nil` if no error occurred.
+	*/
+	export function udp(): LuaMultiReturn<[any, string]>
+
+	/**
+	* Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
+	* Note: The UDP object returned will have the option "ipv6-v6only" set to true.
+	* @return udp_unconnected  a new unconnected IPv6 UDP object, or `nil` in case of error.
+	* @return error  the error message, or `nil` if no error occurred.
+	*/
+	export function udp6(): LuaMultiReturn<[any, string]>
+
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
 declare namespace crash {
 
 	/**
