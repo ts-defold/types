@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.187 (581c6439ae93755a8a6bcf58732c39c724fa193c)
+// DEFOLD. stable version 1.2.188 (6bfeea3b13d7b8920483ea2cba9c181a8650b84d)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -682,7 +682,8 @@ declare namespace go {
 	* By starting a new animation in that function, several animations can be sequenced together. See the examples for more information.
 	* ⚠ If you call `go.animate()` from a game object's `final()` function,
 	* any passed `complete_function` will be ignored and never called upon animation completion.
-	* See the properties guide for which properties can be animated and the animation guide for how to animate them.
+	* See the properties guide for which properties can be animated and the animation guide for how
+	* them.
 	* @param url  url of the game object or component having the property
 	* @param property  id of the property to animate
 	* @param playback  playback mode of the animation
@@ -720,7 +721,7 @@ The id of the animated property.
 	* By calling this function, all stored animations of the given property will be canceled.
 	* See the properties guide for which properties can be animated and the animation guide for how to animate them.
 	* @param url  url of the game object or component having the property
-	* @param property  ide of the property to animate
+	* @param property  id of the property to cancel
 	*/
 	export function cancel_animations(url: string | hash | url, property: string | hash): void
 
@@ -4193,6 +4194,13 @@ declare namespace sys {
 	export let NETWORK_DISCONNECTED: any
 
 	/**
+	* deserializes buffer into a lua table
+	* @param buffer  buffer to deserialize from
+	* @return table  lua table with deserialized data
+	*/
+	export function deserialize(buffer: string): any
+
+	/**
 	* Terminates the game application and reports the specified `code` to the OS.
 	* @param code  exit code to report to the OS, 0 means clean exit
 	*/
@@ -4386,6 +4394,14 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	* @return success  a boolean indicating if the table could be saved or not
 	*/
 	export function save(filename: string, table: any): boolean
+
+	/**
+	* The buffer can later deserialized by `sys.deserialize`.
+	* This method has all the same limitations as `sys.save`.
+	* @param table  lua table to serialize
+	* @return buffer  serialized data buffer
+	*/
+	export function serialize(table: any): string
 
 	/**
 	* Sets the host that is used to check for network connectivity against.
@@ -6079,8 +6095,9 @@ Information about the completion:
 `sender`
 The invoker of the callback: the sound component.
 
+	* @return id  The identifier for the sound voice
 	*/
-	export function play(url: string | hash | url, play_properties?: any, complete_function?: any): void
+	export function play(url: string | hash | url, play_properties?: any, complete_function?: any): number
 
 	/**
 	* Set gain on all active playing voices of a sound.
@@ -6140,141 +6157,6 @@ The invoker of the callback: the sound component.
 
 
 declare namespace spine {
-
-	/**
-	* READ ONLY The current animation set on the component.
-	* hash.
-	*/
-	export let animation: any
-
-	/**
-	* The normalized animation cursor. The type of the property is number.
-	* ⚠ Please note that spine events may not fire as expected when the cursor is manipulated directly.
-	*/
-	export let cursor: any
-
-	/**
-	* The material used when rendering the spine model. The type of the property is hash.
-	*/
-	export let material: any
-
-	/**
-	* number.
-	* The playback_rate is a non-negative number, a negative value will be clamped to 0.
-	*/
-	export let playback_rate: any
-
-	/**
-	* The current skin on the component. The type of the property is hash.
-	* If setting the skin property the skin must be present on the spine
-	* model or a runtime error is signalled.
-	*/
-	export let skin: any
-
-	/**
-	* Cancels all running animations on a specified spine model component.
-	* @param url  the spine model for which to cancel the animation
-	*/
-	export function cancel(url: string | hash | url): void
-
-	/**
-	* Returns the id of the game object that corresponds to a specified skeleton bone.
-	* The returned game object can be used for parenting and transform queries.
-	* This function has complexity `O(n)`, where `n` is the number of bones in the spine model skeleton.
-	* Game objects corresponding to a spine model skeleton bone can not be individually deleted.
-	* @param url  the spine model to query
-	* @param bone_id  id of the corresponding bone
-	* @return id  id of the game object
-	*/
-	export function get_go(url: string | hash | url, bone_id: string | hash): hash
-
-	/**
-	* Plays a specified animation on a spine model component with specified playback
-	* mode and parameters.
-	* An optional completion callback function can be provided that will be called when
-	* the animation has completed playing. If no function is provided,
-	* a spine_animation_done message is sent to the script that started the animation.
-	* ⚠ The callback is not called (or message sent) if the animation is
-	* cancelled with spine.cancel. The callback is called (or message sent) only for
-	* animations that play with the following playback modes:
-	* 
-	* - `go.PLAYBACK_ONCE_FORWARD`
-	* - `go.PLAYBACK_ONCE_BACKWARD`
-	* - `go.PLAYBACK_ONCE_PINGPONG`
-	* 
-	* @param url  the spine model for which to play the animation
-	* @param anim_id  id of the animation to play
-	* @param playback  playback mode of the animation
-
-- `go.PLAYBACK_ONCE_FORWARD`
-- `go.PLAYBACK_ONCE_BACKWARD`
-- `go.PLAYBACK_ONCE_PINGPONG`
-- `go.PLAYBACK_LOOP_FORWARD`
-- `go.PLAYBACK_LOOP_BACKWARD`
-- `go.PLAYBACK_LOOP_PINGPONG`
-
-	* @param play_properties  optional table with properties:
-
-`blend_duration`
-duration of a linear blend between the current and new animation.
-`offset`
-the normalized initial value of the animation cursor when the animation starts playing.
-`playback_rate`
-the rate with which the animation will be played. Must be positive.
-
-	* @param complete_function  function to call when the animation has completed.
-
-`self`
-The current object.
-`message_id`
-The name of the completion message, `"spine_animation_done"`.
-`message`
-Information about the completion:
-
-
-`animation_id` - the animation that was completed.
-`playback` - the playback mode for the animation.
-
-
-`sender`
-The invoker of the callback: the spine model component.
-
-	*/
-	export function play_anim(url: string | hash | url, anim_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
-
-	/**
-	* Resets any previously set IK target of a spine model, the position will be reset
-	* to the original position from the spine scene.
-	* @param url  the spine model containing the object
-	* @param ik_constraint_id  id of the corresponding IK constraint object
-	*/
-	export function reset_ik_target(url: string | hash | url, ik_constraint_id: string | hash): void
-
-	/**
-	* Sets a game object as target position of an inverse kinematic (IK) object. As the
-	* target game object's position is updated, the constraint object is updated with the
-	* new position.
-	* @param url  the spine model containing the object
-	* @param ik_constraint_id  id of the corresponding IK constraint object
-	* @param target_url  target game object
-	*/
-	export function set_ik_target(url: string | hash | url, ik_constraint_id: string | hash, target_url: string | hash | url): void
-
-	/**
-	* Sets a static (vector3) target position of an inverse kinematic (IK) object.
-	* @param url  the spine model containing the object
-	* @param ik_constraint_id  id of the corresponding IK constraint object
-	* @param position  target position
-	*/
-	export function set_ik_target_position(url: string | hash | url, ik_constraint_id: string | hash, position: vmath.vector3): void
-
-	/**
-	* Sets the spine skin on a spine model.
-	* @param url  the spine model for which to set skin
-	* @param spine_skin  spine skin id
-	* @param spine_slot  optional slot id to only change a specific slot
-	*/
-	export function set_skin(url: string | hash | url, spine_skin: string | hash, spine_slot?: string | hash): void
 
 	/**
 	* This message is sent when a Spine animation has finished playing back to the script
