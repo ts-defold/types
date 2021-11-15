@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.188 (6bfeea3b13d7b8920483ea2cba9c181a8650b84d)
+// DEFOLD. stable version 1.2.189 (794112e7e21be5d00f1cc70bb891b80ded986c6f)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -1632,6 +1632,13 @@ with a custom curve. See the animation guide for more information.
 	export function get_font(node: node): hash
 
 	/**
+	* This is only useful for text nodes. The font must be mapped to the gui scene in the gui editor.
+	* @param font_name  font of which to get the path hash
+	* @return hash  path hash to resource
+	*/
+	export function get_font_resource(font_name: hash | string): hash
+
+	/**
 	* Returns the scene height.
 	* @return height  scene height
 	*/
@@ -1883,37 +1890,6 @@ with a custom curve. See the animation guide for more information.
 	* @return text  text value
 	*/
 	export function get_text(node: node): string
-
-	/**
-	* Get text metrics given the provided font, text and parameters.
-	* @param font  font id
-	* @param text  text to measure
-	* @param width  max-width. Use for line-breaks (default=FLT_MAX)
-	* @param line_break  true to break lines accordingly to width (default=false)
-	* @param leading  scale value for line spacing (default=1)
-	* @param tracking  scale value for letter spacing (default=0)
-	* @return metrics  a table with the following fields:
-
-- width
-- height
-- max_ascent
-- max_descent
-
-	*/
-	export function get_text_metrics(font: string | hash, text: string, width: number, line_break: boolean, leading: number, tracking: number): any
-
-	/**
-	* Get the text metrics from a text node.
-	* @param node  text node to measure text from
-	* @return metrics  a table with the following fields:
-
-- width
-- height
-- max_ascent
-- max_descent
-
-	*/
-	export function get_text_metrics_from_node(node: node): any
 
 	/**
 	* Returns the texture of a node.
@@ -3947,6 +3923,30 @@ declare namespace resource {
 	export function get_current_manifest(): number
 
 	/**
+	* Gets the text metrics from a font
+	* @param url  the font to get the (unscaled) metrics from
+	* @param options  A table containing parameters for the text. Supported entries:
+
+`width`
+The width of the text field. Not used if `line_break` is false.
+`leading`
+The leading (default 1.0)
+`tracking`
+The leading (default 0.0)
+`line_break`
+If the calculation should consider line breaks (default false)
+
+	* @return metrics  a table with the following fields:
+
+- width
+- height
+- max_ascent
+- max_descent
+
+	*/
+	export function get_text_metrics(url: hash, options: any): any
+
+	/**
 	* Is any liveupdate data mounted and currently in use?
 	* This can be used to determine if a new manifest or zip file should be downloaded.
 	* @return bool  true if a liveupdate archive (any format) has been loaded
@@ -5673,19 +5673,6 @@ declare namespace label {
 	* @return metrics  the label text
 	*/
 	export function get_text(url: string | hash | url): string
-
-	/**
-	* Gets the text metrics from a label component
-	* @param url  the label to get the (unscaled) metrics from
-	* @return metrics  a table with the following fields:
-
-- width
-- height
-- max_ascent
-- max_descent
-
-	*/
-	export function get_text_metrics(url: string | hash | url): any
 
 	/**
 	* Sets the text of a label component
