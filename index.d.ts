@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.189 (8894457f85514465165401c664f5ba79a7730804)
+// DEFOLD. stable version 1.2.190 (d31d6397a72178541a5ef6e7ef2bed090d828f58)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -742,9 +742,12 @@ The id of the animated property.
 	* gets a named property of the specified game object or component
 	* @param url  url of the game object or component having the property
 	* @param property  id of the property to retrieve
+	* @param options  (optional) options table
+index into array property (1 based)
+name of internal property
 	* @return value  the value of the specified property
 	*/
-	export function get(url: string | hash | url, property: string | hash): any
+	export function get(url: string | hash | url, property: string | hash, options: any): any
 
 	/**
 	* Returns or constructs an instance identifier. The instance id is a hash
@@ -848,8 +851,11 @@ The id of the animated property.
 	* @param url  url of the game object or component having the property
 	* @param property  id of the property to set
 	* @param value  the value to set
+	* @param options  (optional) options table
+index into array property (1 based)
+name of internal property
 	*/
-	export function set(url: string | hash | url, property: string | hash, value: any): void
+	export function set(url: string | hash | url, property: string | hash, value: any, options: any): void
 
 	/**
 	* Sets the parent for a game object instance. This means that the instance will exist in the geometrical space of its parent,
@@ -929,6 +935,12 @@ The id of the animated property.
 
 declare namespace gui {
 
+
+	/**
+	* The fonts used in the gui. The type of the property is hash.
+	* Key must be specified in options table.
+	*/
+	export let fonts: any
 
 	/**
 	* fit adjust mode
@@ -1522,6 +1534,12 @@ with a custom curve. See the animation guide for more information.
 
 	*/
 	export function get_adjust_mode(node: node): any
+
+	/**
+	* gets the node alpha
+	* @param node  node from which to get alpha
+	*/
+	export function get_alpha(node: node): void
 
 	/**
 	* Returns the blend mode of a node.
@@ -2140,6 +2158,13 @@ The rate with which the animation will be played. Must be positive
 	export function set_adjust_mode(node: node, adjust_mode: any): void
 
 	/**
+	* sets the node alpha
+	* @param node  node for which to set alpha
+	* @param alpha  0..1 alpha color
+	*/
+	export function set_alpha(node: node, alpha: number): void
+
+	/**
 	* Set the blend mode of a node.
 	* Blend mode defines how the node will be blended with the background.
 	* @param node  node to set blend mode for
@@ -2562,6 +2587,12 @@ The rate with which the animation will be played. Must be positive
 
 
 
+
+	/**
+	* The textures used in the gui. The type of the property is hash.
+	* Key must be specified in options table.
+	*/
+	export let textures: any
 
 
 }
