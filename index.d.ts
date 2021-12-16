@@ -747,7 +747,7 @@ index into array property (1 based)
 name of internal property
 	* @return value  the value of the specified property
 	*/
-	export function get(url: string | hash | url, property: string | hash, options: any): any
+	export function get(url: string | hash | url, property: string | hash, options?: any): any
 
 	/**
 	* Returns or constructs an instance identifier. The instance id is a hash
@@ -855,7 +855,7 @@ name of internal property
 index into array property (1 based)
 name of internal property
 	*/
-	export function set(url: string | hash | url, property: string | hash, value: any, options: any): void
+	export function set(url: string | hash | url, property: string | hash, value: any, options?: any): void
 
 	/**
 	* Sets the parent for a game object instance. This means that the instance will exist in the geometrical space of its parent,
@@ -2349,7 +2349,7 @@ The rate with which the animation will be played. Must be positive
 	* @param parent  parent node to set
 	* @param keep_scene_transform  optional flag to make the scene position being perserved
 	*/
-	export function set_parent(node: node, parent: node, keep_scene_transform: boolean): void
+	export function set_parent(node: node, parent: node, keep_scene_transform?: boolean): void
 
 	/**
 	* Set the paricle fx for a gui node
