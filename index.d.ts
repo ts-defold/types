@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.190 (d31d6397a72178541a5ef6e7ef2bed090d828f58)
+// DEFOLD. stable version 1.2.191 (d393bae6a361f86cf2263ab312c9b3cea45253ab)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -2717,6 +2717,18 @@ See each joint type for possible properties field. The one field that is accepte
 	export function get_gravity(): vmath.vector3
 
 	/**
+	* Returns the group name of a collision object as a hash.
+	* @param url  the collision object to return the group of.
+	* @return   hash value of the group.
+function checkIsEnemy()
+    local grp = physics.get_group(&quot;#collisionobject&quot;)
+    assert( grp == hash(&quot;enemy&quot;) )
+end
+
+	*/
+	export function get_group(url: string | hash | url): hash
+
+	/**
 	* Get a table for properties for a connected joint. The joint has to be created before
 	* properties can be retrieved.
 	* Note: Currently only supported in 2D physics.
@@ -2748,6 +2760,21 @@ See each joint type for possible properties field. The one field that is accepte
 	* @return torque  the reaction torque on bodyB in N*m.
 	*/
 	export function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): any
+
+	/**
+	* Returns true if the specified group is set in the mask of a collision
+	* object, false otherwise.
+	* @param url  the collision object to check the mask of.
+	* @param group  the name of the group to check for.
+	* @return   boolean value of the maskbit. 'true' if present, 'false' otherwise.
+function checkCollideWithUser()
+    -- to check if the collisionobject would collide with &quot;user&quot; group
+    local hits_user = physics.get_maskbit(&quot;#collisionobject&quot;,&quot;user&quot;)
+    return hits_user
+end
+
+	*/
+	export function get_maskbit(url: string | hash | url, group: string): boolean
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -2794,6 +2821,19 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	export function set_gravity(gravity: vmath.vector3): void
 
 	/**
+	* Updates the group property of a collision object to the specified
+	* string value. The group name should exist i.e. have been used in
+	* a collision object in the editor.
+	* @param url  the collision object affected.
+	* @param group  the new group name to be assigned.
+function changeCollisionGroup()
+     physics.set_group(&quot;#collisionobject&quot;, &quot;enemy&quot;)
+end
+
+	*/
+	export function set_group(url: string | hash | url, group: string): void
+
+	/**
 	* Flips the collision shapes horizontally for a collision object
 	* @param url  the collision object that should flip its shapes
 	* @param flip  `true` if the collision object should flip its shapes, `false` if not
@@ -2810,6 +2850,19 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 Note: The `collide_connected` field cannot be updated/changed after a connection has been made.
 	*/
 	export function set_joint_properties(collisionobject: string | hash | url, joint_id: string | hash, properties: any): void
+
+	/**
+	* Sets or clears the masking of a group (maskbit) in a collision object.
+	* @param url  the collision object to change the mask of.
+	* @param group  the name of the group (maskbit) to modify in the mask.
+	* @param type_boolean  boolean value of the new maskbit. 'true' to enable, 'false' to disable.
+function makeUserAlly()
+    -- no longer collide with the &quot;user&quot; group
+    physics.set_maskbit(&quot;#collisionobject&quot;,&quot;user&quot;,false)
+end
+
+	*/
+	export function set_maskbit(url: string | hash | url, group: string, type_boolean?: any): void
 
 	/**
 	* Flips the collision shapes vertically for a collision object
@@ -3956,6 +4009,7 @@ declare namespace resource {
 	/**
 	* Gets the text metrics from a font
 	* @param url  the font to get the (unscaled) metrics from
+	* @param text  text to measure
 	* @param options  A table containing parameters for the text. Supported entries:
 
 `width`
@@ -3975,7 +4029,7 @@ If the calculation should consider line breaks (default false)
 - max_descent
 
 	*/
-	export function get_text_metrics(url: hash, options: any): any
+	export function get_text_metrics(url: hash, text: string, options?: any): any
 
 	/**
 	* Is any liveupdate data mounted and currently in use?
@@ -4918,6 +4972,13 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	* @return   handle identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
 	export function delay(delay: number, repeat: boolean, callback: any): hash
+
+	/**
+	* Manual triggering a callback for a timer.
+	* @param handle  the timer handle returned by timer.delay()
+	* @return true  if the timer was active, false if the timer is already cancelled / complete
+	*/
+	export function trigger(handle: hash): boolean
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6205,6 +6266,11 @@ declare namespace spine {
 declare namespace sprite {
 
 	/**
+	* hash.
+	*/
+	export let animation: any
+
+	/**
 	* This message is sent to the sender of a `play_animation` message when the
 	* animation has completed.
 	* Note that this message is sent only for animations that play with the following
@@ -6325,6 +6391,31 @@ declare namespace tilemap {
 	export let tile_source: any
 
 	/**
+	* flip tile horizontally
+	*/
+	export let H_FLIP: any
+
+	/**
+	* rotate tile 180 degrees clockwise
+	*/
+	export let ROTATE_180: any
+
+	/**
+	* rotate tile 270 degrees clockwise
+	*/
+	export let ROTATE_270: any
+
+	/**
+	* rotate tile 90 degrees clockwise
+	*/
+	export let ROTATE_90: any
+
+	/**
+	* flip tile vertically
+	*/
+	export let V_FLIP: any
+
+	/**
 	* Get the bounds for a tile map. This function returns multiple values:
 	* The lower left corner index x and y coordinates (1-indexed),
 	* the tile map width and the tile map height.
@@ -6372,15 +6463,17 @@ declare namespace tilemap {
 	* The coordinates must be within the bounds of the tile map as it were created.
 	* That is, it is not possible to extend the size of a tile map by setting tiles outside the edges.
 	* To clear a tile, set the tile to number 0. Which tile map and layer to manipulate is identified by the URL and the layer name parameters.
+	* Transform bitmask is arithmetic sum of one or both FLIP constants (`tilemap.H_FLIP`, `tilemap.V_FLIP`) and/or one of ROTATION constants
+	* (`tilemap.ROTATE_90`, `tilemap.ROTATE_180`, `tilemap.ROTATE_270`).
+	* Flip always applies before rotation (clockwise).
 	* @param url  the tile map
 	* @param layer  name of the layer for the tile
 	* @param x  x-coordinate of the tile
 	* @param y  y-coordinate of the tile
 	* @param tile  index of new tile to set. 0 resets the cell
-	* @param h_flipped  optional if the tile should be horizontally flipped
-	* @param v_flipped  optional i the tile should be vertically flipped
+	* @param transform_bitmask  optional flip and/or rotation should be applied to the tile
 	*/
-	export function set_tile(url: string | hash | url, layer: string | hash, x: number, y: number, tile: number, h_flipped?: boolean, v_flipped?: boolean): void
+	export function set_tile(url: string | hash | url, layer: string | hash, x: number, y: number, tile: number, transform_bitmask?: number): void
 
 	/**
 	* Sets the visibility of the tilemap layer
