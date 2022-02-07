@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.191 (d393bae6a361f86cf2263ab312c9b3cea45253ab)
+// DEFOLD. stable version 1.2.192 (84a9c89dfd5a2c3818c01e7c6777169272d9390b)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -2720,9 +2720,9 @@ See each joint type for possible properties field. The one field that is accepte
 	* Returns the group name of a collision object as a hash.
 	* @param url  the collision object to return the group of.
 	* @return   hash value of the group.
-function checkIsEnemy()
-    local grp = physics.get_group(&quot;#collisionobject&quot;)
-    assert( grp == hash(&quot;enemy&quot;) )
+local function check_is_enemy()
+    local group = physics.get_group(&quot;#collisionobject&quot;)
+    return group == hash(&quot;enemy&quot;)
 end
 
 	*/
@@ -2767,10 +2767,10 @@ end
 	* @param url  the collision object to check the mask of.
 	* @param group  the name of the group to check for.
 	* @return   boolean value of the maskbit. 'true' if present, 'false' otherwise.
-function checkCollideWithUser()
-    -- to check if the collisionobject would collide with &quot;user&quot; group
-    local hits_user = physics.get_maskbit(&quot;#collisionobject&quot;,&quot;user&quot;)
-    return hits_user
+local function is_invincible()
+    -- check if the collisionobject would collide with the &quot;bullet&quot; group
+    local invincible = physics.get_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;)
+    return invincible
 end
 
 	*/
@@ -2826,7 +2826,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* a collision object in the editor.
 	* @param url  the collision object affected.
 	* @param group  the new group name to be assigned.
-function changeCollisionGroup()
+local function change_collision_group()
      physics.set_group(&quot;#collisionobject&quot;, &quot;enemy&quot;)
 end
 
@@ -2855,14 +2855,14 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	* Sets or clears the masking of a group (maskbit) in a collision object.
 	* @param url  the collision object to change the mask of.
 	* @param group  the name of the group (maskbit) to modify in the mask.
-	* @param type_boolean  boolean value of the new maskbit. 'true' to enable, 'false' to disable.
-function makeUserAlly()
-    -- no longer collide with the &quot;user&quot; group
-    physics.set_maskbit(&quot;#collisionobject&quot;,&quot;user&quot;,false)
+	* @param maskbit  boolean value of the new maskbit. 'true' to enable, 'false' to disable.
+local function make_invincible()
+    -- no longer collide with the &quot;bullet&quot; group
+    physics.set_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;, false)
 end
 
 	*/
-	export function set_maskbit(url: string | hash | url, group: string, type_boolean?: any): void
+	export function set_maskbit(url: string | hash | url, group: string, maskbit: boolean): void
 
 	/**
 	* Flips the collision shapes vertically for a collision object
@@ -4391,7 +4391,7 @@ Only available on iOS and Android.
 `manufacturer`
 Only available on iOS and Android.
 `system_name`
-The system OS name: "Darwin", "Linux", "Windows", "HTML5", "Android" or "iPhone OS"
+The system name: "Darwin", "Linux", "Windows", "HTML5", "Android" or "iPhone OS"
 `system_version`
 The system OS version.
 `api_version`
@@ -5485,6 +5485,24 @@ declare namespace camera {
 	* The reason it is called "camera focus" is the similarity to how acquiring input focus works (see `acquire_input_focus`).
 	*/
 	export type acquire_camera_focus = "acquire_camera_focus"
+
+	/**
+	* Camera frustum far plane.
+	* The type of the property is float.
+	*/
+	export let far_z: any
+
+	/**
+	* Vertical field of view of the camera.
+	* The type of the property is float.
+	*/
+	export let fov: any
+
+	/**
+	* Camera frustum near plane.
+	* The type of the property is float.
+	*/
+	export let near_z: any
 
 	/**
 	* 
