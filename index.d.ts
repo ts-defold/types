@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.2.192 (84a9c89dfd5a2c3818c01e7c6777169272d9390b)
+// DEFOLD. stable version 1.3.0 (0e77ba11ac957ee01878bbde2e6ac0c9fae6dc01)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -406,6 +406,7 @@ declare namespace go {
 	* - Sprite
 	* - Tile Grid
 	* - Model
+	* - Mesh
 	* 
 	*/
 	export type disable = "disable"
@@ -423,6 +424,7 @@ declare namespace go {
 	* - Sprite
 	* - Tile Grid
 	* - Model
+	* - Mesh
 	* 
 	*/
 	export type enable = "enable"
@@ -1486,12 +1488,6 @@ with a custom curve. See the animation guide for more information.
 	export function cancel_flipbook(node: node): void
 
 	/**
-	* cancel a spine animation
-	* @param node  spine node that should cancel its animation
-	*/
-	export function cancel_spine(node: node): void
-
-	/**
 	* Make a clone instance of a node.
 	* This function does not clone the supplied node's children nodes.
 	* Use gui.clone_tree for that purpose.
@@ -1838,7 +1834,7 @@ with a custom curve. See the animation guide for more information.
 	* The size mode defines how the node will adjust itself in size. Automatic
 	* size mode alters the node size based on the node's content. Automatic size
 	* mode works for Box nodes and Pie nodes which will both adjust their size
-	* to match the assigned image. Spine, Particle fx and Text nodes will ignore
+	* to match the assigned image. Particle fx and Text nodes will ignore
 	* any size mode setting.
 	* @param node  node from which to get the size mode (node)
 	* @return size_mode  the current size mode
@@ -1855,52 +1851,6 @@ with a custom curve. See the animation guide for more information.
 	* @return values  configuration values
 	*/
 	export function get_slice9(node: node): vmath.vector4
-
-	/**
-	* Gets the playing animation on a spine node
-	* @param node  node to get spine skin from
-	* @return id  spine animation id, 0 if no animation is playing
-	*/
-	export function get_spine_animation(node: node): hash
-
-	/**
-	* The returned node can be used for parenting and transform queries.
-	* This function has complexity O(n), where n is the number of bones in the spine model skeleton.
-	* @param node  spine node to query for bone node
-	* @param bone_id  id of the corresponding bone
-	* @return bone  node corresponding to the spine bone
-	*/
-	export function get_spine_bone(node: node, bone_id: string | hash): node
-
-	/**
-	* This is only useful for spine nodes. Gets the normalized cursor of the animation on a spine node.
-	* @param node  spine node to get the cursor for (node)
-	* @return cursor  cursor value
-	*/
-	export function get_spine_cursor(node: node): any
-
-	/**
-	* This is only useful for spine nodes. Gets the playback rate of the animation on a spine node.
-	* @param node  spine node to set the cursor for
-	* @return rate  playback rate
-	*/
-	export function get_spine_playback_rate(node: node): number
-
-	/**
-	* Returns the spine scene id of the supplied node.
-	* This is currently only useful for spine nodes.
-	* The returned spine scene must be mapped to the gui scene in the gui editor.
-	* @param node  node to get texture from
-	* @return spine_scene  spine scene id
-	*/
-	export function get_spine_scene(node: node): hash
-
-	/**
-	* Gets the spine skin of a spine node
-	* @param node  node to get spine skin from
-	* @return id  spine skin id, 0 if no explicit skin is set
-	*/
-	export function get_spine_skin(node: node): hash
 
 	/**
 	* Returns the text value of a text node. This is only useful for text nodes.
@@ -2012,14 +1962,6 @@ with a custom curve. See the animation guide for more information.
 	export function new_pie_node(pos: vmath.vector3 | vmath.vector4, size: vmath.vector3): node
 
 	/**
-	* Dynamically create a new spine node.
-	* @param pos  node position
-	* @param spine_scene  spine scene id
-	* @return node  new spine node
-	*/
-	export function new_spine_node(pos: vmath.vector3 | vmath.vector4, spine_scene: string | hash): node
-
-	/**
 	* Dynamically create a new text node.
 	* @param pos  node position
 	* @param text  node text
@@ -2106,32 +2048,6 @@ the new state of the emitter:
 	export function play_particlefx(node: node, emitter_state_function?: any): void
 
 	/**
-	* Starts a spine animation.
-	* @param node  spine node that should play the animation
-	* @param animation_id  id of the animation to play
-	* @param playback  playback mode
-
-- `gui.PLAYBACK_ONCE_FORWARD`
-- `gui.PLAYBACK_ONCE_BACKWARD`
-- `gui.PLAYBACK_ONCE_PINGPONG`
-- `gui.PLAYBACK_LOOP_FORWARD`
-- `gui.PLAYBACK_LOOP_BACKWARD`
-- `gui.PLAYBACK_LOOP_PINGPONG`
-
-	* @param play_properties  optional table with properties
-
-`blend_duration`
-The duration of a linear blend between the current and new animation
-`offset`
-The normalized initial value of the animation cursor when the animation starts playing
-`playback_rate`
-The rate with which the animation will be played. Must be positive
-
-	* @param complete_function  function to call when the animation has completed
-	*/
-	export function play_spine_anim(node: node, animation_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
-
-	/**
 	* Resets the input context of keyboard. This will clear marked text.
 	*/
 	export function reset_keyboard(): void
@@ -2142,6 +2058,14 @@ The rate with which the animation will be played. Must be positive
 	* Nodes that are created dynamically from script are not affected.
 	*/
 	export function reset_nodes(): void
+
+	/**
+	* Convert the screen position to the local position of supplied node
+	* @param node  node used for getting local transformation matrix
+	* @param screen_position  screen position
+	* @return local_position  local position
+	*/
+	export function screen_to_local(node: node, screen_position: vmath.vector3): vmath.vector3
 
 	/**
 	* Sets the adjust mode on a node.
@@ -2416,6 +2340,13 @@ The rate with which the animation will be played. Must be positive
 	export function set_scale(node: node, scale: vmath.vector3 | vmath.vector4): void
 
 	/**
+	* Set the screen position to the supplied node
+	* @param node  node to set the screen position to
+	* @param screen_position  screen position
+	*/
+	export function set_screen_position(node: node, screen_position: vmath.vector3): void
+
+	/**
 	* Sets the shadow color of the supplied node.
 	* See gui.set_color for info how vectors encode color values.
 	* @param node  node to set the shadow color for
@@ -2436,7 +2367,7 @@ The rate with which the animation will be played. Must be positive
 	* The size mode defines how the node will adjust itself in size. Automatic
 	* size mode alters the node size based on the node's content. Automatic size
 	* mode works for Box nodes and Pie nodes which will both adjust their size
-	* to match the assigned image. Spine, Particle fx and Text nodes will ignore
+	* to match the assigned image. Particle fx and Text nodes will ignore
 	* any size mode setting.
 	* @param node  node to set size mode for
 	* @param size_mode  size mode to set
@@ -2453,35 +2384,6 @@ The rate with which the animation will be played. Must be positive
 	* @param values  new values
 	*/
 	export function set_slice9(node: node, values: vmath.vector4): void
-
-	/**
-	* This is only useful for spine nodes. The cursor is normalized.
-	* @param node  spine node to set the cursor for
-	* @param cursor  cursor value
-	*/
-	export function set_spine_cursor(node: node, cursor: number): void
-
-	/**
-	* This is only useful for spine nodes. Sets the playback rate of the animation on a spine node. Must be positive.
-	* @param node  spine node to set the cursor for
-	* @param playback_rate  playback rate
-	*/
-	export function set_spine_playback_rate(node: node, playback_rate: number): void
-
-	/**
-	* Set the spine scene on a spine node. The spine scene must be mapped to the gui scene in the gui editor.
-	* @param node  node to set spine scene for
-	* @param spine_scene  spine scene id
-	*/
-	export function set_spine_scene(node: node, spine_scene: string | hash): void
-
-	/**
-	* Sets the spine skin on a spine node.
-	* @param node  node to set the spine skin on
-	* @param spine_skin  spine skin id
-	* @param spine_slot  optional slot id to only change a specific slot
-	*/
-	export function set_spine_skin(node: node, spine_skin: string | hash, spine_slot?: string | hash): void
 
 	/**
 	* Set the text value of a text node. This is only useful for text nodes.
