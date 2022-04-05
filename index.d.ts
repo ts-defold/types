@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.0 (0e77ba11ac957ee01878bbde2e6ac0c9fae6dc01)
+// DEFOLD. stable version 1.3.1 (06bc078e490fd7d94ec01e38abac989f6cc351a5)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -3140,9 +3140,39 @@ declare namespace render {
 	export let FORMAT_LUMINANCE: any
 
 	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_R16F: any
+
+	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_R32F: any
+
+	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_RG16F: any
+
+	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_RG32F: any
+
+	/**
 	* 
 	*/
 	export let FORMAT_RGB: any
+
+	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_RGB16F: any
+
+	/**
+	* May be nil if the format isn't supported
+	*/
+	export let FORMAT_RGB32F: any
 
 	/**
 	* 
@@ -3150,24 +3180,14 @@ declare namespace render {
 	export let FORMAT_RGBA: any
 
 	/**
-	* 
+	* May be nil if the format isn't supported
 	*/
-	export let FORMAT_RGBA_DXT1: any
+	export let FORMAT_RGBA16F: any
 
 	/**
-	* 
+	* May be nil if the format isn't supported
 	*/
-	export let FORMAT_RGBA_DXT3: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_RGBA_DXT5: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_RGB_DXT1: any
+	export let FORMAT_RGBA32F: any
 
 	/**
 	* 
@@ -3320,14 +3340,25 @@ declare namespace render {
 	* system constants buffer is used containing constants as defined in materials and set through
 	* go.set (or particlefx.set_constant) on visual components.
 	* @param predicate  predicate to draw for
-	* @param constants  optional constants to use while rendering
+	* @param options  optional table with properties:
+
+`frustum`
+A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+`constants`
+optional constants to use while rendering
+
 	*/
-	export function draw(predicate: any, constants?: any): void
+	export function draw(predicate: any, options?: any): void
 
 	/**
 	* Draws all 3d debug graphics such as lines drawn with "draw_line" messages and physics visualization.
+	* @param options  optional table with properties:
+
+`frustum`
+A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+
 	*/
-	export function draw_debug3d(): void
+	export function draw_debug3d(options?: any): void
 
 	/**
 	* If another material was already enabled, it will be automatically disabled
@@ -3452,7 +3483,7 @@ declare namespace render {
 	* 
 	* 
 	* `format`
-	* `render.FORMAT_LUMINANCE``render.FORMAT_RGB``render.FORMAT_RGBA` `render.FORMAT_RGB_DXT1``render.FORMAT_RGBA_DXT1``render.FORMAT_RGBA_DXT3` `render.FORMAT_RGBA_DXT5``render.FORMAT_DEPTH``render.FORMAT_STENCIL`
+	* `render.FORMAT_LUMINANCE``render.FORMAT_RGB``render.FORMAT_RGBA``render.FORMAT_DEPTH``render.FORMAT_STENCIL``render.FORMAT_RGBA32F``render.FORMAT_RGBA16F`
 	* 
 	* 
 	* `width`
