@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.2 (287c945fab310c324493e08b191ee1b1538ef973)
+// DEFOLD. stable version 1.3.3 (c2ab1630e34f1311d8340d81494cf5317d25fe16)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -720,12 +720,12 @@ The id of the animated property.
 	export function animate(url: string | hash | url, property: string | hash, playback: any, to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion, easing: any, duration: number, delay?: number, complete_function?: any): void
 
 	/**
-	* By calling this function, all stored animations of the given property will be canceled.
+	* By calling this function, all or specified stored property animations of the game object or component will be canceled.
 	* See the properties guide for which properties can be animated and the animation guide for how to animate them.
-	* @param url  url of the game object or component having the property
-	* @param property  id of the property to cancel
+	* @param url  url of the game object or component
+	* @param property  optional id of the property to cancel
 	*/
-	export function cancel_animations(url: string | hash | url, property: string | hash): void
+	export function cancel_animations(url: string | hash | url, property?: string | hash): void
 
 	/**
 	* Delete one or more game objects identified by id. Deletion is asynchronous meaning that
@@ -4041,8 +4041,11 @@ The texture format. Supported values:
 	export function set_texture(path: hash | string, table: any, buffer: buffer): void
 
 	/**
-	* Stores a zip file and uses it for live update content.
-	* The path is renamed and stored in the (internal) live update location
+	* Stores a zip file and uses it for live update content. The contents of the
+	* zip file will be verified against the manifest to ensure file integrity.
+	* It is possible to opt out of the resource verification using an option passed
+	* to this function.
+	* The path is stored in the (internal) live update location.
 	* @param path  the path to the original file on disc
 	* @param callback  the callback function
 executed after the storage has completed
@@ -4052,8 +4055,12 @@ The current object.
 `status`
 the status of the store operation (See resource.store_manifest)
 
+	* @param options  optional table with extra parameters. Supported entries:
+
+`verify`: if archive should be verified as well as stored (defaults to true)
+
 	*/
-	export function store_archive(path: string, callback: any): void
+	export function store_archive(path: string, callback: any, options?: any): void
 
 	/**
 	* Create a new manifest from a buffer. The created manifest is verified
@@ -4751,6 +4758,7 @@ The response data. Contains the fields:
 `timeout`: timeout in seconds
 `path`: path on disc where to download the file. Only overwrites the path if status is 200
 `ignore_cache`: don't return cached data if we get a 304
+`chunked_transfer`: use chunked transfer encoding for https requests larger than 16kb. Defaults to true.
 
 	*/
 	export function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any): void
