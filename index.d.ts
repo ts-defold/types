@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.3 (c2ab1630e34f1311d8340d81494cf5317d25fe16)
+// DEFOLD. stable version 1.3.4 (80b1b73fd9cdbd4682c2583403fddfbaf0919107)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -2896,10 +2896,27 @@ declare namespace profiler {
 	export function get_memory_usage(): number
 
 	/**
+	* Send a text to the profiler
+	* @param text  the string to send to the profiler
+	*/
+	export function log_text(text: string): void
+
+	/**
 	* Get the number of recorded frames in the on-screen profiler ui recording buffer
 	* @return frame_count  the number of recorded frames, zero if on-screen profiler is disabled
 	*/
 	export function recorded_frame_count(): number
+
+	/**
+	* Starts a profile scope.
+	* @param name  The name of the scope
+	*/
+	export function scope_begin(name: string): void
+
+	/**
+	* End the current profile scope.
+	*/
+	export function scope_end(): void
 
 	/**
 	* Set the on-screen profile mode - run, pause, record or show peak frame
