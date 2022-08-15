@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.4 (80b1b73fd9cdbd4682c2583403fddfbaf0919107)
+// DEFOLD. stable version 1.3.5 (28eafea5a8bfedfddc621a7cd00b39f25bd34922)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -1876,6 +1876,14 @@ with a custom curve. See the animation guide for more information.
 	export function get_tracking(node: node): number
 
 	/**
+	* Returns `true` if a node is visible and `false` if it's not.
+	* Invisible nodes are not rendered.
+	* @param node  node to query
+	* @return visible  whether the node is visible or not
+	*/
+	export function get_visible(node: node): boolean
+
+	/**
 	* Returns the scene width.
 	* @return width  scene width
 	*/
@@ -2430,6 +2438,13 @@ the new state of the emitter:
 	export function set_tracking(node: node, tracking: number): void
 
 	/**
+	* Set if a node should be visible or not. Only visible nodes are rendered.
+	* @param node  node to be visible or not
+	* @param visible  whether the node should be visible or not
+	*/
+	export function set_visible(node: node, visible: boolean): void
+
+	/**
 	* The x-anchor specifies how the node is moved when the game is run in a different resolution.
 	* @param node  node to set x-anchor for
 	* @param anchor  anchor constant
@@ -2472,8 +2487,12 @@ the new state of the emitter:
 	/**
 	* Stops the particle fx for a gui node
 	* @param node  node to stop particle fx for
+	* @param options  options when stopping the particle fx. Supported options:
+
+`clear`: instantly clear spawned particles
+
 	*/
-	export function stop_particlefx(node: node): void
+	export function stop_particlefx(node: node, options: any): void
 
 
 	/**
@@ -2622,11 +2641,11 @@ See each joint type for possible properties field. The one field that is accepte
 	* Returns the group name of a collision object as a hash.
 	* @param url  the collision object to return the group of.
 	* @return   hash value of the group.
-local function check_is_enemy()
+`local function check_is_enemy()
     local group = physics.get_group(&quot;#collisionobject&quot;)
     return group == hash(&quot;enemy&quot;)
 end
-
+`
 	*/
 	export function get_group(url: string | hash | url): hash
 
@@ -2669,12 +2688,12 @@ end
 	* @param url  the collision object to check the mask of.
 	* @param group  the name of the group to check for.
 	* @return   boolean value of the maskbit. 'true' if present, 'false' otherwise.
-local function is_invincible()
+`local function is_invincible()
     -- check if the collisionobject would collide with the &quot;bullet&quot; group
     local invincible = physics.get_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;)
     return invincible
 end
-
+`
 	*/
 	export function get_maskbit(url: string | hash | url, group: string): boolean
 
@@ -2728,10 +2747,10 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* a collision object in the editor.
 	* @param url  the collision object affected.
 	* @param group  the new group name to be assigned.
-local function change_collision_group()
+`local function change_collision_group()
      physics.set_group(&quot;#collisionobject&quot;, &quot;enemy&quot;)
 end
-
+`
 	*/
 	export function set_group(url: string | hash | url, group: string): void
 
@@ -2758,11 +2777,11 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	* @param url  the collision object to change the mask of.
 	* @param group  the name of the group (maskbit) to modify in the mask.
 	* @param maskbit  boolean value of the new maskbit. 'true' to enable, 'false' to disable.
-local function make_invincible()
+`local function make_invincible()
     -- no longer collide with the &quot;bullet&quot; group
     physics.set_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;, false)
 end
-
+`
 	*/
 	export function set_maskbit(url: string | hash | url, group: string, maskbit: boolean): void
 
@@ -2777,12 +2796,12 @@ end
 	* Collision objects tend to fall asleep when inactive for a small period of time for
 	* efficiency reasons. This function wakes them up.
 	* @param url  the collision object to wake.
-function on_input(self, action_id, action)
+`function on_input(self, action_id, action)
     if action_id == hash(&quot;test&quot;) and action.pressed then
         physics.wakeup(&quot;#collisionobject&quot;)
     end
 end
-
+`
 	*/
 	export function wakeup(url: string | hash | url): void
 
@@ -3069,6 +3088,26 @@ declare namespace render {
 	/**
 	* 
 	*/
+	export let BUFFER_COLOR0_BIT: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_COLOR1_BIT: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_COLOR2_BIT: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_COLOR3_BIT: any
+
+	/**
+	* 
+	*/
 	export let BUFFER_COLOR_BIT: any
 
 	/**
@@ -3302,7 +3341,8 @@ declare namespace render {
 	export let WRAP_REPEAT: any
 
 	/**
-	* Clear buffers in the currently enabled render target with specified value.
+	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
+	* color attachments, all buffers will be cleared with the same value.
 	* @param buffers  table with keys specifying which buffers to clear and values set to clear values. Available keys are:
 
 - `render.BUFFER_COLOR_BIT`
@@ -3411,6 +3451,14 @@ A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * vi
 - `render.BUFFER_COLOR_BIT`
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
+
+If the render target has been created with multiple color attachments, these buffer types can be used
+to enable those textures as well. Currently only 4 color attachments are supported.
+
+- `render.BUFFER_COLOR0_BIT`
+- `render.BUFFER_COLOR1_BIT`
+- `render.BUFFER_COLOR2_BIT`
+- `render.BUFFER_COLOR3_BIT`
 
 	*/
 	export function enable_texture(unit: number, render_target: any, buffer_type: any): void
@@ -3528,6 +3576,9 @@ A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * vi
 	* 
 	* 
 	* 
+	* The render target can be created to support multiple color attachments. Each attachment can have different format settings and texture filters,
+	* but attachments must be added in sequence, meaning you cannot create a render target at slot 0 and 3.
+	* Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by render.BUFFER_COLORX_BIT where 'X' is the attachment you want to create).
 	* @param name  render target name
 	* @param parameters  table of buffer parameters, see the description for available keys and values
 	* @return render_target  new render target
@@ -5572,20 +5623,6 @@ declare namespace collectionproxy {
 	export type async_load = "async_load"
 
 	/**
-	* return an indexed table of missing resources for a collection proxy. Each
-	* entry is a hexadecimal string that represents the data of the specific
-	* resource. This representation corresponds with the filename for each
-	* individual resource that is exported when you bundle an application with
-	* LiveUpdate functionality. It should be considered good practise to always
-	* check whether or not there are any missing resources in a collection proxy
-	* before attempting to load the collection proxy.
-	* @param collectionproxy  the collectionproxy to check for missing
-resources.
-	* @return resources  the missing resources
-	*/
-	export function missing_resources(collectionproxy: url): any
-
-	/**
 	* Post this message to a collection-proxy-component to disable the referenced collection, which in turn disables the contained game objects and components.
 	*/
 	export type disable = "disable"
@@ -5978,8 +6015,12 @@ the new state of the emitter:
 	* Stopping a particle FX does not remove already spawned particles.
 	* Which particle FX to stop is identified by the URL.
 	* @param url  the particle fx that should stop playing
+	* @param options  Options when stopping the particle fx. Supported options:
+
+`clear`: instantly clear spawned particles
+
 	*/
-	export function stop(url: string | hash | url): void
+	export function stop(url: string | hash | url, options: any): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6206,34 +6247,6 @@ The invoker of the callback: the sound component.
 	* Post this message to a sound-component to make it stop playing all active voices
 	*/
 	export type stop_sound = "stop_sound"
-
-}
-// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
-
-
-declare namespace spine {
-
-	/**
-	* This message is sent when a Spine animation has finished playing back to the script
-	* that started the animation.
-	* ⚠ No message is sent if a completion callback function was supplied
-	* when the animation was started. No message is sent if the animation is cancelled with
-	* model.cancel(). This message is sent only for animations that play with
-	* the following playback modes:
-	* 
-	* - `go.PLAYBACK_ONCE_FORWARD`
-	* - `go.PLAYBACK_ONCE_BACKWARD`
-	* - `go.PLAYBACK_ONCE_PINGPONG`
-	* 
-	*/
-	export type spine_animation_done = "spine_animation_done"
-
-	/**
-	* This message is sent when Spine animation playback fires events. These events
-	* has to be defined on the animation track in the Spine animation editor. An event
-	* can contain custom values expressed in the fields `integer`, `float` and `string`.
-	*/
-	export type spine_event = "spine_event"
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
