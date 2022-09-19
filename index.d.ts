@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.5 (c1c0592986a4421f33490422c2af532e533aeca5)
+// DEFOLD. stable version 1.3.6 (905234d8da2e642f1075c73aaa1bfb72e49199e3)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -3353,7 +3353,8 @@ declare namespace render {
 	export function clear(buffers: any): void
 
 	/**
-	* Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function. The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
+	* Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function.
+	* The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
 	* @return buffer  new constant buffer
 	*/
 	export function constant_buffer(): any
@@ -4392,6 +4393,8 @@ might be nil if not available.
 
 	/**
 	* Returns a table with system information.
+	* @param options  (optional) options table
+this flag ignores values might be secured by OS e.g. `device_ident`
 	* @return sys_info  table with system information in the following fields:
 
 `device_model`
@@ -4418,7 +4421,7 @@ The current offset from GMT (Greenwich Mean Time), in minutes.
 The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8"
 
 	*/
-	export function get_sys_info(): any
+	export function get_sys_info(options?: any): any
 
 	/**
 	* If the file exists, it must have been created by `sys.save` to be loaded.
@@ -5512,6 +5515,12 @@ declare namespace camera {
 	* The type of the property is float.
 	*/
 	export let near_z: any
+
+	/**
+	* Zoom level when using an orthographic projection.
+	* The type of the property is float.
+	*/
+	export let orthographic_zoom: any
 
 	/**
 	* 
