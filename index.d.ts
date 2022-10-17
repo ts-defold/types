@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.6 (65e2f79be3b8c99f1999a976399a17eb31a79ff2)
+// DEFOLD. stable version 1.3.7 (f0ad06a2f1fbf0e9cbddbf96162a75bc006d84bb)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -4452,7 +4452,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	* @param attributes  table with attributes
 `target`
 : Optional. Specifies the target attribute or the name of the window. The following values are supported:
-- `_self` - URL replaces the current page. This is default.
+- `_self` - (default value) URL replaces the current page.
 - `_blank` - URL is loaded into a new window, or tab.
 - `_parent` - URL is loaded into the parent frame.
 - `_top` - URL replaces any framesets that may be loaded.
@@ -4627,6 +4627,12 @@ declare namespace window {
 	export function get_dim_mode(): any
 
 	/**
+	* This returns the current lock state of the mouse cursor
+	* @return state  The lock state
+	*/
+	export function get_mouse_lock(): boolean
+
+	/**
 	* This returns the current window size (width and height).
 	* @return width  The window width
 	* @return height  The window height
@@ -4671,6 +4677,14 @@ The callback value `data` is a table which currently holds these values
 
 	*/
 	export function set_listener(callback: any): void
+
+	/**
+	* Set the locking state for current mouse cursor on a PC platform.
+	* This function locks or unlocks the mouse cursor to the center point of the window. While the cursor is locked,
+	* mouse position updates will still be sent to the scripts as usual.
+	* @param flag  The lock state for the mouse cursor
+	*/
+	export function set_mouse_lock(flag: boolean): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4795,6 +4809,19 @@ declare namespace html5 {
 	*/
 	export function run(code: string): string
 
+	/**
+	* Set a JavaScript interaction listener callaback from lua that will be
+	* invoked when a user interacts with the web page by clicking, touching or typing.
+	* The callback can then call DOM restricted actions like requesting a pointer lock,
+	* or start playing sounds the first time the callback is invoked.
+	* @param callback  The interaction callback. Pass an empty function or nil if you no longer wish to receive callbacks.
+
+`self`
+The calling script
+
+	*/
+	export function set_interaction_listener(callback: any): void
+
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -4887,6 +4914,14 @@ declare namespace json {
 	* @return data  decoded json
 	*/
 	export function decode(json: string): any
+
+	/**
+	* Encode a lua table to a JSON string.
+	* A Lua error is raised for syntax errors.
+	* @param tbl  lua table to encode
+	* @return json  encoded json
+	*/
+	export function encode(tbl: any): string
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
