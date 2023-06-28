@@ -1,6 +1,6 @@
 /** @noSelfInFile */
 /// <reference types="lua-types/5.1" />
-/// <reference types="typescript-to-lua/language-extensions" />
+/// <reference types="@typescript-to-lua/language-extensions" />
 
 // DEFOLD. stable version 1.3.7 (f0ad06a2f1fbf0e9cbddbf96162a75bc006d84bb)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
