@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.3.7 (f0ad06a2f1fbf0e9cbddbf96162a75bc006d84bb)
+// DEFOLD. stable version 1.4.7 (7a608d3ce6ed895d484956c1e76110ed8b78422a)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -323,10 +323,10 @@ declare namespace crash {
 	/**
 	* reads a system field from a loaded crash dump
 	* @param handle  crash dump handle
-	* @param index  
+	* @param index  system field enum. Must be less than crash.SYSFIELD_MAX
 	* @return value  value recorded in the crash dump, or nil if it didn't exist
 	*/
-	export function get_sys_field(handle: number, index: any): string
+	export function get_sys_field(handle: number, index: number): string
 
 	/**
 	* reads user field from a loaded crash dump
@@ -741,10 +741,17 @@ The id of the animated property.
 	export { delete$ as delete }
 
 	/**
+	* check if the specified game object exists
+	* @param url  url of the game object to check
+	* @return exists  true if the game object exists
+	*/
+	export function exists(url: string | hash | url): any
+
+	/**
 	* gets a named property of the specified game object or component
 	* @param url  url of the game object or component having the property
 	* @param property  id of the property to retrieve
-	* @param options  (optional) options table
+	* @param options  optional options table
 index into array property (1 based)
 name of internal property
 	* @return value  the value of the specified property
@@ -853,7 +860,7 @@ name of internal property
 	* @param url  url of the game object or component having the property
 	* @param property  id of the property to set
 	* @param value  the value to set
-	* @param options  (optional) options table
+	* @param options  optional options table
 index into array property (1 based)
 name of internal property
 	*/
@@ -1460,7 +1467,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.PLAYBACK_LOOP_PINGPONG`
 
 	*/
-	export function animate(node: node, property: any, to: vmath.vector3 | vmath.vector4, easing: any, duration: number, delay?: number, complete_function?: any, playback?: any): void
+	export function animate(node: node, property: any, to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion, easing: any, duration: number, delay?: number, complete_function?: any, playback?: any): void
 
 	/**
 	* If an animation of the specified node is currently running (started by `gui.animate`), it will immediately be canceled.
@@ -2729,9 +2736,9 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
-	* @param request_id  . It will be sent back in the response for identification, 0 by default
+	* @param request_id  a number between [0,-255]. It will be sent back in the response for identification, 0 by default
 	*/
-	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: any): void
+	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number): void
 
 	/**
 	* Set the gravity in runtime. The gravity change is not global, it will only affect
@@ -3446,15 +3453,15 @@ A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * vi
 	* used as texture with the specified unit.
 	* A material shader can then use the texture to sample from.
 	* @param unit  texture unit to enable texture for
-	* @param render_target  render target from which to enable the specified texture unit
-	* @param buffer_type  buffer type from which to enable the texture
+	* @param render_target  render target or texture from which to enable the specified texture unit
+	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to render.BUFFER_COLOR_BIT
 
 - `render.BUFFER_COLOR_BIT`
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
 
 If the render target has been created with multiple color attachments, these buffer types can be used
-to enable those textures as well. Currently only 4 color attachments are supported.
+to enable those textures as well. Currently 4 color attachments are supported:
 
 - `render.BUFFER_COLOR0_BIT`
 - `render.BUFFER_COLOR1_BIT`
@@ -3462,7 +3469,7 @@ to enable those textures as well. Currently only 4 color attachments are support
 - `render.BUFFER_COLOR3_BIT`
 
 	*/
-	export function enable_texture(unit: number, render_target: any, buffer_type: any): void
+	export function enable_texture(unit: number, render_target: any, buffer_type?: any): void
 
 	/**
 	* Returns the logical window height that is set in the "game.project" settings.
@@ -3580,6 +3587,14 @@ to enable those textures as well. Currently only 4 color attachments are support
 	* The render target can be created to support multiple color attachments. Each attachment can have different format settings and texture filters,
 	* but attachments must be added in sequence, meaning you cannot create a render target at slot 0 and 3.
 	* Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by render.BUFFER_COLORX_BIT where 'X' is the attachment you want to create).
+	* It is not guaranteed that the device running the script can support creating render targets with multiple color attachments. To check if the device can support multiple attachments,
+	* you can check if the `render` table contains any of the `BUFFER_COLOR1_BIT`, `BUFFER_COLOR2_BIT` or `BUFFER_COLOR3_BIT` constants:
+	* `function init(self)
+	*     if render.BUFFER_COLOR1_BIT == nil then
+	*         -- this devices does not support multiple color attachments
+	*     end
+	* end
+	* `
 	* @param name  render target name
 	* @param parameters  table of buffer parameters, see the description for available keys and values
 	* @return render_target  new render target
@@ -3900,44 +3915,14 @@ Transient frame buffer types are only valid while the render target is active, i
 declare namespace resource {
 
 	/**
-	* LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH
+	* BASIS_UASTC compression type
 	*/
-	export let LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: any
+	export let COMPRESSION_TYPE_BASIS_UASTC: any
 
 	/**
-	* LIVEUPDATE_ENGINE_VERSION_MISMATCH
+	* COMPRESSION_TYPE_DEFAULT compression type
 	*/
-	export let LIVEUPDATE_ENGINE_VERSION_MISMATCH: any
-
-	/**
-	* LIVEUPDATE_FORMAT_ERROR
-	*/
-	export let LIVEUPDATE_FORMAT_ERROR: any
-
-	/**
-	* LIVEUPDATE_INVALID_RESOURCE
-	*/
-	export let LIVEUPDATE_INVALID_RESOURCE: any
-
-	/**
-	* LIVEUPDATE_OK
-	*/
-	export let LIVEUPDATE_OK: any
-
-	/**
-	* LIVEUPDATE_SCHEME_MISMATCH
-	*/
-	export let LIVEUPDATE_SCHEME_MISMATCH: any
-
-	/**
-	* LIVEUPDATE_SIGNATURE_MISMATCH
-	*/
-	export let LIVEUPDATE_SIGNATURE_MISMATCH: any
-
-	/**
-	* LIVEUPDATE_VERSION_MISMATCH
-	*/
-	export let LIVEUPDATE_VERSION_MISMATCH: any
+	export let COMPRESSION_TYPE_DEFAULT: any
 
 	/**
 	* luminance type texture format
@@ -3945,9 +3930,39 @@ declare namespace resource {
 	export let TEXTURE_FORMAT_LUMINANCE: any
 
 	/**
+	* R16F type texture format
+	*/
+	export let TEXTURE_FORMAT_R16F: any
+
+	/**
+	* R32F type texture format
+	*/
+	export let TEXTURE_FORMAT_R32F: any
+
+	/**
+	* RG16F type texture format
+	*/
+	export let TEXTURE_FORMAT_RG16F: any
+
+	/**
+	* RG32F type texture format
+	*/
+	export let TEXTURE_FORMAT_RG32F: any
+
+	/**
 	* RGB type texture format
 	*/
 	export let TEXTURE_FORMAT_RGB: any
+
+	/**
+	* RGB16F type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB16F: any
+
+	/**
+	* RGB32F type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB32F: any
 
 	/**
 	* RGBA type texture format
@@ -3955,9 +3970,89 @@ declare namespace resource {
 	export let TEXTURE_FORMAT_RGBA: any
 
 	/**
+	* RGBA16F type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA16F: any
+
+	/**
+	* RGBA32F type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA32F: any
+
+	/**
+	* RGBA_ASTC_4x4 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: any
+
+	/**
+	* RGBA_BC3 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_BC3: any
+
+	/**
+	* RGBA_BC7 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_BC7: any
+
+	/**
+	* RGBA_ETC2 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_ETC2: any
+
+	/**
+	* RGBA_PVRTC_2BPPV1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any
+
+	/**
+	* RGBA_PVRTC_4BPPV1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any
+
+	/**
+	* RGB_BC1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB_BC1: any
+
+	/**
+	* RGB_ETC1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB_ETC1: any
+
+	/**
+	* RGB_PVRTC_2BPPV1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any
+
+	/**
+	* RGB_PVRTC_4BPPV1 type texture format
+	*/
+	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any
+
+	/**
+	* RG_BC5 type texture format
+	*/
+	export let TEXTURE_FORMAT_RG_BC5: any
+
+	/**
+	* R_BC4 type texture format
+	*/
+	export let TEXTURE_FORMAT_R_BC4: any
+
+	/**
 	* 2D texture type
 	*/
 	export let TEXTURE_TYPE_2D: any
+
+	/**
+	* 2D Array texture type
+	*/
+	export let TEXTURE_TYPE_2D_ARRAY: any
+
+	/**
+	* Cube map texture type
+	*/
+	export let TEXTURE_TYPE_CUBE_MAP: any
 
 	/**
 	* Constructor-like function with two purposes:
@@ -3984,6 +4079,216 @@ declare namespace resource {
 	export function buffer(path?: string): hash
 
 	/**
+	* This function creates a new atlas resource that can be used in the same way as any atlas created during build time.
+	* The path used for creating the atlas must be unique, trying to create a resource at a path that is already
+	* registered will trigger an error. If the intention is to instead modify an existing atlas, use the resource.set_atlas
+	* function. Also note that the path to the new atlas resource must have a '.texturesetc' extension,
+	* meaning "/path/my_atlas" is not a valid path but "/path/my_atlas.texturesetc" is.
+	* When creating the atlas, at least one geometry and one animation is required, and an error will be
+	* raised if these requirements are not met. A reference to the resource will be held by the collection
+	* that created the resource and will automatically be released when that collection is destroyed.
+	* Note that releasing a resource essentially means decreasing the reference count of that resource,
+	* and not necessarily that it will be deleted.
+	* @param path  The path to the resource.
+	* @param table  A table containing info about how to create the texture. Supported entries:
+
+
+
+`texture`
+the path to the texture resource, e.g "/main/my_texture.texturec"
+
+
+
+
+`animations`
+a list of the animations in the atlas. Supports the following fields:
+
+
+
+
+`id`
+the id of the animation, used in e.g sprite.play_animation
+
+
+
+
+`width`
+the width of the animation
+
+
+
+
+`height`
+the height of the animation
+
+
+
+
+`frame_start`
+index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
+
+
+
+
+`frame_end`
+index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
+
+
+
+
+`playback`
+optional playback mode of the animation, the default value is go.PLAYBACK_ONCE_FORWARD
+
+
+
+
+`fps`
+optional fps of the animation, the default value is 30
+
+
+
+
+`flip_vertical`
+optional flip the animation vertically, the default value is false
+
+
+
+
+`flip_horizontal`
+optional flip the animation horizontally, the default value is false
+
+
+
+
+`geometries`
+A list of the geometries that should map to the texture data. Supports the following fields:
+
+
+
+
+`vertices`
+a list of the vertices in texture space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
+
+
+
+
+`uvs`
+a list of the uv coordinates in texture space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}
+
+
+
+
+`indices`
+a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tripe in the list represents a triangle.
+
+
+
+	* @return path  Returns the atlas resource path
+	*/
+	export function create_atlas(path: string, table: any): hash
+
+	/**
+	* This function creates a new buffer resource that can be used in the same way as any buffer created during build time.
+	* The function requires a valid buffer created from either buffer.create or another pre-existing buffer resource.
+	* By default, the new resource will take ownership of the buffer lua reference, meaning the buffer will not automatically be removed
+	* when the lua reference to the buffer is garbage collected. This behaviour can be overruled by specifying 'transfer_ownership = false'
+	* in the argument table. If the new buffer resource is created from a buffer object that is created by another resource,
+	* the buffer object will be copied and the new resource will effectively own a copy of the buffer instead.
+	* Note that the path to the new resource must have the '.bufferc' extension, "/path/my_buffer" is not a valid path but "/path/my_buffer.bufferc" is.
+	* The path must also be unique, attempting to create a buffer with the same name as an existing resource will raise an error.
+	* @param path  The path to the resource.
+	* @param table  A table containing info about how to create the buffer. Supported entries:
+
+
+
+`buffer`
+the buffer to bind to this resource
+
+
+
+
+`transfer_ownership`
+optional flag to determine wether or not the resource should take over ownership of the buffer object (default true)
+
+
+
+	* @return path  Returns the buffer resource path
+	*/
+	export function create_buffer(path: string, table: any): hash
+
+	/**
+	* Creates a new texture resource that can be used in the same way as any texture created during build time.
+	* The path used for creating the texture must be unique, trying to create a resource at a path that is already
+	* registered will trigger an error. If the intention is to instead modify an existing texture, use the resource.set_texture
+	* function. Also note that the path to the new texture resource must have a '.texturec' extension,
+	* meaning "/path/my_texture" is not a valid path but "/path/my_texture.texturec" is.
+	* @param path  The path to the resource.
+	* @param table  A table containing info about how to create the texture. Supported entries:
+
+`type`
+The texture type. Supported values:
+
+
+- `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_CUBE_MAP`
+
+
+`width`
+The width of the texture (in pixels)
+`height`
+The width of the texture (in pixels)
+`format`
+The texture format, note that some of these formats might not be supported by the running device. Supported values:
+
+
+- `resource.TEXTURE_FORMAT_LUMINANCE`
+- `resource.TEXTURE_FORMAT_RGB`
+- `resource.TEXTURE_FORMAT_RGBA`
+
+These constants might not be available on the device:
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_ETC1`
+- `resource.TEXTURE_FORMAT_RGBA_ETC2`
+- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `resource.TEXTURE_FORMAT_RGB_BC1`
+- `resource.TEXTURE_FORMAT_RGBA_BC3`
+- `resource.TEXTURE_FORMAT_R_BC4`
+- `resource.TEXTURE_FORMAT_RG_BC5`
+- `resource.TEXTURE_FORMAT_RGBA_BC7`
+- `resource.TEXTURE_FORMAT_RGB16F`
+- `resource.TEXTURE_FORMAT_RGB32F`
+- `resource.TEXTURE_FORMAT_RGBA16F`
+- `resource.TEXTURE_FORMAT_RGBA32F`
+- `resource.TEXTURE_FORMAT_R16F`
+- `resource.TEXTURE_FORMAT_RG16F`
+- `resource.TEXTURE_FORMAT_R32F`
+- `resource.TEXTURE_FORMAT_RG32F`
+You can test if the device supports these values by checking if a specific enum is nil or not:
+`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- it is safe to use this format
+end
+`
+
+
+`max_mipmaps`
+optional max number of mipmaps. Defaults to zero, i.e no mipmap support
+`compression_type`
+optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+
+
+- `COMPRESSION_TYPE_DEFAULT`
+- `COMPRESSION_TYPE_BASIS_UASTC`
+
+	* @param buffer  optional buffer of precreated pixel data
+	* @return path  The path to the resource.
+	*/
+	export function create_texture(path: string, table: any, buffer?: buffer): hash
+
+	/**
 	* Constructor-like function with two purposes:
 	* 
 	* - Load the specified resource as part of loading the script
@@ -3996,17 +4301,24 @@ declare namespace resource {
 	export function font(path?: string): hash
 
 	/**
+	* Returns the atlas data for an atlas
+	* @param path  The path to the atlas resource
+	* @return data  A table with the following entries:
+
+- texture
+- geometries
+- animations
+
+See resource.set_atlas for a detailed description of each field
+	*/
+	export function get_atlas(path: hash | string): any
+
+	/**
 	* gets the buffer from a resource
 	* @param path  The path to the resource
 	* @return buffer  The resource buffer
 	*/
 	export function get_buffer(path: hash | string): buffer
-
-	/**
-	* Return a reference to the Manifest that is currently loaded.
-	* @return manifest_reference  reference to the Manifest that is currently loaded
-	*/
-	export function get_current_manifest(): number
 
 	/**
 	* Gets the text metrics from a font
@@ -4019,7 +4331,7 @@ The width of the text field. Not used if `line_break` is false.
 `leading`
 The leading (default 1.0)
 `tracking`
-The leading (default 0.0)
+The tracking (default 0.0)
 `line_break`
 If the calculation should consider line breaks (default false)
 
@@ -4034,11 +4346,30 @@ If the calculation should consider line breaks (default false)
 	export function get_text_metrics(url: hash, text: string, options?: any): any
 
 	/**
-	* Is any liveupdate data mounted and currently in use?
-	* This can be used to determine if a new manifest or zip file should be downloaded.
-	* @return bool  true if a liveupdate archive (any format) has been loaded
+	* Gets texture info from a texture resource path or a texture handle
+	* @param path  The path to the resource or a texture handle
+	* @return table  A table containing info about the texture:
+
+`handle`
+the opaque handle to the texture resource
+`width`
+width of the texture
+`height`
+height of the texture
+`depth`
+depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
+`mipmaps`
+number of mipmaps of the texture
+`type`
+The texture type. Supported values:
+
+
+- `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `resource.TEXTURE_TYPE_2D_ARRAY`
+
 	*/
-	export function is_using_liveupdate_data(): any
+	export function get_texture_info(path: any): any
 
 	/**
 	* Loads the resource data for a specific resource.
@@ -4060,11 +4391,127 @@ If the calculation should consider line breaks (default false)
 	export function material(path?: string): hash
 
 	/**
+	* Release a resource.
+	* ⚠ This is a potentially dangerous operation, releasing resources currently being used can cause unexpected behaviour.
+	* @param path  The path to the resource.
+	*/
+	export function release(path: hash | string): void
+
+	/**
 	* Sets the resource data for a specific resource
 	* @param path  The path to the resource
 	* @param buffer  The buffer of precreated data, suitable for the intended resource type
 	*/
 	export function set(path: string | hash, buffer: buffer): void
+
+	/**
+	* Sets the data for a specific atlas resource. Setting new atlas data is specified by passing in
+	* a texture path for the backing texture of the atlas, a list of geometries and a list of animations
+	* that map to the entries in the geometry list. The geometry entries are represented by three lists:
+	* vertices, uvs and indices that together represent triangles that are used in other parts of the
+	* engine to produce render objects from.
+	* Vertex and uv coordinates for the geometries are expected to be
+	* in pixel coordinates where 0,0 is the top left corner of the texture.
+	* There is no automatic padding or margin support when setting custom data,
+	* which could potentially cause filtering artifacts if used with a material sampler that has linear filtering.
+	* If that is an issue, you need to calculate padding and margins manually before passing in the geometry data to
+	* this function.
+	* @param path  The path to the atlas resource
+	* @param table  A table containing info about the atlas. Supported entries:
+
+
+
+`texture`
+the path to the texture resource, e.g "/main/my_texture.texturec"
+
+
+
+
+`animations`
+a list of the animations in the atlas. Supports the following fields:
+
+
+
+
+`id`
+the id of the animation, used in e.g sprite.play_animation
+
+
+
+
+`width`
+the width of the animation
+
+
+
+
+`height`
+the height of the animation
+
+
+
+
+`frame_start`
+index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
+
+
+
+
+`frame_end`
+index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
+
+
+
+
+`playback`
+optional playback mode of the animation, the default value is go.PLAYBACK_ONCE_FORWARD
+
+
+
+
+`fps`
+optional fps of the animation, the default value is 30
+
+
+
+
+`flip_vertical`
+optional flip the animation vertically, the default value is false
+
+
+
+
+`flip_horizontal`
+optional flip the animation horizontally, the default value is false
+
+
+
+
+`geometries`
+A list of the geometries that should map to the texture data. Supports the following fields:
+
+
+
+
+`vertices`
+a list of the vertices in texture space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
+
+
+
+
+`uvs`
+a list of the uv coordinates in texture space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}
+
+
+
+
+`indices`
+a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tripe in the list represents a triangle.
+
+
+
+	*/
+	export function set_atlas(path: hash | string, table: any): void
 
 	/**
 	* sets the buffer of a resource
@@ -4090,6 +4537,7 @@ The texture type. Supported values:
 
 
 - `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
@@ -4097,90 +4545,58 @@ The width of the texture (in pixels)
 `height`
 The width of the texture (in pixels)
 `format`
-The texture format. Supported values:
+The texture format, note that some of these formats are platform specific. Supported values:
 
 
 - `resource.TEXTURE_FORMAT_LUMINANCE`
 - `resource.TEXTURE_FORMAT_RGB`
 - `resource.TEXTURE_FORMAT_RGBA`
 
+These constants might not be available on the device:
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_ETC1`
+- `resource.TEXTURE_FORMAT_RGBA_ETC2`
+- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `resource.TEXTURE_FORMAT_RGB_BC1`
+- `resource.TEXTURE_FORMAT_RGBA_BC3`
+- `resource.TEXTURE_FORMAT_R_BC4`
+- `resource.TEXTURE_FORMAT_RG_BC5`
+- `resource.TEXTURE_FORMAT_RGBA_BC7`
+- `resource.TEXTURE_FORMAT_RGB16F`
+- `resource.TEXTURE_FORMAT_RGB32F`
+- `resource.TEXTURE_FORMAT_RGBA16F`
+- `resource.TEXTURE_FORMAT_RGBA32F`
+- `resource.TEXTURE_FORMAT_R16F`
+- `resource.TEXTURE_FORMAT_RG16F`
+- `resource.TEXTURE_FORMAT_R32F`
+- `resource.TEXTURE_FORMAT_RG32F`
+You can test if the device supports these values by checking if a specific enum is nil or not:
+`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- it is safe to use this format
+end
+`
+
+
+`x`
+optional x offset of the texture (in pixels)
+`y`
+optional y offset of the texture (in pixels)
+`mipmap`
+optional mipmap to upload the data to
+`compression_type`
+optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+
+
+- `COMPRESSION_TYPE_DEFAULT`
+- `COMPRESSION_TYPE_BASIS_UASTC`
+
 	* @param buffer  The buffer of precreated pixel data
-⚠ Currently, only 1 mipmap is generated.
+⚠ To update a cube map texture you need to pass in six times the amount of data via the buffer, since a cube map has six sides!
 	*/
 	export function set_texture(path: hash | string, table: any, buffer: buffer): void
-
-	/**
-	* Stores a zip file and uses it for live update content. The contents of the
-	* zip file will be verified against the manifest to ensure file integrity.
-	* It is possible to opt out of the resource verification using an option passed
-	* to this function.
-	* The path is stored in the (internal) live update location.
-	* @param path  the path to the original file on disc
-	* @param callback  the callback function
-executed after the storage has completed
-
-`self`
-The current object.
-`status`
-the status of the store operation (See resource.store_manifest)
-
-	* @param options  optional table with extra parameters. Supported entries:
-
-`verify`: if archive should be verified as well as stored (defaults to true)
-
-	*/
-	export function store_archive(path: string, callback: any, options?: any): void
-
-	/**
-	* Create a new manifest from a buffer. The created manifest is verified
-	* by ensuring that the manifest was signed using the bundled public/private
-	* key-pair during the bundle process and that the manifest supports the current
-	* running engine version. Once the manifest is verified it is stored on device.
-	* The next time the engine starts (or is rebooted) it will look for the stored
-	* manifest before loading resources. Storing a new manifest allows the
-	* developer to update the game, modify existing resources, or add new
-	* resources to the game through LiveUpdate.
-	* @param manifest_buffer  the binary data that represents the manifest
-	* @param callback  the callback function
-executed once the engine has attempted to store the manifest.
-
-`self`
-The current object.
-`status`
-the status of the store operation:
-
-
-- `resource.LIVEUPATE_OK`
-- `resource.LIVEUPATE_INVALID_RESOURCE`
-- `resource.LIVEUPATE_VERSION_MISMATCH`
-- `resource.LIVEUPATE_ENGINE_VERSION_MISMATCH`
-- `resource.LIVEUPATE_SIGNATURE_MISMATCH`
-- `resource.LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH`
-- `resource.LIVEUPDATE_FORMAT_ERROR`
-
-	*/
-	export function store_manifest(manifest_buffer: string, callback: any): void
-
-	/**
-	* add a resource to the data archive and runtime index. The resource will be verified
-	* internally before being added to the data archive.
-	* @param manifest_reference  The manifest to check against.
-	* @param data  The resource data that should be stored.
-	* @param hexdigest  The expected hash for the resource,
-retrieved through collectionproxy.missing_resources.
-	* @param callback  The callback
-function that is executed once the engine has been attempted to store
-the resource.
-
-`self`
-The current object.
-`hexdigest`
-The hexdigest of the resource.
-`status`
-Whether or not the resource was successfully stored.
-
-	*/
-	export function store_resource(manifest_reference: number, data: string, hexdigest: string, callback: any): void
 
 	/**
 	* Constructor-like function with two purposes:
@@ -4322,21 +4738,28 @@ declare namespace sys {
 	export function get_application_path(): string
 
 	/**
-	* Get config value from the game.project configuration file.
-	* In addition to the project file, configuration values can also be passed
-	* to the runtime as command line arguments with the `--config` argument.
+	* Get integer config value from the game.project configuration file with optional default value
 	* @param key  key to get value for. The syntax is SECTION.KEY
-	* @return value  config value as a string. nil if the config key doesn't exists
+	* @param default_value  (optional) default value to return if the value does not exist
+	* @return value  config value as an integer. default_value if the config key does not exist. 0 if no default value was supplied.
 	*/
-	export function get_config(key: string): string
+	export function get_config_int(key: string, default_value?: any): any
 
 	/**
-	* Get config value from the game.project configuration file with default value
+	* Get number config value from the game.project configuration file with optional default value
 	* @param key  key to get value for. The syntax is SECTION.KEY
-	* @param default_value  default value to return if the value does not exist
-	* @return value  config value as a string. default_value if the config key does not exist
+	* @param default_value  (optional) default value to return if the value does not exist
+	* @return value  config value as an number. default_value if the config key does not exist. 0 if no default value was supplied.
 	*/
-	export function get_config(key: string, default_value: string): string
+	export function get_config_number(key: string, default_value?: number): number
+
+	/**
+	* Get string config value from the game.project configuration file with optional default value
+	* @param key  key to get value for. The syntax is SECTION.KEY
+	* @param default_value  (optional) default value to return if the value does not exist
+	* @return value  config value as a string. default_value if the config key does not exist. nil if no default value was supplied.
+	*/
+	export function get_config_string(key: string, default_value?: string): string
 
 	/**
 	* 🤖 Returns the current network connectivity status
@@ -4393,7 +4816,7 @@ might be nil if not available.
 
 	/**
 	* Returns a table with system information.
-	* @param options  (optional) options table
+	* @param options  optional options table
 this flag ignores values might be secured by OS e.g. `device_ident`
 	* @return sys_info  table with system information in the following fields:
 
@@ -4787,12 +5210,31 @@ declare namespace buffer {
 	export function get_bytes(buffer: buffer, stream_name: hash): string
 
 	/**
+	* Get a named metadata entry from a buffer along with its type.
+	* @param buf  the buffer to get the metadata from
+	* @param metadata_name  name of the metadata entry
+	* @return values  table of metadata values or nil if the entry does not exist
+	* @return value_type  numeric type of values or nil
+	*/
+	export function get_metadata(buf: buffer, metadata_name: hash | string): LuaMultiReturn<[any, any]>
+
+	/**
 	* Get a specified stream from a buffer.
 	* @param buffer  the buffer to get the stream from
 	* @param stream_name  the stream name
 	* @return stream  the data stream
 	*/
 	export function get_stream(buffer: buffer, stream_name: hash | string): bufferstream
+
+	/**
+	* Creates or updates a metadata array entry on a buffer.
+	* ⚠ The value type and count given when updating the entry should match those used when first creating it.
+	* @param buf  the buffer to set the metadata on
+	* @param metadata_name  name of the metadata entry
+	* @param values  actual metadata, an array of numeric values
+	* @param value_type  type of values when stored
+	*/
+	export function set_metadata(buf: buffer, metadata_name: hash | string, values: any, value_type: any): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -4923,6 +5365,7 @@ declare namespace json {
 	*/
 	export function encode(tbl: any): string
 
+
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5016,9 +5459,24 @@ The handle of the timer
 `time_elapsed`
 The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
-	* @return   handle identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
+	* @return handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
 	export function delay(delay: number, repeat: boolean, callback: any): hash
+
+	/**
+	* Get information about timer.
+	* @param handle  the timer handle returned by timer.delay()
+	* @return data  or nil if timer is cancelled/completed. table with data in the following fields:
+
+`time_remaining`
+Time remaining until the next time a timer.delay() fires.
+`delay`
+Time interval.
+`repeating`
+true = repeat timer until cancel, false = one-shot timer.
+
+	*/
+	export function get_info(handle: hash): any
 
 	/**
 	* Manual triggering a callback for a timer.
@@ -5647,6 +6105,14 @@ True if resource were loaded successfully
 	export function load(url?: string | hash | url, complete_function?: any): void
 
 	/**
+	* Changes the prototype for the collection factory.
+	* Setting the prototype to "nil" will revert back to the original prototype.
+	* @param url  the collection factory component
+	* @param prototype  the path to the new prototype, or nil
+	*/
+	export function set_prototype(url?: string | hash | url, prototype?: any): void
+
+	/**
 	* This decreases the reference count for each resource loaded with collectionfactory.load. If reference is zero, the resource is destroyed.
 	* Calling this function when the factory is not marked as dynamic loading does nothing.
 	* @param url  the collection factory component to unload
@@ -5665,6 +6131,31 @@ declare namespace collectionproxy {
 	* A loaded collection must be initialized (message init) and enabled (message enable) in order to be simulated and drawn.
 	*/
 	export type async_load = "async_load"
+
+	/**
+	* return an indexed table of resources for a collection proxy. Each
+	* entry is a hexadecimal string that represents the data of the specific
+	* resource. This representation corresponds with the filename for each
+	* individual resource that is exported when you bundle an application with
+	* LiveUpdate functionality.
+	* @param collectionproxy  the collectionproxy to check for resources.
+	* @return resources  the resources
+	*/
+	export function get_resources(collectionproxy: url): any
+
+	/**
+	* return an array of missing resources for a collection proxy. Each
+	* entry is a hexadecimal string that represents the data of the specific
+	* resource. This representation corresponds with the filename for each
+	* individual resource that is exported when you bundle an application with
+	* LiveUpdate functionality. It should be considered good practise to always
+	* check whether or not there are any missing resources in a collection proxy
+	* before attempting to load the collection proxy.
+	* @param collectionproxy  the collectionproxy to check for missing
+resources.
+	* @return resources  the missing resources
+	*/
+	export function missing_resources(collectionproxy: url): any
 
 	/**
 	* Post this message to a collection-proxy-component to disable the referenced collection, which in turn disables the contained game objects and components.
@@ -5794,6 +6285,13 @@ True if resources were loaded successfully
 	export function load(url?: string | hash | url, complete_function?: any): void
 
 	/**
+	* Changes the prototype for the factory.
+	* @param url  the factory component
+	* @param prototype  the path to the new prototype, or nil
+	*/
+	export function set_prototype(url?: string | hash | url, prototype?: any): void
+
+	/**
 	* This decreases the reference count for each resource loaded with factory.load. If reference is zero, the resource is destroyed.
 	* Calling this function when the factory is not marked as dynamic loading does nothing.
 	* @param url  the factory component to unload
@@ -5833,6 +6331,19 @@ declare namespace label {
 	export function set_text(url: string | hash | url, text: string): void
 
 	/**
+	* The leading of the label. This value is used to scale the line spacing of text.
+	* The type of the property is number.
+	*/
+	export let leading: any
+
+	/**
+	* The line break of the label.
+	* This value is used to adjust the vertical spacing of characters in the text.
+	* The type of the property is boolean.
+	*/
+	export let line_break: any
+
+	/**
 	* The material used when rendering the label. The type of the property is hash.
 	*/
 	export let material: any
@@ -5858,6 +6369,13 @@ declare namespace label {
 	* The type of the property is vector3.
 	*/
 	export let size: any
+
+	/**
+	* The tracking of the label.
+	* This value is used to adjust the vertical spacing of characters in the text.
+	* The type of the property is number.
+	*/
+	export let tracking: any
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6324,6 +6842,11 @@ declare namespace sprite {
 	export let cursor: any
 
 	/**
+	* READ ONLY The frame count of the currently playing animation.
+	*/
+	export let frame_count: any
+
+	/**
 	* The image used when rendering the sprite. The type of the property is hash.
 	*/
 	export let image: any
@@ -6350,8 +6873,9 @@ declare namespace sprite {
 	export let scale: any
 
 	/**
-	* READ ONLY Returns the size of the sprite, not allowing for any additional scaling that may be applied.
-	* The type of the property is vector3.
+	* The size of the sprite, not allowing for any additional scaling that may be applied.
+	* The type of the property is vector3. It is not possible to set the size if the size mode
+	* of the sprite is set to auto.
 	*/
 	export let size: any
 
