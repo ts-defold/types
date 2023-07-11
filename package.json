@@ -27,7 +27,7 @@
     "lua-types": "^2.10.1"
   },
   "devDependencies": {
-    "@ts-defold/type-gen": "^0.5.2",
+    "@ts-defold/type-gen": "^0.5.3",
     "typescript": "~5.1.0",
     "typescript-to-lua": "~1.16.0"
   },
