@@ -5365,6 +5365,11 @@ declare namespace json {
 	*/
 	export function encode(tbl: any): string
 
+	/**
+	* null
+	*/
+	 let null$: any
+	export { null$ as null }
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
