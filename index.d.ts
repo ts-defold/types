@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.4.7 (7a608d3ce6ed895d484956c1e76110ed8b78422a)
+// DEFOLD. stable version 1.4.8 (504de7800fa81847bfc2e26a21973899db9dd747)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -1881,6 +1881,13 @@ with a custom curve. See the animation guide for more information.
 	* @return tracking  tracking scaling number (default=0)
 	*/
 	export function get_tracking(node: node): number
+
+	/**
+	* Get a node and all its children as a Lua table.
+	* @param node  root node to get node tree from
+	* @return clones  a table mapping node ids to the corresponding nodes
+	*/
+	export function get_tree(node: node): any
 
 	/**
 	* Returns `true` if a node is visible and `false` if it's not.
@@ -4789,6 +4796,14 @@ If the engine is a debug or release version
 	export function get_engine_info(): any
 
 	/**
+	* Create a path to the host device for unit testing
+	* Useful for saving logs etc during development
+	* @param filename  file to read from
+	* @return host_path  the path prefixed with the proper host mount
+	*/
+	export function get_host_path(filename: string): string
+
+	/**
 	* Returns an array of tables with information on network interfaces.
 	* @return ifaddrs  an array of tables. Each table entry contain the following fields:
 
@@ -5997,6 +6012,13 @@ declare namespace camera {
 	export type acquire_camera_focus = "acquire_camera_focus"
 
 	/**
+	* The ratio between the frustum width and height. Used when calculating the
+	* projection of a perspective camera.
+	* The type of the property is number.
+	*/
+	export let aspect_ratio: any
+
+	/**
 	* Camera frustum far plane.
 	* The type of the property is float.
 	*/
@@ -6021,6 +6043,12 @@ declare namespace camera {
 	export let orthographic_zoom: any
 
 	/**
+	* READ ONLY The calculated projection matrix of the camera.
+	* The type of the property is matrix4.
+	*/
+	export let projection: any
+
+	/**
 	* 
 	* Post this message to a camera-component to deactivate it. The camera is then removed from the active cameras.
 	* See `acquire_camera_focus` for more information how the active cameras are used in rendering.
@@ -6034,6 +6062,12 @@ declare namespace camera {
 	* 
 	*/
 	export type set_camera = "set_camera"
+
+	/**
+	* READ ONLY The calculated view matrix of the camera.
+	* The type of the property is matrix4.
+	*/
+	export let view: any
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
