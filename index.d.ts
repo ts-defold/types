@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.4.8 (504de7800fa81847bfc2e26a21973899db9dd747)
+// DEFOLD. stable version 1.5.0 (57b34efdf44a922acc6f21d285b207029b53927d)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -1724,6 +1724,13 @@ with a custom curve. See the animation guide for more information.
 	export function get_line_break(node: node): boolean
 
 	/**
+	* Returns the material of a node.
+	* The material must be mapped to the gui scene in the gui editor.
+	* @param node  node to get the material for
+	*/
+	export function get_material(node: node): void
+
+	/**
 	* Retrieves the node with the specified id.
 	* @param id  id of the node to retrieve
 	* @return instance  a new node instance
@@ -2271,6 +2278,21 @@ the new state of the emitter:
 	export function set_line_break(node: node, line_break: boolean): void
 
 	/**
+	* Set the material on a node. The material must be mapped to the gui scene in the gui editor,
+	* and assigning a material is supported for all node types. To set the default material that
+	* is assigned to the gui scene node, use `gui.reset_material(node_id)` instead.
+	* @param node  node to set material for
+	* @param material  material id
+	*/
+	export function set_material(node: node, material: string | hash): void
+
+	/**
+	* Resets the node material to the material assigned in the gui scene.
+	* @param node  node to reset the material for
+	*/
+	export function set_material(node: node): void
+
+	/**
 	* Sets the outer bounds mode for a pie node.
 	* @param node  node for which to set the outer bounds mode
 	* @param bounds_mode  the outer bounds mode of the pie node:
@@ -2516,9 +2538,15 @@ the new state of the emitter:
 	export type layout_changed = "layout_changed"
 
 	/**
-	* The material used when rendering the gui. The type of the property is hash.
+	* The main material (the default material assigned to a GUI) used when rendering the gui. The type of the property is hash.
 	*/
 	export let material: any
+
+	/**
+	* The materials used when rendering the gui. The type of the property is hash.
+	* Key must be specified in options table.
+	*/
+	export let materials: any
 
 
 
@@ -4521,11 +4549,26 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	export function set_atlas(path: hash | string, table: any): void
 
 	/**
-	* sets the buffer of a resource
+	* Sets the buffer of a resource. By default, setting the resource buffer will either copy the data from the incoming buffer object
+	* to the buffer stored in the destination resource, or make a new buffer object if the sizes between the source buffer and the destination buffer
+	* stored in the resource differs. In some cases, e.g performance reasons, it might be beneficial to just set the buffer object on the resource without copying or cloning.
+	* To achieve this, set the `transfer_ownership` flag to true in the argument table. Transferring ownership from a lua buffer to a resource with this function
+	* works exactly the same as resource.create_buffer: the destination resource will take ownership of the buffer held by the lua reference, i.e the buffer will not automatically be removed
+	* when the lua reference to the buffer is garbage collected.
+	* Note: When setting a buffer with `transfer_ownership = true`, the currently bound buffer in the resource will be destroyed.
 	* @param path  The path to the resource
 	* @param buffer  The resource buffer
+	* @param table  A table containing info about how to set the buffer. Supported entries:
+
+
+
+`transfer_ownership`
+optional flag to determine wether or not the resource should take over ownership of the buffer object (default false)
+
+
+
 	*/
-	export function set_buffer(path: hash | string, buffer: buffer): void
+	export function set_buffer(path: hash | string, buffer: buffer, table: any): void
 
 	/**
 	* Update internal sound resource (wavc/oggc) with new data
@@ -6776,12 +6819,12 @@ sound pan between -1 and 1, default is 0. The final pan of the sound will be an 
 `speed`
 sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. The final speed of the sound will be a multiplication of this speed and the sound speed.
 
-	* @param complete_function  function to call when the sound has finished playing.
+	* @param complete_function  function to call when the sound has finished playing or stopped manually via sound.stop.
 
 `self`
 The current object.
 `message_id`
-The name of the completion message, `"sound_done"`.
+The name of the completion message, which can be either `"sound_done"` if the sound has finished playing, or `"sound_stopped"` if it was stopped manually.
 `message`
 Information about the completion:
 
@@ -6837,6 +6880,12 @@ The invoker of the callback: the sound component.
 	* could be played to completion.
 	*/
 	export type sound_done = "sound_done"
+
+	/**
+	* This message is sent back to the sender of a `play_sound` message, if the sound
+	* has been manually stopped.
+	*/
+	export type sound_stopped = "sound_stopped"
 
 	/**
 	* The speed on the sound-component where 1.0 is normal speed, 0.5 is half
