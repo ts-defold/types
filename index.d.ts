@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.5.0 (00352cc02f24c12e6081245c0d5fb2e0b263d05e)
+// DEFOLD. stable version 1.6.0 (981353ef7ba544d3074cefdbfe275b541b7038aa)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -124,7 +124,7 @@ declare namespace socket {
 	* @return tcp_client  a new IPv6 TCP client object, or `nil` in case of error.
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
-	export function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, string]>
+	export function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, any, string, any]>
 
 	/**
 	* Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
@@ -165,7 +165,7 @@ declare namespace socket {
 	* @return sockets_w  a list with the sockets ready for writing.
 	* @return error  an error message. "timeout" if a timeout condition was met, otherwise `nil`.
 	*/
-	export function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string]>
+	export function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string, any]>
 
 	/**
 	* This function drops a number of arguments and returns the remaining.
@@ -180,7 +180,8 @@ declare namespace socket {
 	* @return retD_2  argument D+2.
 	* @return retN  argument N.
 	*/
-	export function skip(d: number, ret1?: any, ret2?: any, retN?: any): LuaMultiReturn<[any, any, any]> | undefined
+	export function skip(d: number, ret1?: any, ret2?: any, retN?: any): any
+	export function skip(d: number, ret1?: any, ret2?: any, retN?: any): any
 
 	/**
 	* Freezes the program execution during a given amount of time.
@@ -193,7 +194,7 @@ declare namespace socket {
 	* @return tcp_master  a new IPv4 TCP master object, or `nil` in case of error.
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
-	export function tcp(): LuaMultiReturn<[any, string]>
+	export function tcp(): LuaMultiReturn<[any, any, string, any]>
 
 	/**
 	* Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -201,14 +202,14 @@ declare namespace socket {
 	* @return tcp_master  a new IPv6 TCP master object, or `nil` in case of error.
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
-	export function tcp6(): LuaMultiReturn<[any, string]>
+	export function tcp6(): LuaMultiReturn<[any, any, string, any]>
 
 	/**
 	* Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	* @return udp_unconnected  a new unconnected IPv4 UDP object, or `nil` in case of error.
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
-	export function udp(): LuaMultiReturn<[any, string]>
+	export function udp(): LuaMultiReturn<[any, any, string, any]>
 
 	/**
 	* Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -216,7 +217,7 @@ declare namespace socket {
 	* @return udp_unconnected  a new unconnected IPv6 UDP object, or `nil` in case of error.
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
-	export function udp6(): LuaMultiReturn<[any, string]>
+	export function udp6(): LuaMultiReturn<[any, any, string, any]>
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -324,9 +325,9 @@ declare namespace crash {
 	* reads a system field from a loaded crash dump
 	* @param handle  crash dump handle
 	* @param index  system field enum. Must be less than crash.SYSFIELD_MAX
-	* @return value  value recorded in the crash dump, or nil if it didn't exist
+	* @return value  value recorded in the crash dump, or `nil` if it didn't exist
 	*/
-	export function get_sys_field(handle: number, index: number): string
+	export function get_sys_field(handle: number, index: number): LuaMultiReturn<[string, any]>
 
 	/**
 	* reads user field from a loaded crash dump
@@ -339,9 +340,9 @@ declare namespace crash {
 	/**
 	* The crash dump will be removed from disk upon a successful
 	* load, so loading is one-shot.
-	* @return handle  handle to the loaded dump, or nil if no dump was found
+	* @return handle  handle to the loaded dump, or `nil` if no dump was found
 	*/
-	export function load_previous(): number
+	export function load_previous(): LuaMultiReturn<[number, any]>
 
 	/**
 	* releases a previously loaded crash dump
@@ -773,9 +774,9 @@ name of internal property
 	/**
 	* Get the parent for a game object instance.
 	* @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
-	* @return parent_id  parent instance or nil
+	* @return parent_id  parent instance or `nil`
 	*/
-	export function get_parent(id?: string | hash | url): hash
+	export function get_parent(id?: string | hash | url): LuaMultiReturn<[hash, any]>
 
 	/**
 	* The position is relative the parent (if any). Use go.get_world_position to retrieve the global world position.
@@ -1636,7 +1637,7 @@ with a custom curve. See the animation guide for more information.
 	* @param node  node to get the cursor for (node)
 	* @return cursor  cursor value
 	*/
-	export function get_flipbook_cursor(node: node): any
+	export function get_flipbook_cursor(node: node): number
 
 	/**
 	* This is only useful nodes with flipbook animations. Gets the playback rate of the flipbook animation on a node.
@@ -1760,14 +1761,14 @@ with a custom curve. See the animation guide for more information.
 	* Returns the parent node of the specified node.
 	* If the supplied node does not have a parent, `nil` is returned.
 	* @param node  the node from which to retrieve its parent
-	* @return parent  parent instance or nil
+	* @return parent  parent instance or `nil`
 	*/
-	export function get_parent(node: node): node
+	export function get_parent(node: node): LuaMultiReturn<[node, any]>
 
 	/**
 	* Get the paricle fx for a gui node
 	* @param node  node to get particle fx for
-	* @return   particle fx id
+	* @return particlefx  particle fx id
 	*/
 	export function get_particlefx(node: node): hash
 
@@ -1953,18 +1954,18 @@ with a custom curve. See the animation guide for more information.
 	* above the second.
 	* If the second argument is `nil` the first node is moved to the top.
 	* @param node  to move
-	* @param node  reference node above which the first node should be moved
+	* @param reference  reference node above which the first node should be moved
 	*/
-	export function move_above(node: node, node1: any): void
+	export function move_above(node: node, reference: any): void
 
 	/**
 	* Alters the ordering of the two supplied nodes by moving the first node
 	* below the second.
 	* If the second argument is `nil` the first node is moved to the bottom.
 	* @param node  to move
-	* @param node  reference node below which the first node should be moved
+	* @param reference  reference node below which the first node should be moved
 	*/
-	export function move_below(node: node, node1: any): void
+	export function move_below(node: node, reference: any): void
 
 	/**
 	* Dynamically create a new box node.
@@ -2080,6 +2081,12 @@ the new state of the emitter:
 	* Resets the input context of keyboard. This will clear marked text.
 	*/
 	export function reset_keyboard(): void
+
+	/**
+	* Resets the node material to the material assigned in the gui scene.
+	* @param node  node to reset the material for
+	*/
+	export function reset_material(node: node): void
 
 	/**
 	* Resets all nodes in the current GUI scene to their initial state.
@@ -2285,12 +2292,6 @@ the new state of the emitter:
 	* @param material  material id
 	*/
 	export function set_material(node: node, material: string | hash): void
-
-	/**
-	* Resets the node material to the material assigned in the gui scene.
-	* @param node  node to reset the material for
-	*/
-	export function set_material(node: node): void
 
 	/**
 	* Sets the outer bounds mode for a pie node.
@@ -2675,14 +2676,14 @@ See each joint type for possible properties field. The one field that is accepte
 	* Get the gravity in runtime. The gravity returned is not global, it will return
 	* the gravity for the collection that the function is called from.
 	* Note: For 2D physics the z component will always be zero.
-	* @return   gravity vector of collection
+	* @return gravity  gravity vector of collection
 	*/
 	export function get_gravity(): vmath.vector3
 
 	/**
 	* Returns the group name of a collision object as a hash.
 	* @param url  the collision object to return the group of.
-	* @return   hash value of the group.
+	* @return group  hash value of the group.
 `local function check_is_enemy()
     local group = physics.get_group(&quot;#collisionobject&quot;)
     return group == hash(&quot;enemy&quot;)
@@ -2697,7 +2698,7 @@ end
 	* Note: Currently only supported in 2D physics.
 	* @param collisionobject  collision object where the joint exist
 	* @param joint_id  id of the joint
-	* @return   properties table. See the joint types for what fields are available, the only field available for all types is:
+	* @return properties  properties table. See the joint types for what fields are available, the only field available for all types is:
 
 `collide_connected`: Set this flag to true if the attached bodies should collide.
 
@@ -2729,7 +2730,7 @@ end
 	* object, false otherwise.
 	* @param url  the collision object to check the mask of.
 	* @param group  the name of the group to check for.
-	* @return   boolean value of the maskbit. 'true' if present, 'false' otherwise.
+	* @return maskbit  boolean value of the maskbit. 'true' if present, 'false' otherwise.
 `local function is_invincible()
     -- check if the collisionobject would collide with the &quot;bullet&quot; group
     local invincible = physics.get_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;)
@@ -2753,9 +2754,9 @@ end
 `all`
 Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
 
-	* @return result  It returns a list. If missed it returns nil. See `ray_cast_response` for details on the returned values.
+	* @return result  It returns a list. If missed it returns `nil`. See `ray_cast_response` for details on the returned values.
 	*/
-	export function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): any
+	export function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): LuaMultiReturn<[any, any]>
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -3295,6 +3296,16 @@ declare namespace render {
 	/**
 	* 
 	*/
+	export let FRUSTUM_PLANES_ALL: any
+
+	/**
+	* 
+	*/
+	export let FRUSTUM_PLANES_SIDES: any
+
+	/**
+	* 
+	*/
 	export let RENDER_TARGET_DEFAULT: any
 
 	/**
@@ -3443,7 +3454,15 @@ declare namespace render {
 	* @param options  optional table with properties:
 
 `frustum`
-A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). default=nil
+`frustum_planes`
+Determines which sides of the frustum will be used. Default is render.FRUSTUM_PLANES_SIDES.
+
+
+- render.FRUSTUM_PLANES_SIDES : The left, right, top and bottom sides of the frustum.
+- render.FRUSTUM_PLANES_ALL : All 6 sides of the frustum.
+
+
 `constants`
 optional constants to use while rendering
 
@@ -3456,6 +3475,12 @@ optional constants to use while rendering
 
 `frustum`
 A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+`frustum_planes`
+Determines which sides of the frustum will be used. Default is render.FRUSTUM_PLANES_SIDES.
+
+
+- render.FRUSTUM_PLANES_SIDES : The left, right, top and bottom sides of the frustum.
+- render.FRUSTUM_PLANES_ALL : All sides of the frustum.
 
 	*/
 	export function draw_debug3d(options?: any): void
@@ -3489,9 +3514,12 @@ A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * vi
 	* A material shader can then use the texture to sample from.
 	* @param unit  texture unit to enable texture for
 	* @param render_target  render target or texture from which to enable the specified texture unit
-	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to render.BUFFER_COLOR_BIT
+	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `render.BUFFER_COLOR_BIT`. These values are supported:
 
 - `render.BUFFER_COLOR_BIT`
+
+If The render target has been created as depth and/or stencil textures, these buffer types can be used:
+
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
 
@@ -3533,6 +3561,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @param buffer_type  which type of buffer to retrieve the width from
 
 - `render.BUFFER_COLOR_BIT`
+- `render.BUFFER_COLOR[x]_BIT` (x: [0..3], if supported!)
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
 
@@ -3602,20 +3631,24 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* number
 	* 
 	* 
-	* `min_filter`
+	* `min_filter` (optional)
 	* `render.FILTER_LINEAR``render.FILTER_NEAREST`
 	* 
 	* 
-	* `mag_filter`
+	* `mag_filter` (optional)
 	* `render.FILTER_LINEAR``render.FILTER_NEAREST`
 	* 
 	* 
-	* `u_wrap`
+	* `u_wrap`     (optional)
 	* `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
 	* 
 	* 
-	* `v_wrap`
+	* `v_wrap`     (optional)
 	* `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
+	* 
+	* 
+	* `flags`      (optional)
+	* `render.TEXTURE_BIT` (only applicable to depth and stencil buffers)
 	* 
 	* 
 	* 
@@ -4761,6 +4794,14 @@ declare namespace sys {
 	export function deserialize(buffer: string): any
 
 	/**
+	* Check if a path exists
+	* Good for checking if a file exists before loading a large file
+	* @param path  path to check
+	* @return result  `true` if the path exists, `false` otherwise
+	*/
+	export function exists(path: string): any
+
+	/**
 	* Terminates the game application and reports the specified `code` to the OS.
 	* @param code  exit code to report to the OS, 0 means clean exit
 	*/
@@ -4914,7 +4955,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	/**
 	* Loads a custom resource. Specify the full filename of the resource that you want
 	* to load. When loaded, the file data is returned as a string.
-	* If loading fails, the function returns nil plus the error message.
+	* If loading fails, the function returns `nil` plus the error message.
 	* In order for the engine to include custom resources in the build process, you need
 	* to specify them in the "custom_resources" key in your "game.project" settings file.
 	* You can specify single resource files or directories. If a directory is included
@@ -4925,7 +4966,8 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	* @return data  loaded data, or `nil` if the resource could not be loaded
 	* @return error  the error message, or `nil` if no error occurred
 	*/
-	export function load_resource(filename: string): LuaMultiReturn<[string, string]>
+	export function load_resource(filename: string): string
+	export function load_resource(filename: string): any
 
 	/**
 	* Open URL in default application, typically a browser
@@ -5134,7 +5176,7 @@ declare namespace window {
 
 	/**
 	* Sets a window event listener.
-	* @param callback  A callback which receives info about window events. Pass an empty function or nil if you no longer wish to receive callbacks.
+	* @param callback  A callback which receives info about window events. Pass an empty function or `nil` if you no longer wish to receive callbacks.
 
 `self`
 The calling script
@@ -5271,10 +5313,10 @@ declare namespace buffer {
 	* Get a named metadata entry from a buffer along with its type.
 	* @param buf  the buffer to get the metadata from
 	* @param metadata_name  name of the metadata entry
-	* @return values  table of metadata values or nil if the entry does not exist
-	* @return value_type  numeric type of values or nil
+	* @return values  table of metadata values or `nil` if the entry does not exist
+	* @return value_type  numeric type of values or `nil`
 	*/
-	export function get_metadata(buf: buffer, metadata_name: hash | string): LuaMultiReturn<[any, any]>
+	export function get_metadata(buf: buffer, metadata_name: hash | string): LuaMultiReturn<[any, any, any, any]>
 
 	/**
 	* Get a specified stream from a buffer.
@@ -5314,7 +5356,7 @@ declare namespace html5 {
 	* invoked when a user interacts with the web page by clicking, touching or typing.
 	* The callback can then call DOM restricted actions like requesting a pointer lock,
 	* or start playing sounds the first time the callback is invoked.
-	* @param callback  The interaction callback. Pass an empty function or nil if you no longer wish to receive callbacks.
+	* @param callback  The interaction callback. Pass an empty function or `nil` if you no longer wish to receive callbacks.
 
 `self`
 The calling script
@@ -5399,7 +5441,7 @@ declare namespace image {
 `buffer`: the raw image data
 
 	*/
-	export function load(buffer: string, premult?: boolean): any
+	export function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5505,7 +5547,7 @@ declare namespace timer {
 	export function cancel(handle: hash): boolean
 
 	/**
-	* Adds a timer and returns a unique handle
+	* Adds a timer and returns a unique handle.
 	* You may create more timers from inside a timer callback.
 	* Using a delay of 0 will result in a timer that triggers at the next frame just before
 	* script update functions.
@@ -5529,7 +5571,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	/**
 	* Get information about timer.
 	* @param handle  the timer handle returned by timer.delay()
-	* @return data  or nil if timer is cancelled/completed. table with data in the following fields:
+	* @return data  table or `nil` if timer is cancelled/completed. table with data in the following fields:
 
 `time_remaining`
 Time remaining until the next time a timer.delay() fires.
@@ -5539,7 +5581,7 @@ Time interval.
 true = repeat timer until cancel, false = one-shot timer.
 
 	*/
-	export function get_info(handle: hash): any
+	export function get_info(handle: hash): LuaMultiReturn<[any, any]>
 
 	/**
 	* Manual triggering a callback for a timer.
@@ -6190,7 +6232,7 @@ True if resource were loaded successfully
 	* Changes the prototype for the collection factory.
 	* Setting the prototype to "nil" will revert back to the original prototype.
 	* @param url  the collection factory component
-	* @param prototype  the path to the new prototype, or nil
+	* @param prototype  the path to the new prototype, or `nil`
 	*/
 	export function set_prototype(url?: string | hash | url, prototype?: any): void
 
@@ -6369,7 +6411,7 @@ True if resources were loaded successfully
 	/**
 	* Changes the prototype for the factory.
 	* @param url  the factory component
-	* @param prototype  the path to the new prototype, or nil
+	* @param prototype  the path to the new prototype, or `nil`
 	*/
 	export function set_prototype(url?: string | hash | url, prototype?: any): void
 
@@ -6973,7 +7015,7 @@ declare namespace sprite {
 	* the animation has completed playing. If no function is provided,
 	* a animation_done message is sent to the script that started the animation.
 	* @param url  the sprite that should play the animation
-	* @param id  hash name hash of the animation to play
+	* @param id  hashed id of the animation to play
 	* @param complete_function  function to call when the animation has completed.
 
 `self`
@@ -6999,7 +7041,7 @@ the normalized initial value of the animation cursor when the animation starts p
 the rate with which the animation will be played. Must be positive.
 
 	*/
-	export function play_flipbook(url: string | hash | url, id: any, complete_function?: any, play_properties?: any): void
+	export function play_flipbook(url: string | hash | url, id: string | hash, complete_function?: any, play_properties?: any): void
 
 	/**
 	* Sets horizontal flipping of the provided sprite's animations.
