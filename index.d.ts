@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.0 (d9e9c49ab946c058f29a8b688c862d70f30e9c43)
+// DEFOLD. stable version 1.6.1 (27bbea23f00cfb65707cb096fbe82ba7b78723f6)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -6541,6 +6541,14 @@ declare namespace model {
 	export function get_go(url: string | hash | url, bone_id: string | hash): hash
 
 	/**
+	* Get the enabled state of a mesh
+	* @param url  the model
+	* @param mesh_id  the id of the mesh
+	* @return enabled  true if the mesh is visible, false otherwise
+	*/
+	export function get_mesh_enabled(url: string | hash | url, mesh_id: string | hash | url): boolean
+
+	/**
 	* Plays an animation on a model component with specified playback
 	* mode and parameters.
 	* An optional completion callback function can be provided that will be called when
@@ -6594,6 +6602,14 @@ The invoker of the callback: the model component.
 
 	*/
 	export function play_anim(url: string | hash | url, anim_id: string | hash, playback: any, play_properties?: any, complete_function?: any): void
+
+	/**
+	* Enable or disable visibility of a mesh
+	* @param url  the model
+	* @param mesh_id  the id of the mesh
+	* @param enabled  true if the mesh should be visible, false if it should be hideen
+	*/
+	export function set_mesh_enabled(url: string | hash | url, mesh_id: string | hash | url, enabled: boolean): void
 
 	/**
 	* This message is sent when a Model animation has finished playing back to the script
