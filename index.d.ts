@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.1 (a90c50928623cf23b3687a7eec05972d11427202)
+// DEFOLD. stable version 1.6.2 (708bbcc6985d4cf3719829603972a39895a03a07)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -5415,6 +5415,11 @@ declare namespace image {
 	export let TYPE_LUMINANCE: any
 
 	/**
+	* luminance image type
+	*/
+	export let TYPE_LUMINANCE_ALPHA: any
+
+	/**
 	* RGB image type
 	*/
 	export let TYPE_RGB: any
@@ -5436,6 +5441,7 @@ declare namespace image {
 - `image.TYPE_RGB`
 - `image.TYPE_RGBA`
 - `image.TYPE_LUMINANCE`
+- `image.TYPE_LUMINANCE_ALPHA`
 
 
 `buffer`: the raw image data
