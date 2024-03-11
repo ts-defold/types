@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.4 (fcec9500fd438e365d4e4f6cec24b99afb907247)
+// DEFOLD. stable version 1.7.0 (bf4dc66ab5fbbafd4294d32c2797c08b630c0be5)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -912,6 +912,22 @@ name of internal property
 	*/
 	export function set_scale(scale: number | vmath.vector3, id?: string | hash | url): void
 
+	/**
+	* ⚠ The function uses world transformation calculated at the end of previous frame.
+	* @param position  position which need to be converted
+	* @param url  url of the game object which coordinate system convert to
+	* @return converted_postion  converted position
+	*/
+	export function world_to_local_position(position: vmath.vector3, url: string | hash | url): vmath.vector3
+
+	/**
+	* ⚠ The function uses world transformation calculated at the end of previous frame.
+	* @param transformation  transformation which need to be converted
+	* @param url  url of the game object which coordinate system convert to
+	* @return converted_transform  converted transformation
+	*/
+	export function world_to_local_transform(transformation: vmath.matrix4, url: string | hash | url): vmath.matrix4
+
 
 
 
@@ -1021,6 +1037,11 @@ declare namespace gui {
 	* multiply blending
 	*/
 	export let BLEND_MULT: any
+
+	/**
+	* screen blending
+	*/
+	export let BLEND_SCREEN: any
 
 	/**
 	* clipping mode none
@@ -1567,6 +1588,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.BLEND_ADD`
 - `gui.BLEND_ADD_ALPHA`
 - `gui.BLEND_MULT`
+- `gui.BLEND_SCREEN`
 
 	*/
 	export function get_blend_mode(node: node): any
@@ -2013,7 +2035,7 @@ with a custom curve. See the animation guide for more information.
 
 	/**
 	* Dynamically create a new texture.
-	* @param texture  texture id
+	* @param texture_id  texture id
 	* @param width  texture width
 	* @param height  texture height
 	* @param type  texture type
@@ -2027,7 +2049,7 @@ with a custom curve. See the animation guide for more information.
 	* @return success  texture creation was successful
 	* @return code  one of the gui.RESULT_* codes if unsuccessful
 	*/
-	export function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>
+	export function new_texture(texture_id: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>
 
 	/**
 	* Tests whether a coordinate is within the bounding box of a
@@ -2146,6 +2168,7 @@ the new state of the emitter:
 - `gui.BLEND_ADD`
 - `gui.BLEND_ADD_ALPHA`
 - `gui.BLEND_MULT`
+- `gui.BLEND_SCREEN`
 
 	*/
 	export function set_blend_mode(node: node, blend_mode: any): void
@@ -3562,7 +3585,8 @@ declare namespace render {
 	export function constant_buffer(): any
 
 	/**
-	* Deletes a previously created render target.
+	* Deletes a render target created by a render script.
+	* You cannot delete a render target resource.
 	* @param render_target  render target to delete
 	*/
 	export function delete_render_target(render_target: any): void
@@ -3589,10 +3613,10 @@ declare namespace render {
 	export function disable_state(state: any): void
 
 	/**
-	* Disables a texture unit for a render target that has previourly been enabled.
-	* @param unit  texture unit to disable
+	* Disables a texture that has previourly been enabled.
+	* @param binding  texture binding, either by texture unit, string or hash that should be disabled
 	*/
-	export function disable_texture(unit: number): void
+	export function disable_texture(binding: number | string | hash): void
 
 	/**
 	* Draws all objects that match a specified predicate. An optional constant buffer can be
@@ -3658,11 +3682,19 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	export function enable_state(state: any): void
 
 	/**
-	* Sets the specified render target's specified buffer to be
-	* used as texture with the specified unit.
-	* A material shader can then use the texture to sample from.
-	* @param unit  texture unit to enable texture for
-	* @param render_target  render target or texture from which to enable the specified texture unit
+	* Sets the specified texture handle for a render target attachment or a regular texture
+	* that should be used for rendering. The texture can be bound to either a texture unit
+	* or to a sampler name by a hash or a string.
+	* A texture can be bound to multiple units and sampler names at the same time,
+	* the actual binding will be applied to the shaders when a shader program is bound.
+	* When mixing binding using both units and sampler names, you might end up in situations
+	* where two different textures will be applied to the same bind location in the shader.
+	* In this case, the texture set to the named sampler will take precedence over the unit.
+	* Note that you can bind multiple sampler names to the same texture, in case you want to reuse
+	* the same texture for differnt use-cases. It is however recommended that you use the same name
+	* everywhere for the textures that should be shared across different materials.
+	* @param binding  texture binding, either by texture unit, string or hash for the sampler name that the texture should be bound to
+	* @param handle_or_name  render target or texture handle that should be bound, or a named resource in the "Render Resource" table in the currently assigned .render file
 	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `render.BUFFER_COLOR_BIT`. These values are supported:
 
 - `render.BUFFER_COLOR_BIT`
@@ -3681,7 +3713,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 - `render.BUFFER_COLOR3_BIT`
 
 	*/
-	export function enable_texture(unit: number, render_target: any, buffer_type?: any): void
+	export function enable_texture(binding: number | string | hash, handle_or_name: any, buffer_type?: any): void
 
 	/**
 	* Returns the logical window height that is set in the "game.project" settings.
@@ -4004,6 +4036,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	/**
 	* Sets a render target. Subsequent draw operations will be to the
 	* render target until it is replaced by a subsequent call to set_render_target.
+	* This function supports render targets created by a render script, or a render target resource.
 	* @param render_target  render target to set. render.RENDER_TARGET_DEFAULT to set the default render target
 	* @param options  optional table with behaviour parameters
 
@@ -4021,7 +4054,8 @@ Transient frame buffer types are only valid while the render target is active, i
 	export function set_render_target(render_target: any, options?: any): void
 
 	/**
-	* sets the render target size
+	* Sets the render target size for a render target created from
+	* either a render script, or from a render target resource.
 	* @param render_target  render target to set size for
 	* @param width  new render target width
 	* @param height  new render target height
@@ -4439,6 +4473,7 @@ optional flag to determine wether or not the resource should take over ownership
 	* registered will trigger an error. If the intention is to instead modify an existing texture, use the resource.set_texture
 	* function. Also note that the path to the new texture resource must have a '.texturec' extension,
 	* meaning "/path/my_texture" is not a valid path but "/path/my_texture.texturec" is.
+	* If the texture is created without a buffer, the pixel data will be blank.
 	* @param path  The path to the resource.
 	* @param table  A table containing info about how to create the texture. Supported entries:
 
@@ -4451,9 +4486,9 @@ The texture type. Supported values:
 
 
 `width`
-The width of the texture (in pixels)
+The width of the texture (in pixels). Must be larger than 0.
 `height`
-The width of the texture (in pixels)
+The width of the texture (in pixels). Must be larger than 0.
 `format`
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
@@ -4463,6 +4498,7 @@ The texture format, note that some of these formats might not be supported by th
 - `resource.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
+
 - `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
 - `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
 - `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
@@ -4483,6 +4519,7 @@ These constants might not be available on the device:
 - `resource.TEXTURE_FORMAT_RG16F`
 - `resource.TEXTURE_FORMAT_R32F`
 - `resource.TEXTURE_FORMAT_RG32F`
+
 You can test if the device supports these values by checking if a specific enum is nil or not:
 `if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
     -- it is safe to use this format
@@ -4536,6 +4573,48 @@ See resource.set_atlas for a detailed description of each field
 	* @return buffer  The resource buffer
 	*/
 	export function get_buffer(path: hash | string): buffer
+
+	/**
+	* Gets render target info from a render target resource path or a render target handle
+	* @param path  The path to the resource or a render target handle
+	* @return table  A table containing info about the render target:
+
+`handle`
+the opaque handle to the texture resource
+'attachments'
+a table of attachments, where each attachment contains the following entries:
+`handle`
+the opaque handle to the texture resource
+`width`
+width of the texture
+`height`
+height of the texture
+`depth`
+depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
+`mipmaps`
+number of mipmaps of the texture
+`type`
+The texture type. Supported values:
+
+
+- `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `resource.TEXTURE_TYPE_2D_ARRAY`
+
+
+`buffer_type`
+The attachment buffer type. Supported values:
+
+
+- `resource.BUFFER_TYPE_COLOR0`
+- `resource.BUFFER_TYPE_COLOR1`
+- `resource.BUFFER_TYPE_COLOR2`
+- `resource.BUFFER_TYPE_COLOR3`
+- `resource.BUFFER_TYPE_DEPTH`
+- `resource.BUFFER_TYPE_STENCIL`
+
+	*/
+	export function get_render_target_info(path: any): any
 
 	/**
 	* Gets the text metrics from a font
@@ -5609,9 +5688,9 @@ The response data. Contains the fields:
 	* @param options  optional table with request parameters. Supported entries:
 
 `timeout`: timeout in seconds
-`path`: path on disc where to download the file. Only overwrites the path if status is 200
-`ignore_cache`: don't return cached data if we get a 304
-`chunked_transfer`: use chunked transfer encoding for https requests larger than 16kb. Defaults to true.
+Not available in HTML5 build
+Not available in HTML5 build
+Not available in HTML5 build
 
 	*/
 	export function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any): void
@@ -5645,7 +5724,13 @@ declare namespace image {
 	/**
 	* Load image (PNG or JPEG) from buffer.
 	* @param buffer  image data buffer
-	* @param premult  optional flag if alpha should be premultiplied. Defaults to `false`
+	* @param options  An optional table containing parameters for loading the image. Supported entries:
+
+`premultiply_alpha`
+True if alpha should be premultiplied into the color components. Defaults to `false`.
+`flip_vertically`
+True if the image contents should be flipped vertically. Defaults to `false`.
+
 	* @return image  object or `nil` if loading fails. The object is a table with the following fields:
 
 `width`: image width
@@ -5660,12 +5745,18 @@ declare namespace image {
 `buffer`: the raw image data
 
 	*/
-	export function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>
+	export function load(buffer: string, options?: any): LuaMultiReturn<[any, any]>
 
 	/**
 	* Load image (PNG or JPEG) from a string buffer.
 	* @param buffer  image data buffer
-	* @param premult  optional flag if alpha should be premultiplied. Defaults to `false`
+	* @param options  An optional table containing parameters for loading the image. Supported entries:
+
+`premultiply_alpha`
+True if alpha should be premultiplied into the color components. Defaults to `false`.
+`flip_vertically`
+True if the image contents should be flipped vertically. Defaults to `false`.
+
 	* @return image  object or `nil` if loading fails. The object is a table with the following fields:
 
 `width`: image width
@@ -5680,7 +5771,7 @@ declare namespace image {
 `buffer`: the script buffer that holds the decompressed image data. See buffer.create how to use the buffer.
 
 	*/
-	export function load_buffer(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>
+	export function load_buffer(buffer: string, options?: any): LuaMultiReturn<[any, any]>
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6351,6 +6442,18 @@ declare namespace camera {
 	export let aspect_ratio: any
 
 	/**
+	* makes camera active
+	* @param url  url of camera component
+	*/
+	export function acquire_focus(url: string | hash | url): void
+
+	/**
+	* deactivate camera
+	* @param url  url of camera component
+	*/
+	export function release_focus(url: string | hash | url): void
+
+	/**
 	* Camera frustum far plane.
 	* The type of the property is float.
 	*/
@@ -6996,6 +7099,7 @@ declare namespace sound {
 	* Inversely, to find the linear value from a dB value, use the formula
 	* `10db/20`.
 	* ⚠ A sound will continue to play even if the game object the sound component belonged to is deleted. You can send a `stop_sound` to stop the sound.
+	* ⚠ `play_id` should be specified in case you want to receive `sound_done` or `sound_stopped` in `on_message()`.
 	*/
 	export type play_sound = "play_sound"
 
@@ -7140,7 +7244,7 @@ Information about the completion:
 `sender`
 The invoker of the callback: the sound component.
 
-	* @return id  The identifier for the sound voice
+	* @return play_id  The identifier for the sound voice
 	*/
 	export function play(url: string | hash | url, play_properties?: any, complete_function?: any): number
 
@@ -7186,14 +7290,14 @@ the sequential play identifier that should be stopped (was given by the sound.pl
 	export function stop(url: string | hash | url, stop_properties?: any): void
 
 	/**
-	* This message is sent back to the sender of a `play_sound` message, if the sound
-	* could be played to completion.
+	* This message is sent back to the sender of a `play_sound` message
+	* if the sound could be played to completion and a `play_id` was provided with the `play_sound` message.
 	*/
 	export type sound_done = "sound_done"
 
 	/**
 	* This message is sent back to the sender of a `play_sound` message, if the sound
-	* has been manually stopped.
+	* has been manually stopped and a `play_id` was provided with the `play_sound` message.
 	*/
 	export type sound_stopped = "sound_stopped"
 
