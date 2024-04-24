@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.7.0 (bf4dc66ab5fbbafd4294d32c2797c08b630c0be5)
+// DEFOLD. stable version 1.8.0 (ef07c036b8f7d34f4b1d7fcc355ce46a92d2dcc8)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -218,6 +218,338 @@ declare namespace socket {
 	* @return error  the error message, or `nil` if no error occurred.
 	*/
 	export function udp6(): LuaMultiReturn<[any, any, string, any]>
+
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
+declare namespace b2d {
+
+	/**
+	* Get the Box2D body from a collision object
+	* @param url  the url to the game object collision component
+	* @return body  the body if successful. Otherwise `nil`.
+	*/
+	export function get_body(url: url): any
+
+	/**
+	* Get the Box2D world from the current collection
+	* @return world  the world if successful. Otherwise `nil`.
+	*/
+	export function get_world(): any
+
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
+declare namespace b2d.body {
+
+	/**
+	* Dynamic body
+	*/
+	export let B2_DYNAMIC_BODY: any
+
+	/**
+	* Kinematic body
+	*/
+	export let B2_KINEMATIC_BODY: any
+
+	/**
+	* Static (immovable) body
+	*/
+	export let B2_STATIC_BODY: any
+
+	/**
+	* Apply an angular impulse.
+	* @param impulse  impulse the angular impulse in units of kg*m*m/s
+	*/
+	export function apply_angular_impulse(impulse: number): void
+
+	/**
+	* Apply a force at a world point. If the force is not
+	* applied at the center of mass, it will generate a torque and
+	* affect the angular velocity. This wakes up the body.
+	* @param force  the world force vector, usually in Newtons (N).
+	* @param point  the world position of the point of application.
+	*/
+	export function apply_force(force: vmath.vector3, point: vmath.vector3): void
+
+	/**
+	* Apply a force to the center of mass. This wakes up the body.
+	* @param force  the world force vector, usually in Newtons (N).
+	*/
+	export function apply_force_to_center(force: vmath.vector3): void
+
+	/**
+	* Apply an impulse at a point. This immediately modifies the velocity.
+	* It also modifies the angular velocity if the point of application
+	* is not at the center of mass. This wakes up the body.
+	* @param impulse  the world impulse vector, usually in N-seconds or kg-m/s.
+	* @param point  the world position of the point of application.
+	*/
+	export function apply_linear_impulse(impulse: vmath.vector3, point: vmath.vector3): void
+
+	/**
+	* Apply a torque. This affects the angular velocity
+	* without affecting the linear velocity of the center of mass.
+	* This wakes up the body.
+	* @param torque  torque about the z-axis (out of the screen), usually in N-m.
+	*/
+	export function apply_torque(torque: number): void
+
+	/**
+	* Print the body representation to the log output
+	*/
+	export function dump(): void
+
+	/**
+	* Get the angular damping of the body.
+	* @return damping  the damping
+	*/
+	export function get_angular_damping(): number
+
+	/**
+	* Set the angular velocity.
+	* @param omega  the new angular velocity in radians/second.
+	*/
+	export function get_angular_velocity(omega: number): void
+
+	/**
+	* Get the angular velocity.
+	* @return velocity  the angular velocity in radians/second.
+	*/
+	export function get_angular_velocity(): number
+
+	/**
+	* Get the gravity scale of the body.
+	* @return scale  the scale
+	*/
+	export function get_gravity_scale(): number
+
+	/**
+	* Get the rotational inertia of the body about the local origin.
+	* @return inertia  the rotational inertia, usually in kg-m^2.
+	*/
+	export function get_inertia(): number
+
+	/**
+	* Get the linear damping of the body.
+	* @return damping  the damping
+	*/
+	export function get_linear_damping(): number
+
+	/**
+	* Get the linear velocity of the center of mass.
+	* @return velocity  the linear velocity of the center of mass.
+	*/
+	export function get_linear_velocity(): vmath.vector3
+
+	/**
+	* Get the world linear velocity of a world point attached to this body.
+	* @param world_point  a point in world coordinates.
+	* @return velocity  the world velocity of a point.
+	*/
+	export function get_linear_velocity_from_world_point(world_point: vmath.vector3): vmath.vector3
+
+	/**
+	* Get the world velocity of a local point.
+	* @param world_point  a point in local coordinates.
+	* @return velocity  the world velocity of a point.
+	*/
+	export function get_linear_velocity_from_world_point(world_point: vmath.vector3): vmath.vector3
+
+	/**
+	* Get the local position of the center of mass.
+	* @return center  Get the local position of the center of mass.
+	*/
+	export function get_local_center(): vmath.vector3
+
+	/**
+	* Gets a local point relative to the body's origin given a world point.
+	* @param world_point  a point in world coordinates.
+	* @return vector  the corresponding local point relative to the body's origin.
+	*/
+	export function get_local_point(world_point: vmath.vector3): vmath.vector3
+
+	/**
+	* Gets a local vector given a world vector.
+	* @param world_vector  a vector in world coordinates.
+	* @return vector  the corresponding local vector.
+	*/
+	export function get_local_vector(world_vector: vmath.vector3): vmath.vector3
+
+	/**
+	* Get the total mass of the body.
+	* @return mass  the mass, usually in kilograms (kg).
+	*/
+	export function get_mass(): number
+
+	/**
+	* Get the next body in the world's body list.
+	* @return body  the next body
+	*/
+	export function get_next(): any
+
+	/**
+	* Get the world body origin position.
+	* @return position  the world position of the body's origin.
+	*/
+	export function get_position(): vmath.vector3
+
+	/**
+	* Get the type of this body.
+	* @return type  the body type
+	*/
+	export function get_type(): any
+
+	/**
+	* Get the parent world of this body.
+	* @return world  
+	*/
+	export function get_world(): any
+
+	/**
+	* Get the angle in radians.
+	* @return angle  the current world rotation angle in radians.
+	*/
+	export function get_world_center(): number
+
+	/**
+	* Get the world position of the center of mass.
+	* @return center  Get the world position of the center of mass.
+	*/
+	export function get_world_center(): vmath.vector3
+
+	/**
+	* Get the world coordinates of a point given the local coordinates.
+	* @param local_vector  localPoint a point on the body measured relative the the body's origin.
+	* @return vector  the same point expressed in world coordinates.
+	*/
+	export function get_world_point(local_vector: vmath.vector3): vmath.vector3
+
+	/**
+	* Get the world coordinates of a vector given the local coordinates.
+	* @param local_vector  a vector fixed in the body.
+	* @return vector  the same vector expressed in world coordinates.
+	*/
+	export function get_world_vector(local_vector: vmath.vector3): vmath.vector3
+
+	/**
+	* Get the active state of the body.
+	* @return enabled  is the body active
+	*/
+	export function is_active(): any
+
+	/**
+	* Get the sleeping state of this body.
+	* @return enabled  true if the body is awake, false if it's sleeping.
+	*/
+	export function is_awake(): any
+
+	/**
+	* Is this body in bullet mode
+	* @return enabled  true if the body is in bullet mode
+	*/
+	export function is_bullet(): any
+
+	/**
+	* Does this body have fixed rotation?
+	* @return enabled  is the rotation fixed
+	*/
+	export function is_fixed_rotation(): any
+
+	/**
+	* Is this body allowed to sleep
+	* @return enabled  true if the body is allowed to sleep
+	*/
+	export function is_sleeping_allowed(): any
+
+	/**
+	* This resets the mass properties to the sum of the mass properties of the fixtures.
+	* This normally does not need to be called unless you called SetMassData to override
+	*/
+	export function reset_mass_data(): void
+
+	/**
+	* Set the active state of the body. An inactive body is not
+	* simulated and cannot be collided with or woken up.
+	* If you pass a flag of true, all fixtures will be added to the
+	* broad-phase.
+	* If you pass a flag of false, all fixtures will be removed from
+	* the broad-phase and all contacts will be destroyed.
+	* Fixtures and joints are otherwise unaffected. You may continue
+	* to create/destroy fixtures and joints on inactive bodies.
+	* Fixtures on an inactive body are implicitly inactive and will
+	* not participate in collisions, ray-casts, or queries.
+	* Joints connected to an inactive body are implicitly inactive.
+	* An inactive body is still owned by a b2World object and remains
+	* in the body list.
+	* @param enable  true if the body should be active
+	*/
+	export function set_active(enable: any): void
+
+	/**
+	* Set the angular damping of the body.
+	* @param damping  the damping
+	*/
+	export function set_angular_damping(damping: number): void
+
+	/**
+	* Set the sleep state of the body. A sleeping body has very low CPU cost.
+	* @param enable  flag set to false to put body to sleep, true to wake it.
+	*/
+	export function set_awake(enable: any): void
+
+	/**
+	* Should this body be treated like a bullet for continuous collision detection?
+	* @param enable  if true, the body will be in bullet mode
+	*/
+	export function set_bullet(enable: any): void
+
+	/**
+	* Set this body to have fixed rotation. This causes the mass to be reset.
+	* @param enable  true if the rotation should be fixed
+	*/
+	export function set_fixed_rotation(enable: any): void
+
+	/**
+	* Set the gravity scale of the body.
+	* @param scale  the scale
+	*/
+	export function set_gravity_scale(scale: number): void
+
+	/**
+	* Set the linear damping of the body.
+	* @param damping  the damping
+	*/
+	export function set_linear_damping(damping: number): void
+
+	/**
+	* Set the linear velocity of the center of mass.
+	* @param velocity  the new linear velocity of the center of mass.
+	*/
+	export function set_linear_velocity(velocity: vmath.vector3): void
+
+	/**
+	* You can disable sleeping on this body. If you disable sleeping, the body will be woken.
+	* @param enable  if false, the body will never sleep, and consume more CPU
+	*/
+	export function set_sleeping_allowed(enable: any): void
+
+	/**
+	* Set the position of the body's origin and rotation.
+	* This breaks any contacts and wakes the other bodies.
+	* Manipulating a body's transform may cause non-physical behavior.
+	* @param position  the world position of the body's local origin.
+	* @param angle  the world position of the body's local origin.
+	*/
+	export function set_transform(position: vmath.vector3, angle: number): void
+
+	/**
+	* Set the type of this body. This may alter the mass and velocity.
+	* @param type  the body type
+	*/
+	export function set_type(type: any): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -1369,6 +1701,11 @@ declare namespace gui {
 	export let PROP_COLOR: any
 
 	/**
+	* euler property
+	*/
+	export let PROP_EULER: any
+
+	/**
 	* fill_angle property
 	*/
 	export let PROP_FILL_ANGLE: any
@@ -1459,6 +1796,7 @@ declare namespace gui {
 
 - `"position"`
 - `"rotation"`
+- `"euler"`
 - `"scale"`
 - `"color"`
 - `"outline"`
@@ -1472,6 +1810,7 @@ The following property constants are defined equaling the corresponding property
 
 - `gui.PROP_POSITION`
 - `gui.PROP_ROTATION`
+- `gui.PROP_EULER`
 - `gui.PROP_SCALE`
 - `gui.PROP_COLOR`
 - `gui.PROP_OUTLINE`
@@ -1508,6 +1847,7 @@ with a custom curve. See the animation guide for more information.
 
 - `"position"`
 - `"rotation"`
+- `"euler"`
 - `"scale"`
 - `"color"`
 - `"outline"`
@@ -1557,6 +1897,31 @@ with a custom curve. See the animation guide for more information.
 	* @param texture  texture id
 	*/
 	export function delete_texture(texture: string | hash): void
+
+	/**
+	* Instead of using specific getters such as gui.get_position or gui.get_scale,
+	* you can use gui.get instead and supply the property as a string or a hash.
+	* While this function is similar to go.get, there are a few more restrictions
+	* when operating in the gui namespace. Most notably, only these propertie identifiers are supported:
+	* 
+	* - `"position"`
+	* - `"rotation"`
+	* - `"euler"`
+	* - `"scale"`
+	* - `"color"`
+	* - `"outline"`
+	* - `"shadow"`
+	* - `"size"`
+	* - `"fill_angle"` (pie)
+	* - `"inner_radius"` (pie)
+	* - `"slice9"` (slice9)
+	* 
+	* The value returned will either be a vmath.vector4 or a single number, i.e getting the "position"
+	* property will return a vec4 while getting the "position.x" property will return a single value.
+	* @param node  node to get the property for
+	* @param property  the property to retrieve
+	*/
+	export function get(node: node, property: any): void
 
 	/**
 	* Returns the adjust mode of a node.
@@ -1651,6 +2016,14 @@ with a custom curve. See the animation guide for more information.
 	* @return color  node color
 	*/
 	export function get_color(node: node): vmath.vector4
+
+	/**
+	* Returns the rotation of the supplied node.
+	* The rotation is expressed in degree Euler angles.
+	* @param node  node to get the rotation from
+	* @return rotation  node rotation
+	*/
+	export function get_euler(node: node): vmath.vector3
 
 	/**
 	* Returns the sector angle of a pie node.
@@ -1841,11 +2214,11 @@ with a custom curve. See the animation guide for more information.
 
 	/**
 	* Returns the rotation of the supplied node.
-	* The rotation is expressed in degree Euler angles.
+	* The rotation is expressed as a quaternion
 	* @param node  node to get the rotation from
 	* @return rotation  node rotation
 	*/
-	export function get_rotation(node: node): vmath.vector3
+	export function get_rotation(node: node): vmath.quaternion
 
 	/**
 	* Returns the scale of the supplied node.
@@ -2138,6 +2511,36 @@ the new state of the emitter:
 	export function screen_to_local(node: node, screen_position: vmath.vector3): vmath.vector3
 
 	/**
+	* Instead of using specific setteres such as gui.set_position or gui.set_scale,
+	* you can use gui.set instead and supply the property as a string or a hash.
+	* While this function is similar to go.get and go.set, there are a few more restrictions
+	* when operating in the gui namespace. Most notably, only these propertie identifiers are supported:
+	* 
+	* - `"position"`
+	* - `"rotation"`
+	* - `"euler"`
+	* - `"scale"`
+	* - `"color"`
+	* - `"outline"`
+	* - `"shadow"`
+	* - `"size"`
+	* - `"fill_angle"` (pie)
+	* - `"inner_radius"` (pie)
+	* - `"slice9"` (slice9)
+	* 
+	* The value to set must either be a vmath.vector4, vmath.vector3, vmath.quat or a single number and depends on the property name you want to set.
+	* I.e when setting the "position" property, you need to use a vmath.vector4 and when setting a single component of the property,
+	* such as "position.x", you need to use a single value.
+	* Note: When setting the rotation using the "rotation" property, you need to pass in a vmath.quat. This behaviour is different than from the gui.set_rotation function,
+	* the intention is to move new functionality closer to go namespace so that migrating between gui and go is easier. To set the rotation using degrees instead,
+	* use the "euler" property instead. The rotation and euler properties are linked, changing one of them will change the backing data of the other.
+	* @param node  node to set the property for
+	* @param property  the property to set
+	* @param value  the property to set
+	*/
+	export function set(node: node, property: any, value: number | vmath.vector4 | vmath.vector3 | vmath.quaternion): void
+
+	/**
 	* Sets the adjust mode on a node.
 	* The adjust mode defines how the node will adjust itself to screen
 	* resolutions that differs from the one in the project settings.
@@ -2239,6 +2642,14 @@ the new state of the emitter:
 	* @param enabled  whether the node should be enabled or not
 	*/
 	export function set_enabled(node: node, enabled: boolean): void
+
+	/**
+	* Sets the rotation of the supplied node.
+	* The rotation is expressed in degree Euler angles.
+	* @param node  node to set the rotation for
+	* @param rotation  new rotation
+	*/
+	export function set_euler(node: node, rotation: vmath.vector3 | vmath.vector4): void
 
 	/**
 	* Set the sector angle of a pie node.
@@ -2406,11 +2817,11 @@ the new state of the emitter:
 
 	/**
 	* Sets the rotation of the supplied node.
-	* The rotation is expressed in degree Euler angles.
+	* The rotation is expressed as a quaternion
 	* @param node  node to set the rotation for
 	* @param rotation  new rotation
 	*/
-	export function set_rotation(node: node, rotation: vmath.vector3 | vmath.vector4): void
+	export function set_rotation(node: node, rotation: vmath.quaternion | vmath.vector4): void
 
 	/**
 	* Sets the scaling of the supplied node.
@@ -4341,7 +4752,7 @@ declare namespace resource {
 	* Note that releasing a resource essentially means decreasing the reference count of that resource,
 	* and not necessarily that it will be deleted.
 	* @param path  The path to the resource.
-	* @param table  A table containing info about how to create the texture. Supported entries:
+	* @param table  A table containing info about how to create the atlas. Supported entries:
 
 
 
@@ -4413,6 +4824,12 @@ optional flip the animation horizontally, the default value is false
 
 `geometries`
 A list of the geometries that should map to the texture data. Supports the following fields:
+
+
+
+
+`id`
+The name of the geometry. Used when matching animations between multiple atlases
 
 
 
@@ -4541,6 +4958,85 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	* @return path  The path to the resource.
 	*/
 	export function create_texture(path: string, table: any, buffer?: buffer): hash
+
+	/**
+	* Creates a new texture resource that can be used in the same way as any texture created during build time.
+	* The path used for creating the texture must be unique, trying to create a resource at a path that is already
+	* registered will trigger an error. If the intention is to instead modify an existing texture, use the resource.set_texture
+	* function. Also note that the path to the new texture resource must have a '.texturec' extension,
+	* meaning "/path/my_texture" is not a valid path but "/path/my_texture.texturec" is.
+	* If the texture is created without a buffer, the pixel data will be blank.
+	* The difference between the async version and resource.create_texture is that the texture data will be uploaded
+	* in a graphics worker thread. The function will return a resource immediately that contains a 1x1 blank texture which can be used
+	* immediately after the function call. When the new texture has been uploaded, the initial blank texture will be deleted and replaced with the
+	* new texture. Be careful when using the initial texture handle handle as it will not be valid after the upload has finished.
+	* @param path  The path to the resource.
+	* @param table  
+A table containing info about how to create the texture. Supported entries:
+`type`
+The texture type. Supported values:
+
+
+- `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_CUBE_MAP`
+
+
+`width`
+The width of the texture (in pixels). Must be larger than 0.
+`height`
+The width of the texture (in pixels). Must be larger than 0.
+`format`
+The texture format, note that some of these formats might not be supported by the running device. Supported values:
+
+
+- `resource.TEXTURE_FORMAT_LUMINANCE`
+- `resource.TEXTURE_FORMAT_RGB`
+- `resource.TEXTURE_FORMAT_RGBA`
+
+These constants might not be available on the device:
+
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `resource.TEXTURE_FORMAT_RGB_ETC1`
+- `resource.TEXTURE_FORMAT_RGBA_ETC2`
+- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `resource.TEXTURE_FORMAT_RGB_BC1`
+- `resource.TEXTURE_FORMAT_RGBA_BC3`
+- `resource.TEXTURE_FORMAT_R_BC4`
+- `resource.TEXTURE_FORMAT_RG_BC5`
+- `resource.TEXTURE_FORMAT_RGBA_BC7`
+- `resource.TEXTURE_FORMAT_RGB16F`
+- `resource.TEXTURE_FORMAT_RGB32F`
+- `resource.TEXTURE_FORMAT_RGBA16F`
+- `resource.TEXTURE_FORMAT_RGBA32F`
+- `resource.TEXTURE_FORMAT_R16F`
+- `resource.TEXTURE_FORMAT_RG16F`
+- `resource.TEXTURE_FORMAT_R32F`
+- `resource.TEXTURE_FORMAT_RG32F`
+
+You can test if the device supports these values by checking if a specific enum is nil or not:
+`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- it is safe to use this format
+end
+`
+
+
+`max_mipmaps`
+optional max number of mipmaps. Defaults to zero, i.e no mipmap support
+`compression_type`
+optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+
+
+- `COMPRESSION_TYPE_DEFAULT`
+- `COMPRESSION_TYPE_BASIS_UASTC`
+
+	* @param buffer  optional buffer of precreated pixel data
+	* @return path_  The path to the resource and the request id for the async request.
+	*/
+	export function create_texture_async(path: string, table: any, buffer?: buffer): any
 
 	/**
 	* Constructor-like function with two purposes:
@@ -7380,6 +7876,13 @@ declare namespace sprite {
 	* of the sprite is set to auto.
 	*/
 	export let size: any
+
+	/**
+	* The slice values of the sprite. The type of the property is a vector4 that corresponds to
+	* the left, top, right, bottom values of the sprite in the editor.
+	* It is not possible to set the slice property if the size mode of the sprite is set to auto.
+	*/
+	export let slice: any
 
 	/**
 	* Play an animation on a sprite component from its tile set
