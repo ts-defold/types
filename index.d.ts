@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.8.0 (ef07c036b8f7d34f4b1d7fcc355ce46a92d2dcc8)
+// DEFOLD. stable version 1.8.0 (fd3b8c652df601220d8651f581fa2fada8205237)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -230,7 +230,7 @@ declare namespace b2d {
 	* @param url  the url to the game object collision component
 	* @return body  the body if successful. Otherwise `nil`.
 	*/
-	export function get_body(url: url): any
+	export function get_body(url: string | hash | url): any
 
 	/**
 	* Get the Box2D world from the current collection
@@ -261,214 +261,247 @@ declare namespace b2d.body {
 
 	/**
 	* Apply an angular impulse.
+	* @param body  body
 	* @param impulse  impulse the angular impulse in units of kg*m*m/s
 	*/
-	export function apply_angular_impulse(impulse: number): void
+	export function apply_angular_impulse(body: any, impulse: number): void
 
 	/**
 	* Apply a force at a world point. If the force is not
 	* applied at the center of mass, it will generate a torque and
 	* affect the angular velocity. This wakes up the body.
+	* @param body  body
 	* @param force  the world force vector, usually in Newtons (N).
 	* @param point  the world position of the point of application.
 	*/
-	export function apply_force(force: vmath.vector3, point: vmath.vector3): void
+	export function apply_force(body: any, force: vmath.vector3, point: vmath.vector3): void
 
 	/**
 	* Apply a force to the center of mass. This wakes up the body.
+	* @param body  body
 	* @param force  the world force vector, usually in Newtons (N).
 	*/
-	export function apply_force_to_center(force: vmath.vector3): void
+	export function apply_force_to_center(body: any, force: vmath.vector3): void
 
 	/**
 	* Apply an impulse at a point. This immediately modifies the velocity.
 	* It also modifies the angular velocity if the point of application
 	* is not at the center of mass. This wakes up the body.
+	* @param body  body
 	* @param impulse  the world impulse vector, usually in N-seconds or kg-m/s.
 	* @param point  the world position of the point of application.
 	*/
-	export function apply_linear_impulse(impulse: vmath.vector3, point: vmath.vector3): void
+	export function apply_linear_impulse(body: any, impulse: vmath.vector3, point: vmath.vector3): void
 
 	/**
 	* Apply a torque. This affects the angular velocity
 	* without affecting the linear velocity of the center of mass.
 	* This wakes up the body.
+	* @param body  body
 	* @param torque  torque about the z-axis (out of the screen), usually in N-m.
 	*/
-	export function apply_torque(torque: number): void
+	export function apply_torque(body: any, torque: number): void
 
 	/**
 	* Print the body representation to the log output
+	* @param body  body
 	*/
-	export function dump(): void
+	export function dump(body: any): void
 
 	/**
 	* Get the angular damping of the body.
+	* @param body  body
 	* @return damping  the damping
 	*/
-	export function get_angular_damping(): number
+	export function get_angular_damping(body: any): number
 
 	/**
 	* Set the angular velocity.
+	* @param body  body
 	* @param omega  the new angular velocity in radians/second.
 	*/
-	export function get_angular_velocity(omega: number): void
+	export function get_angular_velocity(body: any, omega: number): void
 
 	/**
 	* Get the angular velocity.
+	* @param body  body
 	* @return velocity  the angular velocity in radians/second.
 	*/
-	export function get_angular_velocity(): number
+	export function get_angular_velocity(body: any): number
 
 	/**
 	* Get the gravity scale of the body.
+	* @param body  body
 	* @return scale  the scale
 	*/
-	export function get_gravity_scale(): number
+	export function get_gravity_scale(body: any): number
 
 	/**
 	* Get the rotational inertia of the body about the local origin.
+	* @param body  body
 	* @return inertia  the rotational inertia, usually in kg-m^2.
 	*/
-	export function get_inertia(): number
+	export function get_inertia(body: any): number
 
 	/**
 	* Get the linear damping of the body.
+	* @param body  body
 	* @return damping  the damping
 	*/
-	export function get_linear_damping(): number
+	export function get_linear_damping(body: any): number
 
 	/**
 	* Get the linear velocity of the center of mass.
+	* @param body  body
 	* @return velocity  the linear velocity of the center of mass.
 	*/
-	export function get_linear_velocity(): vmath.vector3
+	export function get_linear_velocity(body: any): vmath.vector3
 
 	/**
 	* Get the world linear velocity of a world point attached to this body.
+	* @param body  body
 	* @param world_point  a point in world coordinates.
 	* @return velocity  the world velocity of a point.
 	*/
-	export function get_linear_velocity_from_world_point(world_point: vmath.vector3): vmath.vector3
+	export function get_linear_velocity_from_world_point(body: any, world_point: vmath.vector3): vmath.vector3
 
 	/**
 	* Get the world velocity of a local point.
+	* @param body  body
 	* @param world_point  a point in local coordinates.
 	* @return velocity  the world velocity of a point.
 	*/
-	export function get_linear_velocity_from_world_point(world_point: vmath.vector3): vmath.vector3
+	export function get_linear_velocity_from_world_point(body: any, world_point: vmath.vector3): vmath.vector3
 
 	/**
 	* Get the local position of the center of mass.
+	* @param body  body
 	* @return center  Get the local position of the center of mass.
 	*/
-	export function get_local_center(): vmath.vector3
+	export function get_local_center(body: any): vmath.vector3
 
 	/**
 	* Gets a local point relative to the body's origin given a world point.
+	* @param body  body
 	* @param world_point  a point in world coordinates.
 	* @return vector  the corresponding local point relative to the body's origin.
 	*/
-	export function get_local_point(world_point: vmath.vector3): vmath.vector3
+	export function get_local_point(body: any, world_point: vmath.vector3): vmath.vector3
 
 	/**
 	* Gets a local vector given a world vector.
+	* @param body  body
 	* @param world_vector  a vector in world coordinates.
 	* @return vector  the corresponding local vector.
 	*/
-	export function get_local_vector(world_vector: vmath.vector3): vmath.vector3
+	export function get_local_vector(body: any, world_vector: vmath.vector3): vmath.vector3
 
 	/**
 	* Get the total mass of the body.
+	* @param body  body
 	* @return mass  the mass, usually in kilograms (kg).
 	*/
-	export function get_mass(): number
+	export function get_mass(body: any): number
 
 	/**
 	* Get the next body in the world's body list.
+	* @param body  body
 	* @return body  the next body
 	*/
-	export function get_next(): any
+	export function get_next(body: any): any
 
 	/**
 	* Get the world body origin position.
+	* @param body  body
 	* @return position  the world position of the body's origin.
 	*/
-	export function get_position(): vmath.vector3
+	export function get_position(body: any): vmath.vector3
 
 	/**
 	* Get the type of this body.
+	* @param body  body
 	* @return type  the body type
 	*/
-	export function get_type(): any
+	export function get_type(body: any): any
 
 	/**
 	* Get the parent world of this body.
+	* @param body  body
 	* @return world  
 	*/
-	export function get_world(): any
+	export function get_world(body: any): any
 
 	/**
 	* Get the angle in radians.
+	* @param body  body
 	* @return angle  the current world rotation angle in radians.
 	*/
-	export function get_world_center(): number
+	export function get_world_center(body: any): number
 
 	/**
 	* Get the world position of the center of mass.
+	* @param body  body
 	* @return center  Get the world position of the center of mass.
 	*/
-	export function get_world_center(): vmath.vector3
+	export function get_world_center(body: any): vmath.vector3
 
 	/**
 	* Get the world coordinates of a point given the local coordinates.
+	* @param body  body
 	* @param local_vector  localPoint a point on the body measured relative the the body's origin.
 	* @return vector  the same point expressed in world coordinates.
 	*/
-	export function get_world_point(local_vector: vmath.vector3): vmath.vector3
+	export function get_world_point(body: any, local_vector: vmath.vector3): vmath.vector3
 
 	/**
 	* Get the world coordinates of a vector given the local coordinates.
+	* @param body  body
 	* @param local_vector  a vector fixed in the body.
 	* @return vector  the same vector expressed in world coordinates.
 	*/
-	export function get_world_vector(local_vector: vmath.vector3): vmath.vector3
+	export function get_world_vector(body: any, local_vector: vmath.vector3): vmath.vector3
 
 	/**
 	* Get the active state of the body.
+	* @param body  body
 	* @return enabled  is the body active
 	*/
-	export function is_active(): any
+	export function is_active(body: any): any
 
 	/**
 	* Get the sleeping state of this body.
+	* @param body  body
 	* @return enabled  true if the body is awake, false if it's sleeping.
 	*/
-	export function is_awake(): any
+	export function is_awake(body: any): any
 
 	/**
 	* Is this body in bullet mode
+	* @param body  body
 	* @return enabled  true if the body is in bullet mode
 	*/
-	export function is_bullet(): any
+	export function is_bullet(body: any): any
 
 	/**
 	* Does this body have fixed rotation?
+	* @param body  body
 	* @return enabled  is the rotation fixed
 	*/
-	export function is_fixed_rotation(): any
+	export function is_fixed_rotation(body: any): any
 
 	/**
 	* Is this body allowed to sleep
+	* @param body  body
 	* @return enabled  true if the body is allowed to sleep
 	*/
-	export function is_sleeping_allowed(): any
+	export function is_sleeping_allowed(body: any): any
 
 	/**
 	* This resets the mass properties to the sum of the mass properties of the fixtures.
 	* This normally does not need to be called unless you called SetMassData to override
+	* @param body  body
 	*/
-	export function reset_mass_data(): void
+	export function reset_mass_data(body: any): void
 
 	/**
 	* Set the active state of the body. An inactive body is not
@@ -484,72 +517,83 @@ declare namespace b2d.body {
 	* Joints connected to an inactive body are implicitly inactive.
 	* An inactive body is still owned by a b2World object and remains
 	* in the body list.
+	* @param body  body
 	* @param enable  true if the body should be active
 	*/
-	export function set_active(enable: any): void
+	export function set_active(body: any, enable: any): void
 
 	/**
 	* Set the angular damping of the body.
+	* @param body  body
 	* @param damping  the damping
 	*/
-	export function set_angular_damping(damping: number): void
+	export function set_angular_damping(body: any, damping: number): void
 
 	/**
 	* Set the sleep state of the body. A sleeping body has very low CPU cost.
+	* @param body  body
 	* @param enable  flag set to false to put body to sleep, true to wake it.
 	*/
-	export function set_awake(enable: any): void
+	export function set_awake(body: any, enable: any): void
 
 	/**
 	* Should this body be treated like a bullet for continuous collision detection?
+	* @param body  body
 	* @param enable  if true, the body will be in bullet mode
 	*/
-	export function set_bullet(enable: any): void
+	export function set_bullet(body: any, enable: any): void
 
 	/**
 	* Set this body to have fixed rotation. This causes the mass to be reset.
+	* @param body  body
 	* @param enable  true if the rotation should be fixed
 	*/
-	export function set_fixed_rotation(enable: any): void
+	export function set_fixed_rotation(body: any, enable: any): void
 
 	/**
 	* Set the gravity scale of the body.
+	* @param body  body
 	* @param scale  the scale
 	*/
-	export function set_gravity_scale(scale: number): void
+	export function set_gravity_scale(body: any, scale: number): void
 
 	/**
 	* Set the linear damping of the body.
+	* @param body  body
 	* @param damping  the damping
 	*/
-	export function set_linear_damping(damping: number): void
+	export function set_linear_damping(body: any, damping: number): void
 
 	/**
 	* Set the linear velocity of the center of mass.
+	* @param body  body
 	* @param velocity  the new linear velocity of the center of mass.
 	*/
-	export function set_linear_velocity(velocity: vmath.vector3): void
+	export function set_linear_velocity(body: any, velocity: vmath.vector3): void
 
 	/**
 	* You can disable sleeping on this body. If you disable sleeping, the body will be woken.
+	* @param body  body
 	* @param enable  if false, the body will never sleep, and consume more CPU
 	*/
-	export function set_sleeping_allowed(enable: any): void
+	export function set_sleeping_allowed(body: any, enable: any): void
 
 	/**
 	* Set the position of the body's origin and rotation.
 	* This breaks any contacts and wakes the other bodies.
 	* Manipulating a body's transform may cause non-physical behavior.
+	* @param body  body
 	* @param position  the world position of the body's local origin.
 	* @param angle  the world position of the body's local origin.
 	*/
-	export function set_transform(position: vmath.vector3, angle: number): void
+	export function set_transform(body: any, position: vmath.vector3, angle: number): void
 
 	/**
 	* Set the type of this body. This may alter the mass and velocity.
+	* @param body  body
 	* @param type  the body type
 	*/
-	export function set_type(type: any): void
+	export function set_type(body: any, type: any): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5034,9 +5078,10 @@ Creating an empty texture with no buffer data is not supported as a core feature
 - `COMPRESSION_TYPE_BASIS_UASTC`
 
 	* @param buffer  optional buffer of precreated pixel data
-	* @return path_  The path to the resource and the request id for the async request.
+	* @return path  The path to the resource.
+	* @return request_id  The request id for the async request.
 	*/
-	export function create_texture_async(path: string, table: any, buffer?: buffer): any
+	export function create_texture_async(path: string, table: any, buffer?: buffer): LuaMultiReturn<[hash, any]>
 
 	/**
 	* Constructor-like function with two purposes:
