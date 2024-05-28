@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.8.0 (9141d9d3605e3f5d51c71293116d769da2613d39)
+// DEFOLD. stable version 1.8.1 (fd1ad4c17bfdcd890ea7176f2672c35102384419)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -358,17 +358,17 @@ declare namespace b2d.body {
 	export function get_linear_velocity(body: any): vmath.vector3
 
 	/**
+	* Get the world velocity of a local point.
+	* @param body  body
+	* @param local_point  a point in local coordinates.
+	* @return velocity  the world velocity of a point.
+	*/
+	export function get_linear_velocity_from_local_point(body: any, local_point: vmath.vector3): vmath.vector3
+
+	/**
 	* Get the world linear velocity of a world point attached to this body.
 	* @param body  body
 	* @param world_point  a point in world coordinates.
-	* @return velocity  the world velocity of a point.
-	*/
-	export function get_linear_velocity_from_world_point(body: any, world_point: vmath.vector3): vmath.vector3
-
-	/**
-	* Get the world velocity of a local point.
-	* @param body  body
-	* @param world_point  a point in local coordinates.
 	* @return velocity  the world velocity of a point.
 	*/
 	export function get_linear_velocity_from_world_point(body: any, world_point: vmath.vector3): vmath.vector3
@@ -2398,7 +2398,7 @@ with a custom curve. See the animation guide for more information.
 	* @param recursive  check hierarchy recursively
 	* @return enabled  whether the node is enabled or not
 	*/
-	export function is_enabled(node: node, recursive: boolean): boolean
+	export function is_enabled(node: node, recursive?: boolean): boolean
 
 	/**
 	* Alters the ordering of the two supplied nodes by moving the first node
@@ -2805,10 +2805,10 @@ the new state of the emitter:
 	/**
 	* Sets the parent node of the specified node.
 	* @param node  node for which to set its parent
-	* @param parent  parent node to set
+	* @param parent  parent node to set, pass `nil` to remove parent
 	* @param keep_scene_transform  optional flag to make the scene position being perserved
 	*/
-	export function set_parent(node: node, parent: node, keep_scene_transform?: boolean): void
+	export function set_parent(node: node, parent?: node, keep_scene_transform?: boolean): void
 
 	/**
 	* Set the paricle fx for a gui node
@@ -2925,7 +2925,7 @@ the new state of the emitter:
 	* @param node  node to set text for
 	* @param text  text to set
 	*/
-	export function set_text(node: node, text: string): void
+	export function set_text(node: node, text: string | number): void
 
 	/**
 	* Set the texture on a box or pie node. The texture must be mapped to
@@ -3019,7 +3019,7 @@ the new state of the emitter:
 `clear`: instantly clear spawned particles
 
 	*/
-	export function stop_particlefx(node: node, options: any): void
+	export function stop_particlefx(node: node, options?: any): void
 
 
 	/**
@@ -3161,6 +3161,26 @@ declare namespace physics {
 	* wheel joint type
 	*/
 	export let JOINT_TYPE_WHEEL: any
+
+	/**
+	* 
+	*/
+	export let SHAPE_TYPE_BOX: any
+
+	/**
+	* 
+	*/
+	export let SHAPE_TYPE_CAPSULE: any
+
+	/**
+	* 
+	*/
+	export let SHAPE_TYPE_HULL: any
+
+	/**
+	* 
+	*/
+	export let SHAPE_TYPE_SPHERE: any
 
 	/**
 	* Create a physics joint between two collision object components.
@@ -3312,7 +3332,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 
 	* @return result  It returns a list. If missed it returns `nil`. See ray_cast_response for details on the returned values.
 	*/
-	export function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): LuaMultiReturn<[any, any]>
+	export function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options?: any): LuaMultiReturn<[any, any]>
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -3418,17 +3438,20 @@ See physics.get_shape for a detailed description of each field in the data table
 `local function set_shape_data()
     -- set capsule shape data
     local data = {}
+    data.type = physics.SHAPE_TYPE_CAPSULE
     data.diameter = 10
     data.height = 20
     physics.set_shape(&quot;#collisionobject&quot;, &quot;my_capsule_shape&quot;, data)
 
     -- set sphere shape data
     data = {}
+    data.type = physics.SHAPE_TYPE_SPHERE
     data.diameter = 10
     physics.set_shape(&quot;#collisionobject&quot;, &quot;my_sphere_shape&quot;, data)
 
     -- set box shape data
     data = {}
+    data.type = physics.SHAPE_TYPE_BOX
     data.dimensions = vmath.vector3(10, 10, 5)
     physics.set_shape(&quot;#collisionobject&quot;, &quot;my_box_shape&quot;, data)
 end
@@ -4406,6 +4429,23 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	export function set_blend_func(source_factor: any, destination_factor: any): void
 
 	/**
+	* Sets the current render camera to be used for rendering. If a render camera
+	* has been set by the render script, the renderer will be using its projection and view matrix
+	* during rendering. If a projection and/or view matrix has been set by the render script,
+	* they will not be used until the current render camera has been reset by calling `render.set_camera()`.
+	* If the 'use_frustum' flag in the options table has been set to true, the renderer will automatically use the
+	* camera frustum for frustum culling regardless of what frustum is being passed into the render.draw() function.
+	* Note that the frustum plane option in render.draw can still be used together with the camera.
+	* @param camera  camera id to use, or nil to reset
+	* @param options  optional table with properties:
+
+`use_frustum`
+If true, the renderer will use the cameras view-projection matrix for frustum culling (default: false)
+
+	*/
+	export function set_camera(camera: any, options?: any): void
+
+	/**
 	* Specifies whether the individual color components in the frame buffer is enabled for writing (`true`) or disabled (`false`). For example, if `blue` is `false`, nothing is written to the blue component of any pixel in any of the color buffers, regardless of the drawing operation attempted. Note that writing are either enabled or disabled for entire color components, not the individual bits of a component.
 	* The component masks are all initially `true`.
 	* @param red  red mask
@@ -4926,7 +4966,7 @@ optional flag to determine wether or not the resource should take over ownership
 
 	* @return path  Returns the buffer resource path
 	*/
-	export function create_buffer(path: string, table: any): hash
+	export function create_buffer(path: string, table?: any): hash
 
 	/**
 	* Creates a new texture resource that can be used in the same way as any texture created during build time.
@@ -5370,7 +5410,7 @@ optional flag to determine wether or not the resource should take over ownership
 
 
 	*/
-	export function set_buffer(path: hash | string, buffer: buffer, table: any): void
+	export function set_buffer(path: hash | string, buffer: buffer, table?: any): void
 
 	/**
 	* Update internal sound resource (wavc/oggc) with new data
@@ -6229,7 +6269,7 @@ The response data. Contains the fields:
 	* @param options  optional table with request parameters. Supported entries:
 
 `timeout`: timeout in seconds
-Not available in HTML5 build
+Path should be absolute
 Not available in HTML5 build
 Not available in HTML5 build
 
@@ -6330,7 +6370,7 @@ declare namespace json {
 
 	* @return data  decoded json
 	*/
-	export function decode(json: string, options: any): any
+	export function decode(json: string, options?: any): any
 
 	/**
 	* Encode a lua table to a JSON string.
@@ -6342,7 +6382,7 @@ declare namespace json {
 
 	* @return json  encoded json
 	*/
-	export function encode(tbl: any, options: any): string
+	export function encode(tbl: any, options?: any): string
 
 	/**
 	* null
@@ -6968,31 +7008,11 @@ declare namespace zlib {
 declare namespace camera {
 
 	/**
-	* Post this message to a camera-component to activate it.
-	* Several cameras can be active at the same time, but only the camera that was last activated will be used for rendering.
-	* When the camera is deactivated (see `release_camera_focus`), the previously activated camera will again be used for rendering automatically.
-	* The reason it is called "camera focus" is the similarity to how acquiring input focus works (see `acquire_input_focus`).
-	*/
-	export type acquire_camera_focus = "acquire_camera_focus"
-
-	/**
 	* The ratio between the frustum width and height. Used when calculating the
 	* projection of a perspective camera.
 	* The type of the property is number.
 	*/
 	export let aspect_ratio: any
-
-	/**
-	* makes camera active
-	* @param url  url of camera component
-	*/
-	export function acquire_focus(url: string | hash | url): void
-
-	/**
-	* deactivate camera
-	* @param url  url of camera component
-	*/
-	export function release_focus(url: string | hash | url): void
 
 	/**
 	* Camera frustum far plane.
@@ -7023,14 +7043,6 @@ declare namespace camera {
 	* The type of the property is matrix4.
 	*/
 	export let projection: any
-
-	/**
-	* 
-	* Post this message to a camera-component to deactivate it. The camera is then removed from the active cameras.
-	* See `acquire_camera_focus` for more information how the active cameras are used in rendering.
-	* 
-	*/
-	export type release_camera_focus = "release_camera_focus"
 
 	/**
 	* 
@@ -7613,7 +7625,7 @@ the new state of the emitter:
 `clear`: instantly clear spawned particles
 
 	*/
-	export function stop(url: string | hash | url, options: any): void
+	export function stop(url: string | hash | url, options?: any): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
