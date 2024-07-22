@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.0 (d6882f432beca85d460ec42497888157c356d058)
+// DEFOLD. stable version 1.9.1 (3be87d89fd5a93a63f527351fbedb84f8a875812)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -775,6 +775,7 @@ declare namespace go {
 	* and be a part of the simulation. A component is disabled when it receives the `disable` message.
 	* undefined Components that currently supports this message are:
 	* 
+	* - Camera
 	* - Collection Proxy
 	* - Collision Object
 	* - Gui
@@ -793,6 +794,7 @@ declare namespace go {
 	* and be a part of the simulation. A component is disabled when it receives the `disable` message.
 	* undefined Components that currently supports this message are:
 	* 
+	* - Camera
 	* - Collection Proxy
 	* - Collision Object
 	* - Gui
@@ -1760,6 +1762,11 @@ declare namespace gui {
 	export let PROP_INNER_RADIUS: any
 
 	/**
+	* leading property
+	*/
+	export let PROP_LEADING: any
+
+	/**
 	* outline color property
 	*/
 	export let PROP_OUTLINE: any
@@ -1793,6 +1800,11 @@ declare namespace gui {
 	* slice9 property
 	*/
 	export let PROP_SLICE9: any
+
+	/**
+	* tracking property
+	*/
+	export let PROP_TRACKING: any
 
 	/**
 	* data error
@@ -1848,6 +1860,8 @@ declare namespace gui {
 - `"size"`
 - `"fill_angle"` (pie)
 - `"inner_radius"` (pie)
+- `"leading"` (text)
+- `"tracking"` (text)
 - `"slice9"` (slice9)
 
 The following property constants are defined equaling the corresponding property string names.
@@ -1862,6 +1876,8 @@ The following property constants are defined equaling the corresponding property
 - `gui.PROP_SIZE`
 - `gui.PROP_FILL_ANGLE`
 - `gui.PROP_INNER_RADIUS`
+- `gui.PROP_LEADING`
+- `gui.PROP_TRACKING`
 - `gui.PROP_SLICE9`
 
 	* @param to  target property value
@@ -1899,6 +1915,8 @@ with a custom curve. See the animation guide for more information.
 - `"size"`
 - `"fill_angle"` (pie)
 - `"inner_radius"` (pie)
+- `"leading"` (text)
+- `"tracking"` (text)
 - `"slice9"` (slice9)
 
 	*/
@@ -1946,7 +1964,7 @@ with a custom curve. See the animation guide for more information.
 	* Instead of using specific getters such as gui.get_position or gui.get_scale,
 	* you can use gui.get instead and supply the property as a string or a hash.
 	* While this function is similar to go.get, there are a few more restrictions
-	* when operating in the gui namespace. Most notably, only these propertie identifiers are supported:
+	* when operating in the gui namespace. Most notably, only these explicitly named properties are supported:
 	* 
 	* - `"position"`
 	* - `"rotation"`
@@ -1958,14 +1976,19 @@ with a custom curve. See the animation guide for more information.
 	* - `"size"`
 	* - `"fill_angle"` (pie)
 	* - `"inner_radius"` (pie)
+	* - `"leading"` (text)
+	* - `"tracking"` (text)
 	* - `"slice9"` (slice9)
 	* 
 	* The value returned will either be a vmath.vector4 or a single number, i.e getting the "position"
 	* property will return a vec4 while getting the "position.x" property will return a single value.
+	* You can also use this function to get material constants.
 	* @param node  node to get the property for
 	* @param property  the property to retrieve
+	* @param options  optional options table (only applicable for material constants)
+index into array property (1 based)
 	*/
-	export function get(node: node, property: any): void
+	export function get(node: node, property: any, options?: any): void
 
 	/**
 	* Returns the adjust mode of a node.
@@ -1984,8 +2007,9 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* gets the node alpha
 	* @param node  node from which to get alpha
+	* @return alpha  alpha
 	*/
-	export function get_alpha(node: node): void
+	export function get_alpha(node: node): number
 
 	/**
 	* Returns the blend mode of a node.
@@ -2005,7 +2029,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	* @param node  node from which to get the clipping inverted state
-	* @return inverted  true or false
+	* @return inverted  `true` or `false`
 	*/
 	export function get_clipping_inverted(node: node): boolean
 
@@ -2023,7 +2047,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	* @param node  node from which to get the clipping visibility state
-	* @return visible  true or false
+	* @return visible  `true` or `false`
 	*/
 	export function get_clipping_visible(node: node): boolean
 
@@ -2136,8 +2160,9 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* gets the node inherit alpha state
 	* @param node  node from which to get the inherit alpha state
+	* @return inherit_alpha  `true` or `false`
 	*/
-	export function get_inherit_alpha(node: node): void
+	export function get_inherit_alpha(node: node): boolean
 
 	/**
 	* Returns the inner radius of a pie node.
@@ -2179,8 +2204,9 @@ with a custom curve. See the animation guide for more information.
 	* Returns the material of a node.
 	* The material must be mapped to the gui scene in the gui editor.
 	* @param node  node to get the material for
+	* @return materal  material id
 	*/
-	export function get_material(node: node): void
+	export function get_material(node: node): hash
 
 	/**
 	* Retrieves the node with the specified id.
@@ -2558,7 +2584,7 @@ the new state of the emitter:
 	* Instead of using specific setteres such as gui.set_position or gui.set_scale,
 	* you can use gui.set instead and supply the property as a string or a hash.
 	* While this function is similar to go.get and go.set, there are a few more restrictions
-	* when operating in the gui namespace. Most notably, only these propertie identifiers are supported:
+	* when operating in the gui namespace. Most notably, only these named properties identifiers are supported:
 	* 
 	* - `"position"`
 	* - `"rotation"`
@@ -2570,6 +2596,8 @@ the new state of the emitter:
 	* - `"size"`
 	* - `"fill_angle"` (pie)
 	* - `"inner_radius"` (pie)
+	* - `"leading"` (text)
+	* - `"tracking"` (text)
 	* - `"slice9"` (slice9)
 	* 
 	* The value to set must either be a vmath.vector4, vmath.vector3, vmath.quat or a single number and depends on the property name you want to set.
@@ -2578,11 +2606,17 @@ the new state of the emitter:
 	* Note: When setting the rotation using the "rotation" property, you need to pass in a vmath.quat. This behaviour is different than from the gui.set_rotation function,
 	* the intention is to move new functionality closer to go namespace so that migrating between gui and go is easier. To set the rotation using degrees instead,
 	* use the "euler" property instead. The rotation and euler properties are linked, changing one of them will change the backing data of the other.
+	* Similar to go.set, you can also use gui.set for setting material constant values on a node. E.g if a material has specified a constant called `tint` in
+	* the .material file, you can use gui.set to set the value of that constant by calling `gui.set(node, "tint", vmath.vec4(1,0,0,1))`, or `gui.set(node, "matrix", vmath.matrix4())`
+	* if the constant is a matrix. Arrays are also supported by gui.set - to set an array constant, you need to pass in an options table with the 'index' key set.
+	* If the material has a constant array called 'tint_array' specified in the material, you can use `gui.set(node, "tint_array", vmath.vec4(1,0,0,1), { index = 4})` to set the fourth array element to a different value.
 	* @param node  node to set the property for
 	* @param property  the property to set
 	* @param value  the property to set
+	* @param options  optional options table (only applicable for material constants)
+index into array property (1 based)
 	*/
-	export function set(node: node, property: any, value: number | vmath.vector4 | vmath.vector3 | vmath.quaternion): void
+	export function set(node: node, property: any, value: number | vmath.vector4 | vmath.vector3 | vmath.quaternion, options?: any): void
 
 	/**
 	* Sets the adjust mode on a node.
@@ -2623,7 +2657,7 @@ the new state of the emitter:
 	/**
 	* If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	* @param node  node to set clipping inverted state for
-	* @param inverted  true or false
+	* @param inverted  `true` or `false`
 	*/
 	export function set_clipping_inverted(node: node, inverted: boolean): void
 
@@ -2641,7 +2675,7 @@ the new state of the emitter:
 	/**
 	* If node is set as an visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	* @param node  node to set clipping visibility for
-	* @param visible  true or false
+	* @param visible  `true` or `false`
 	*/
 	export function set_clipping_visible(node: node, visible: boolean): void
 
@@ -2739,7 +2773,7 @@ the new state of the emitter:
 	/**
 	* sets the node inherit alpha state
 	* @param node  node from which to set the inherit alpha state
-	* @param inherit_alpha  true or false
+	* @param inherit_alpha  `true` or `false`
 	*/
 	export function set_inherit_alpha(node: node, inherit_alpha: boolean): void
 
@@ -2770,7 +2804,7 @@ the new state of the emitter:
 	* Sets the line-break mode on a text node.
 	* This is only useful for text nodes.
 	* @param node  node to set line-break for
-	* @param line_break  true or false
+	* @param line_break  `true` or `false`
 	*/
 	export function set_line_break(node: node, line_break: boolean): void
 
@@ -5252,7 +5286,15 @@ The attachment buffer type. Supported values:
 - `resource.BUFFER_TYPE_COLOR2`
 - `resource.BUFFER_TYPE_COLOR3`
 - `resource.BUFFER_TYPE_DEPTH`
-- `resource.BUFFER_TYPE_STENCIL`
+
+`resource.BUFFER_TYPE_STENCIL`
+
+
+
+`texture`
+The hashed path to the attachment texture resource. This field is only available if the render target passed in is a resource.
+
+
 
 	*/
 	export function get_render_target_info(path: any): any
@@ -5336,6 +5378,18 @@ The texture type. Supported values:
 	* @param path  The path to the resource.
 	*/
 	export function release(path: hash | string): void
+
+	/**
+	* Constructor-like function with two purposes:
+	* 
+	* - Load the specified resource as part of loading the script
+	* - Return a hash to the run-time version of the resource
+	* 
+	* ⚠ This function can only be called within go.property function calls.
+	* @param path  optional resource path string to the resource
+	* @return path  a path hash to the binary version of the resource
+	*/
+	export function render_target(path?: string): hash
 
 	/**
 	* Sets the resource data for a specific resource
@@ -7087,10 +7141,9 @@ declare namespace camera {
 	/**
 	* This function returns a table with all the camera URLs that have been
 	* registered in the render context.
-	* @param camera  camera id
 	* @return cameras  a table with all camera URLs
 	*/
-	export function get_cameras(camera: any): any
+	export function get_cameras(): any
 
 	/**
 	* get far z
@@ -8218,6 +8271,31 @@ declare namespace tilemap {
 	* @return tile  index of the tile
 	*/
 	export function get_tile(url: string | hash | url, layer: string | hash, x: number, y: number): number
+
+	/**
+	* Get the tile information at the specified position in the tilemap.
+	* The position is identified by the tile index starting at origin
+	* with index 1, 1. (see tilemap.set_tile())
+	* Which tile map and layer to query is identified by the URL and the
+	* layer name parameters.
+	* @param url  the tile map
+	* @param layer  name of the layer for the tile
+	* @param x  x-coordinate of the tile
+	* @param y  y-coordinate of the tile
+	* @return tile_info  index of the tile
+	*/
+	export function get_tile_info(url: string | hash | url, layer: string | hash, x: number, y: number): any
+
+	/**
+	* Retrieves all the tiles for the specified layer in the tilemap.
+	* It returns a table of rows where the keys are the
+	* tile positions (see tilemap.get_bounds()).
+	* You can iterate it using `tiles[row_index][column_index]`.
+	* @param url  the tilemap
+	* @param layer  the name of the layer for the tiles
+	* @return tiles  a table of rows representing the layer
+	*/
+	export function get_tiles(url: string | hash | url, layer: string | hash): any
 
 	/**
 	* Replace a tile in a tile map with a new tile.
