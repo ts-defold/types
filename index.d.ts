@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.1 (691478c02875b80e76da65d2f5756394e7a906b1)
+// DEFOLD. stable version 1.9.2 (3251ca82359cf238a1074e383281e3126547d50b)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -1342,6 +1342,542 @@ name of internal property
 	*/
 	export type set_parent = "set_parent"
 
+
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
+declare namespace graphics {
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_CONSTANT_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_CONSTANT_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_DST_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_DST_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_DST_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_DST_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ONE_MINUS_SRC_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_SRC_ALPHA: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_SRC_ALPHA_SATURATE: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_SRC_COLOR: any
+
+	/**
+	* 
+	*/
+	export let BLEND_FACTOR_ZERO: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_TYPE_COLOR0_BIT: any
+
+	/**
+	* May be nil if multitarget rendering isn't supporte...
+	*/
+	export let BUFFER_TYPE_COLOR1_BIT: any
+
+	/**
+	* May be nil if multitarget rendering isn't supporte...
+	*/
+	export let BUFFER_TYPE_COLOR2_BIT: any
+
+	/**
+	* May be nil if multitarget rendering isn't supporte...
+	*/
+	export let BUFFER_TYPE_COLOR3_BIT: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_TYPE_DEPTH_BIT: any
+
+	/**
+	* 
+	*/
+	export let BUFFER_TYPE_STENCIL_BIT: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_ALWAYS: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_EQUAL: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_GEQUAL: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_GREATER: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_LEQUAL: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_LESS: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_NEVER: any
+
+	/**
+	* 
+	*/
+	export let COMPARE_FUNC_NOTEQUAL: any
+
+	/**
+	* 
+	*/
+	export let COMPRESSION_TYPE_BASIS_ETC1S: any
+
+	/**
+	* 
+	*/
+	export let COMPRESSION_TYPE_BASIS_UASTC: any
+
+	/**
+	* 
+	*/
+	export let COMPRESSION_TYPE_DEFAULT: any
+
+	/**
+	* 
+	*/
+	export let COMPRESSION_TYPE_WEBP: any
+
+	/**
+	* 
+	*/
+	export let COMPRESSION_TYPE_WEBP_LOSSY: any
+
+	/**
+	* 
+	*/
+	export let FACE_TYPE_BACK: any
+
+	/**
+	* 
+	*/
+	export let FACE_TYPE_FRONT: any
+
+	/**
+	* 
+	*/
+	export let FACE_TYPE_FRONT_AND_BACK: any
+
+	/**
+	* 
+	*/
+	export let STATE_ALPHA_TEST: any
+
+	/**
+	* 
+	*/
+	export let STATE_ALPHA_TEST_SUPPORTED: any
+
+	/**
+	* 
+	*/
+	export let STATE_BLEND: any
+
+	/**
+	* 
+	*/
+	export let STATE_CULL_FACE: any
+
+	/**
+	* 
+	*/
+	export let STATE_DEPTH_TEST: any
+
+	/**
+	* 
+	*/
+	export let STATE_POLYGON_OFFSET_FILL: any
+
+	/**
+	* 
+	*/
+	export let STATE_SCISSOR_TEST: any
+
+	/**
+	* 
+	*/
+	export let STATE_STENCIL_TEST: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_DECR: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_DECR_WRAP: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_INCR: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_INCR_WRAP: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_INVERT: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_KEEP: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_REPLACE: any
+
+	/**
+	* 
+	*/
+	export let STENCIL_OP_ZERO: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_DEFAULT: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_LINEAR: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_NEAREST: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_BGRA8U: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FORMAT_DEPTH: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_LUMINANCE: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_LUMINANCE_ALPHA: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_R16F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_R32F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_R32UI: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RG16F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RG32F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB16F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB32F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA16F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA32F: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA32UI: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_16BPP: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_BC3: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_BC7: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_ETC2: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB_16BPP: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB_BC1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB_ETC1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RG_BC5: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_RG_ETC2: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_R_BC4: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_FORMAT_R_ETC2: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_FORMAT_STENCIL: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_TYPE_2D: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_TYPE_2D_ARRAY: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_TYPE_CUBE_MAP: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_TYPE_IMAGE_2D: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_USAGE_FLAG_COLOR: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_USAGE_FLAG_INPUT: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_USAGE_FLAG_MEMORYLESS: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_USAGE_FLAG_SAMPLE: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_USAGE_FLAG_STORAGE: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_WRAP_CLAMP_TO_BORDER: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_WRAP_CLAMP_TO_EDGE: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_WRAP_MIRRORED_REPEAT: any
+
+	/**
+	* 
+	*/
+	export let TEXTURE_WRAP_REPEAT: any
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -3740,246 +4276,6 @@ declare namespace render {
 	/**
 	* 
 	*/
-	export let BLEND_CONSTANT_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_CONSTANT_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_DST_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_DST_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_CONSTANT_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_CONSTANT_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_DST_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_DST_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_SRC_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ONE_MINUS_SRC_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_SRC_ALPHA: any
-
-	/**
-	* 
-	*/
-	export let BLEND_SRC_ALPHA_SATURATE: any
-
-	/**
-	* 
-	*/
-	export let BLEND_SRC_COLOR: any
-
-	/**
-	* 
-	*/
-	export let BLEND_ZERO: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_COLOR0_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_COLOR1_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_COLOR2_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_COLOR3_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_COLOR_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_DEPTH_BIT: any
-
-	/**
-	* 
-	*/
-	export let BUFFER_STENCIL_BIT: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_ALWAYS: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_EQUAL: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_GEQUAL: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_GREATER: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_LEQUAL: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_LESS: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_NEVER: any
-
-	/**
-	* 
-	*/
-	export let COMPARE_FUNC_NOTEQUAL: any
-
-	/**
-	* 
-	*/
-	export let FACE_BACK: any
-
-	/**
-	* 
-	*/
-	export let FACE_FRONT: any
-
-	/**
-	* 
-	*/
-	export let FACE_FRONT_AND_BACK: any
-
-	/**
-	* 
-	*/
-	export let FILTER_LINEAR: any
-
-	/**
-	* 
-	*/
-	export let FILTER_NEAREST: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_DEPTH: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_LUMINANCE: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_R16F: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_R32F: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RG16F: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RG32F: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_RGB: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RGB16F: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RGB32F: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_RGBA: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RGBA16F: any
-
-	/**
-	* May be nil if the format isn't supported
-	*/
-	export let FORMAT_RGBA32F: any
-
-	/**
-	* 
-	*/
-	export let FORMAT_STENCIL: any
-
-	/**
-	* 
-	*/
 	export let FRUSTUM_PLANES_ALL: any
 
 	/**
@@ -3993,98 +4289,13 @@ declare namespace render {
 	export let RENDER_TARGET_DEFAULT: any
 
 	/**
-	* 
-	*/
-	export let STATE_BLEND: any
-
-	/**
-	* 
-	*/
-	export let STATE_CULL_FACE: any
-
-	/**
-	* 
-	*/
-	export let STATE_DEPTH_TEST: any
-
-	/**
-	* 
-	*/
-	export let STATE_POLYGON_OFFSET_FILL: any
-
-	/**
-	* 
-	*/
-	export let STATE_STENCIL_TEST: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_DECR: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_DECR_WRAP: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_INCR: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_INCR_WRAP: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_INVERT: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_KEEP: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_REPLACE: any
-
-	/**
-	* 
-	*/
-	export let STENCIL_OP_ZERO: any
-
-	/**
-	* 
-	*/
-	export let WRAP_CLAMP_TO_BORDER: any
-
-	/**
-	* 
-	*/
-	export let WRAP_CLAMP_TO_EDGE: any
-
-	/**
-	* 
-	*/
-	export let WRAP_MIRRORED_REPEAT: any
-
-	/**
-	* 
-	*/
-	export let WRAP_REPEAT: any
-
-	/**
 	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
 	* color attachments, all buffers will be cleared with the same value.
 	* @param buffers  table with keys specifying which buffers to clear and values set to clear values. Available keys are:
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	*/
 	export function clear(buffers: any): void
@@ -4114,12 +4325,12 @@ declare namespace render {
 	* Disables a render state.
 	* @param state  state to disable
 
-- `render.STATE_DEPTH_TEST`
-- `render.STATE_STENCIL_TEST`
-- `render.STATE_BLEND`
+- `graphics.STATE_DEPTH_TEST`
+- `graphics.STATE_STENCIL_TEST`
+- `graphics.STATE_BLEND`
 🤖 not available on iOS and Android)
-- `render.STATE_CULL_FACE`
-- `render.STATE_POLYGON_OFFSET_FILL`
+- `graphics.STATE_CULL_FACE`
+- `graphics.STATE_POLYGON_OFFSET_FILL`
 
 	*/
 	export function disable_state(state: any): void
@@ -4200,12 +4411,12 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	* Enables a particular render state. The state will be enabled until disabled.
 	* @param state  state to enable
 
-- `render.STATE_DEPTH_TEST`
-- `render.STATE_STENCIL_TEST`
-- `render.STATE_BLEND`
+- `graphics.STATE_DEPTH_TEST`
+- `graphics.STATE_STENCIL_TEST`
+- `graphics.STATE_BLEND`
 🤖 not available on iOS and Android)
-- `render.STATE_CULL_FACE`
-- `render.STATE_POLYGON_OFFSET_FILL`
+- `graphics.STATE_CULL_FACE`
+- `graphics.STATE_POLYGON_OFFSET_FILL`
 
 	*/
 	export function enable_state(state: any): void
@@ -4224,22 +4435,22 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	* everywhere for the textures that should be shared across different materials.
 	* @param binding  texture binding, either by texture unit, string or hash for the sampler name that the texture should be bound to
 	* @param handle_or_name  render target or texture handle that should be bound, or a named resource in the "Render Resource" table in the currently assigned .render file
-	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `render.BUFFER_COLOR_BIT`. These values are supported:
+	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `graphics.BUFFER_TYPE_COLOR0_BIT`. These values are supported:
 
-- `render.BUFFER_COLOR_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
 
 If The render target has been created as depth and/or stencil textures, these buffer types can be used:
 
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 If the render target has been created with multiple color attachments, these buffer types can be used
 to enable those textures as well. Currently 4 color attachments are supported:
 
-- `render.BUFFER_COLOR0_BIT`
-- `render.BUFFER_COLOR1_BIT`
-- `render.BUFFER_COLOR2_BIT`
-- `render.BUFFER_COLOR3_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_COLOR1_BIT`
+- `graphics.BUFFER_TYPE_COLOR2_BIT`
+- `graphics.BUFFER_TYPE_COLOR3_BIT`
 
 	*/
 	export function enable_texture(binding: number | string | hash, handle_or_name: any, buffer_type?: any): void
@@ -4257,9 +4468,9 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @param render_target  render target from which to retrieve the buffer height
 	* @param buffer_type  which type of buffer to retrieve the height from
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	* @return height  the height of the render target buffer texture
 	*/
@@ -4270,10 +4481,10 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @param render_target  render target from which to retrieve the buffer width
 	* @param buffer_type  which type of buffer to retrieve the width from
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_COLOR[x]_BIT` (x: [0..3], if supported!)
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_COLOR[x]_BIT` (x: [0..3], if supported!)
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	* @return width  the width of the render target buffer texture
 	*/
@@ -4330,7 +4541,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* 
 	* 
 	* `format`
-	* `render.FORMAT_LUMINANCE``render.FORMAT_RGB``render.FORMAT_RGBA``render.FORMAT_DEPTH``render.FORMAT_STENCIL``render.FORMAT_RGBA32F``render.FORMAT_RGBA16F`
+	* `graphics.TEXTURE_FORMAT_LUMINANCE``graphics.TEXTURE_FORMAT_RGB``graphics.TEXTURE_FORMAT_RGBA``graphics.TEXTURE_FORMAT_DEPTH``graphics.TEXTURE_FORMAT_STENCIL``graphics.TEXTURE_FORMAT_RGBA32F``graphics.TEXTURE_FORMAT_RGBA16F`
 	* 
 	* 
 	* `width`
@@ -4342,19 +4553,19 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* 
 	* 
 	* `min_filter` (optional)
-	* `render.FILTER_LINEAR``render.FILTER_NEAREST`
+	* `graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
 	* 
 	* 
 	* `mag_filter` (optional)
-	* `render.FILTER_LINEAR``render.FILTER_NEAREST`
+	* `graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
 	* 
 	* 
 	* `u_wrap`     (optional)
-	* `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
+	* `graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
 	* 
 	* 
 	* `v_wrap`     (optional)
-	* `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
+	* `graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
 	* 
 	* 
 	* `flags`      (optional)
@@ -4364,11 +4575,11 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* 
 	* The render target can be created to support multiple color attachments. Each attachment can have different format settings and texture filters,
 	* but attachments must be added in sequence, meaning you cannot create a render target at slot 0 and 3.
-	* Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by render.BUFFER_COLORX_BIT where 'X' is the attachment you want to create).
+	* Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by graphics.BUFFER_TYPE_COLORX_BIT where 'X' is the attachment you want to create).
 	* It is not guaranteed that the device running the script can support creating render targets with multiple color attachments. To check if the device can support multiple attachments,
-	* you can check if the `render` table contains any of the `BUFFER_COLOR1_BIT`, `BUFFER_COLOR2_BIT` or `BUFFER_COLOR3_BIT` constants:
+	* you can check if the `render` table contains any of the `BUFFER_TYPE_COLOR1_BIT`, `BUFFER_TYPE_COLOR2_BIT` or `BUFFER_TYPE_COLOR3_BIT` constants:
 	* `function init(self)
-	*     if render.BUFFER_COLOR1_BIT == nil then
+	*     if graphics.BUFFER_TYPE_COLOR1_BIT == nil then
 	*         -- this devices does not support multiple color attachments
 	*     end
 	* end
@@ -4403,63 +4614,63 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* 
 	* 
 	* 
-	* `render.BLEND_ZERO`
+	* `graphics.BLEND_FACTOR_ZERO`
 	* (0,0,0,0)
 	* 
 	* 
-	* `render.BLEND_ONE`
+	* `graphics.BLEND_FACTOR_ONE`
 	* (1,1,1,1)
 	* 
 	* 
-	* `render.BLEND_SRC_COLOR`
+	* `graphics.BLEND_FACTOR_SRC_COLOR`
 	* (Rs/kR,Gs/kG,Bs/kB,As/kA)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_SRC_COLOR`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_SRC_COLOR`
 	* (1,1,1,1) - (Rs/kR,Gs/kG,Bs/kB,As/kA)
 	* 
 	* 
-	* `render.BLEND_DST_COLOR`
+	* `graphics.BLEND_FACTOR_DST_COLOR`
 	* (Rd/kR,Gd/kG,Bd/kB,Ad/kA)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_DST_COLOR`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_DST_COLOR`
 	* (1,1,1,1) - (Rd/kR,Gd/kG,Bd/kB,Ad/kA)
 	* 
 	* 
-	* `render.BLEND_SRC_ALPHA`
+	* `graphics.BLEND_FACTOR_SRC_ALPHA`
 	* (As/kA,As/kA,As/kA,As/kA)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_SRC_ALPHA`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA`
 	* (1,1,1,1) - (As/kA,As/kA,As/kA,As/kA)
 	* 
 	* 
-	* `render.BLEND_DST_ALPHA`
+	* `graphics.BLEND_FACTOR_DST_ALPHA`
 	* (Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_DST_ALPHA`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_DST_ALPHA`
 	* (1,1,1,1) - (Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 	* 
 	* 
-	* `render.BLEND_CONSTANT_COLOR`
+	* `graphics.BLEND_FACTOR_CONSTANT_COLOR`
 	* (Rc,Gc,Bc,Ac)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_CONSTANT_COLOR`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR`
 	* (1,1,1,1) - (Rc,Gc,Bc,Ac)
 	* 
 	* 
-	* `render.BLEND_CONSTANT_ALPHA`
+	* `graphics.BLEND_FACTOR_CONSTANT_ALPHA`
 	* (Ac,Ac,Ac,Ac)
 	* 
 	* 
-	* `render.BLEND_ONE_MINUS_CONSTANT_ALPHA`
+	* `graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA`
 	* (1,1,1,1) - (Ac,Ac,Ac,Ac)
 	* 
 	* 
-	* `render.BLEND_SRC_ALPHA_SATURATE`
+	* `graphics.BLEND_FACTOR_SRC_ALPHA_SATURATE`
 	* (i,i,i,1) where i = min(As, kA - Ad) /kA
 	* 
 	* 
@@ -4471,7 +4682,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* - Bd = min(kB, Bs * sB + Bd * dB)
 	* - Ad = min(kA, As * sA + Ad * dA)
 	* 
-	* Blend function `(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)` is useful for
+	* Blend function `(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)` is useful for
 	* drawing with transparency when the drawn objects are sorted from farthest to nearest.
 	* It is also useful for drawing antialiased points and lines in arbitrary order.
 	* @param source_factor  source factor
@@ -4517,14 +4728,14 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	/**
 	* Specifies whether front- or back-facing polygons can be culled
 	* when polygon culling is enabled. Polygon culling is initially disabled.
-	* If mode is `render.FACE_FRONT_AND_BACK`, no polygons are drawn, but other
+	* If mode is `graphics.FACE_TYPE_FRONT_AND_BACK`, no polygons are drawn, but other
 	* primitives such as points and lines are drawn. The initial value for
-	* `face_type` is `render.FACE_BACK`.
+	* `face_type` is `graphics.FACE_TYPE_BACK`.
 	* @param face_type  face type
 
-- `render.FACE_FRONT`
-- `render.FACE_BACK`
-- `render.FACE_FRONT_AND_BACK`
+- `graphics.FACE_TYPE_FRONT`
+- `graphics.FACE_TYPE_BACK`
+- `graphics.FACE_TYPE_FRONT_AND_BACK`
 
 	*/
 	export function set_cull_face(face_type: any): void
@@ -4536,16 +4747,16 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	* the conditions under which a pixel will be drawn.
 	* Function constants:
 	* 
-	* - `render.COMPARE_FUNC_NEVER` (never passes)
-	* - `render.COMPARE_FUNC_LESS` (passes if the incoming depth value is less than the stored value)
-	* - `render.COMPARE_FUNC_LEQUAL` (passes if the incoming depth value is less than or equal to the stored value)
-	* - `render.COMPARE_FUNC_GREATER` (passes if the incoming depth value is greater than the stored value)
-	* - `render.COMPARE_FUNC_GEQUAL` (passes if the incoming depth value is greater than or equal to the stored value)
-	* - `render.COMPARE_FUNC_EQUAL` (passes if the incoming depth value is equal to the stored value)
-	* - `render.COMPARE_FUNC_NOTEQUAL` (passes if the incoming depth value is not equal to the stored value)
-	* - `render.COMPARE_FUNC_ALWAYS` (always passes)
+	* - `graphics.COMPARE_FUNC_NEVER` (never passes)
+	* - `graphics.COMPARE_FUNC_LESS` (passes if the incoming depth value is less than the stored value)
+	* - `graphics.COMPARE_FUNC_LEQUAL` (passes if the incoming depth value is less than or equal to the stored value)
+	* - `graphics.COMPARE_FUNC_GREATER` (passes if the incoming depth value is greater than the stored value)
+	* - `graphics.COMPARE_FUNC_GEQUAL` (passes if the incoming depth value is greater than or equal to the stored value)
+	* - `graphics.COMPARE_FUNC_EQUAL` (passes if the incoming depth value is equal to the stored value)
+	* - `graphics.COMPARE_FUNC_NOTEQUAL` (passes if the incoming depth value is not equal to the stored value)
+	* - `graphics.COMPARE_FUNC_ALWAYS` (always passes)
 	* 
-	* The depth function is initially set to `render.COMPARE_FUNC_LESS`.
+	* The depth function is initially set to `graphics.COMPARE_FUNC_LESS`.
 	* @param func  depth test function, see the description for available values
 	*/
 	export function set_depth_func(func: any): void
@@ -4560,7 +4771,7 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 
 	/**
 	* Sets the scale and units used to calculate depth values.
-	* If `render.STATE_POLYGON_OFFSET_FILL` is enabled, each fragment's depth value
+	* If `graphics.STATE_POLYGON_OFFSET_FILL` is enabled, each fragment's depth value
 	* is offset from its interpolated value (depending on the depth value of the
 	* appropriate vertices). Polygon offset can be used when drawing decals, rendering
 	* hidden-line images etc.
@@ -4600,9 +4811,9 @@ Transient frame buffer types are only valid while the render target is active, i
  A buffer type defined that doesn't exist in the render target is silently ignored.
 
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	*/
 	export function set_render_target(render_target: any, options?: any): void
@@ -4624,7 +4835,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	* The stencil test discards a pixel based on the outcome of a comparison between the
 	* reference value `ref` and the corresponding value in the stencil buffer.
 	* `func` specifies the comparison function. See the table below for values.
-	* The initial value is `render.COMPARE_FUNC_ALWAYS`.
+	* The initial value is `graphics.COMPARE_FUNC_ALWAYS`.
 	* `ref` specifies the reference value for the stencil test. The value is clamped to
 	* the range [0, 2n-1], where n is the number of bitplanes in the stencil buffer.
 	* The initial value is `0`.
@@ -4632,14 +4843,14 @@ Transient frame buffer types are only valid while the render target is active, i
 	* is done. The initial value is all `1`'s.
 	* Function constant:
 	* 
-	* - `render.COMPARE_FUNC_NEVER` (never passes)
-	* - `render.COMPARE_FUNC_LESS` (passes if (ref &amp; mask) &lt; (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_LEQUAL` (passes if (ref &amp; mask) &lt;= (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_GREATER` (passes if (ref &amp; mask) &gt; (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_GEQUAL` (passes if (ref &amp; mask) &gt;= (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_EQUAL` (passes if (ref &amp; mask) = (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_NOTEQUAL` (passes if (ref &amp; mask) != (stencil &amp; mask))
-	* - `render.COMPARE_FUNC_ALWAYS` (always passes)
+	* - `graphics.COMPARE_FUNC_NEVER` (never passes)
+	* - `graphics.COMPARE_FUNC_LESS` (passes if (ref &amp; mask) &lt; (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_LEQUAL` (passes if (ref &amp; mask) &lt;= (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_GREATER` (passes if (ref &amp; mask) &gt; (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_GEQUAL` (passes if (ref &amp; mask) &gt;= (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_EQUAL` (passes if (ref &amp; mask) = (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_NOTEQUAL` (passes if (ref &amp; mask) != (stencil &amp; mask))
+	* - `graphics.COMPARE_FUNC_ALWAYS` (always passes)
 	* 
 	* @param func  stencil test function, see the description for available values
 	* @param ref  reference value for the stencil test
@@ -4669,18 +4880,18 @@ Transient frame buffer types are only valid while the render target is active, i
 	* contents.
 	* Operator constants:
 	* 
-	* - `render.STENCIL_OP_KEEP` (keeps the current value)
-	* - `render.STENCIL_OP_ZERO` (sets the stencil buffer value to 0)
-	* - `render.STENCIL_OP_REPLACE` (sets the stencil buffer value to `ref`, as specified by render.set_stencil_func)
-	* - `render.STENCIL_OP_INCR` (increments the stencil buffer value and clamp to the maximum representable unsigned value)
-	* - `render.STENCIL_OP_INCR_WRAP` (increments the stencil buffer value and wrap to zero when incrementing the maximum representable unsigned value)
-	* - `render.STENCIL_OP_DECR` (decrements the current stencil buffer value and clamp to 0)
-	* - `render.STENCIL_OP_DECR_WRAP` (decrements the current stencil buffer value and wrap to the maximum representable unsigned value when decrementing zero)
-	* - `render.STENCIL_OP_INVERT` (bitwise inverts the current stencil buffer value)
+	* - `graphics.STENCIL_OP_KEEP` (keeps the current value)
+	* - `graphics.STENCIL_OP_ZERO` (sets the stencil buffer value to 0)
+	* - `graphics.STENCIL_OP_REPLACE` (sets the stencil buffer value to `ref`, as specified by render.set_stencil_func)
+	* - `graphics.STENCIL_OP_INCR` (increments the stencil buffer value and clamp to the maximum representable unsigned value)
+	* - `graphics.STENCIL_OP_INCR_WRAP` (increments the stencil buffer value and wrap to zero when incrementing the maximum representable unsigned value)
+	* - `graphics.STENCIL_OP_DECR` (decrements the current stencil buffer value and clamp to 0)
+	* - `graphics.STENCIL_OP_DECR_WRAP` (decrements the current stencil buffer value and wrap to the maximum representable unsigned value when decrementing zero)
+	* - `graphics.STENCIL_OP_INVERT` (bitwise inverts the current stencil buffer value)
 	* 
 	* `dppass` and `dpfail` specify the stencil buffer actions depending on whether subsequent
 	* depth buffer tests succeed (dppass) or fail (dpfail).
-	* The initial value for all operators is `render.STENCIL_OP_KEEP`.
+	* The initial value for all operators is `graphics.STENCIL_OP_KEEP`.
 	* @param sfail  action to take when the stencil test fails
 	* @param dpfail  the stencil action when the stencil test passes
 	* @param dppass  the stencil action when both the stencil test and the depth test pass, or when the stencil test passes and either there is no depth buffer or depth testing is not enabled
@@ -4718,161 +4929,6 @@ Transient frame buffer types are only valid while the render target is active, i
 
 
 declare namespace resource {
-
-	/**
-	* BASIS_UASTC compression type
-	*/
-	export let COMPRESSION_TYPE_BASIS_UASTC: any
-
-	/**
-	* COMPRESSION_TYPE_DEFAULT compression type
-	*/
-	export let COMPRESSION_TYPE_DEFAULT: any
-
-	/**
-	* luminance type texture format
-	*/
-	export let TEXTURE_FORMAT_LUMINANCE: any
-
-	/**
-	* R16F type texture format
-	*/
-	export let TEXTURE_FORMAT_R16F: any
-
-	/**
-	* R32F type texture format
-	*/
-	export let TEXTURE_FORMAT_R32F: any
-
-	/**
-	* RG16F type texture format
-	*/
-	export let TEXTURE_FORMAT_RG16F: any
-
-	/**
-	* RG32F type texture format
-	*/
-	export let TEXTURE_FORMAT_RG32F: any
-
-	/**
-	* RGB type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB: any
-
-	/**
-	* RGB16F type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB16F: any
-
-	/**
-	* RGB32F type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB32F: any
-
-	/**
-	* RGBA type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA: any
-
-	/**
-	* RGBA16F type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA16F: any
-
-	/**
-	* RGBA32F type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA32F: any
-
-	/**
-	* RGBA_ASTC_4x4 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: any
-
-	/**
-	* RGBA_BC3 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_BC3: any
-
-	/**
-	* RGBA_BC7 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_BC7: any
-
-	/**
-	* RGBA_ETC2 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_ETC2: any
-
-	/**
-	* RGBA_PVRTC_2BPPV1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any
-
-	/**
-	* RGBA_PVRTC_4BPPV1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any
-
-	/**
-	* RGB_BC1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB_BC1: any
-
-	/**
-	* RGB_ETC1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB_ETC1: any
-
-	/**
-	* RGB_PVRTC_2BPPV1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any
-
-	/**
-	* RGB_PVRTC_4BPPV1 type texture format
-	*/
-	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any
-
-	/**
-	* RG_BC5 type texture format
-	*/
-	export let TEXTURE_FORMAT_RG_BC5: any
-
-	/**
-	* R_BC4 type texture format
-	*/
-	export let TEXTURE_FORMAT_R_BC4: any
-
-	/**
-	* 2D texture type
-	*/
-	export let TEXTURE_TYPE_2D: any
-
-	/**
-	* 2D Array texture type
-	*/
-	export let TEXTURE_TYPE_2D_ARRAY: any
-
-	/**
-	* Cube map texture type
-	*/
-	export let TEXTURE_TYPE_CUBE_MAP: any
-
-	/**
-	* Usage hint for creating textures that uses temporary memory
-	*/
-	export let TEXTURE_USAGE_FLAG_MEMORYLESS: any
-
-	/**
-	* Usage hint for creating textures that can be sampled in a shader
-	*/
-	export let TEXTURE_USAGE_FLAG_SAMPLE: any
-
-	/**
-	* Usage hint for creating textures that can be used for writing in a shader
-	*/
-	export let TEXTURE_USAGE_FLAG_STORAGE: any
 
 	/**
 	* Constructor-like function with two purposes:
@@ -5056,9 +5112,9 @@ optional flag to determine wether or not the resource should take over ownership
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
 
 
 `width`
@@ -5069,55 +5125,55 @@ The width of the texture (in pixels). Must be larger than 0.
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
 
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 
 You can test if the device supports these values by checking if a specific enum is nil or not:
-`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
     -- it is safe to use this format
 end
 `
 
 
 `flags`
-Texture creation flags that can be used to dictate how the texture is created. The default value is resource.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
+Texture creation flags that can be used to dictate how the texture is created. The default value is graphics.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
 These flags may or may not be supported on the running device and/or the underlying graphics API and is simply used internally as a 'hint' when creating the texture. There is no guarantee that any of these will have any effect. Supported values:
 
 
-- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
+- `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 
 `max_mipmaps`
 optional max number of mipmaps. Defaults to zero, i.e no mipmap support
 `compression_type`
 optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -5146,8 +5202,8 @@ A table containing info about how to create the texture. Supported entries:
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
@@ -5158,44 +5214,44 @@ The width of the texture (in pixels). Must be larger than 0.
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
 
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 
 
 `flags`
 Texture creation flags that can be used to dictate how the texture is created. Supported values:
 
 
-- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
+- `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 You can test if the device supports these values by checking if a specific enum is nil or not:
-`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
     -- it is safe to use this format
 end
 `
@@ -5205,7 +5261,7 @@ end
 optional max number of mipmaps. Defaults to zero, i.e no mipmap support
 `compression_type`
 optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -5272,9 +5328,9 @@ number of mipmaps of the texture
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D_ARRAY`
 
 
 `buffer_type`
@@ -5345,10 +5401,10 @@ usage hints of the texture.
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_IMAGE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D_ARRAY`
 
 	*/
 	export function get_texture_info(path: any): any
@@ -5545,8 +5601,8 @@ optional flag to determine wether or not the resource should take over ownership
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
@@ -5557,33 +5613,33 @@ The width of the texture (in pixels)
 The texture format, note that some of these formats are platform specific. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 You can test if the device supports these values by checking if a specific enum is nil or not:
-`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
     -- it is safe to use this format
 end
 `
@@ -5596,7 +5652,7 @@ optional y offset of the texture (in pixels)
 `mipmap`
 optional mipmap to upload the data to
 `compression_type`
-optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -7368,6 +7424,21 @@ declare namespace collectionproxy {
 	export type async_load = "async_load"
 
 	/**
+	* collection proxy is already loaded
+	*/
+	export let RESULT_ALREADY_LOADED: any
+
+	/**
+	* collection proxy is loading now
+	*/
+	export let RESULT_LOADING: any
+
+	/**
+	* collection proxy isn't excluded
+	*/
+	export let RESULT_NOT_EXCLUDED: any
+
+	/**
 	* return an indexed table of resources for a collection proxy where the
 	* referenced collection has been excluded using LiveUpdate. Each entry is a
 	* hexadecimal string that represents the data of the specific resource.
@@ -7393,6 +7464,18 @@ resources.
 	* @return resources  the missing resources
 	*/
 	export function missing_resources(collectionproxy: url): any
+
+	/**
+	* The collection should be loaded by the collection proxy.
+	* Setting the collection to "nil" will revert it back to the original collection.
+	* The collection proxy shouldn't be loaded and should have the 'Exclude' checkbox checked.
+	* This functionality is designed to simplify the management of Live Update resources.
+	* @param url  the collection proxy component
+	* @param prototype  the path to the new collection, or `nil`
+	* @return success  collection change was successful
+	* @return code  one of the collectionproxy.RESULT_* codes if unsuccessful
+	*/
+	export function set_collection(url?: string | hash | url, prototype?: any): LuaMultiReturn<[boolean, number]>
 
 	/**
 	* Post this message to a collection-proxy-component to disable the referenced collection, which in turn disables the contained game objects and components.
