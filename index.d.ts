@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.2 (3251ca82359cf238a1074e383281e3126547d50b)
+// DEFOLD. stable version 1.9.3 (e4aaff11f49c941fde1dd93883cf69c6b8abebe4)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -10,6 +10,9 @@ declare type hash = {
 }
 
 declare type url = {
+	socket: hash,
+	path: hash,
+	fragment: hash,
 }
 
 declare type node = {
@@ -6140,6 +6143,61 @@ The stack traceback.
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
+declare namespace types {
+
+	/**
+	* Check if passed type is hash.
+	* @param v  Variable to check type
+	* @return result  True if passed type is hash
+	*/
+	export function is_hash(v: any): boolean
+
+	/**
+	* Check if passed type is matrix4.
+	* @param v  Variable to check type
+	* @return result  True if passed type is matrix4
+	*/
+	export function is_matrix4(v: any): boolean
+
+	/**
+	* Check if passed type is quaternion.
+	* @param v  Variable to check type
+	* @return result  True if passed type is quaternion
+	*/
+	export function is_quat(v: any): boolean
+
+	/**
+	* Check if passed type is URL.
+	* @param v  Variable to check type
+	* @return result  True if passed type is URL
+	*/
+	export function is_url(v: any): boolean
+
+	/**
+	* Check if passed type is vector.
+	* @param v  Variable to check type
+	* @return result  True if passed type is vector
+	*/
+	export function is_vector(v: any): boolean
+
+	/**
+	* Check if passed type is vector3.
+	* @param v  Variable to check type
+	* @return result  True if passed type is vector3
+	*/
+	export function is_vector3(v: any): boolean
+
+	/**
+	* Check if passed type is vector4.
+	* @param v  Variable to check type
+	* @return result  True if passed type is vector4
+	*/
+	export function is_vector4(v: any): boolean
+
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
 declare namespace window {
 
 	/**
@@ -6436,6 +6494,8 @@ The response data. Contains the fields:
 `headers`: all the returned headers
 `path`: the stored path (if saved to disc)
 `error`: if any unforeseen errors occurred (e.g. file I/O)
+`bytes_received`: the amount of bytes received/sent for a request, only if option `report_progress` is true
+`bytes_total`: the total amount of bytes for a request, only if option `report_progress` is true
 
 	* @param headers  optional table with custom headers
 	* @param post_data  optional data to send
@@ -6445,6 +6505,7 @@ The response data. Contains the fields:
 Path should be absolute
 Not available in HTML5 build
 Not available in HTML5 build
+`report_progress`: when it is true, the amount of bytes sent and/or received for a request will be passed into the callback function
 
 	*/
 	export function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any): void
@@ -6636,7 +6697,7 @@ declare namespace timer {
 	* @param handle  the timer handle returned by timer.delay()
 	* @return true  if the timer was active, false if the timer is already cancelled / complete
 	*/
-	export function cancel(handle: hash): boolean
+	export function cancel(handle: any): boolean
 
 	/**
 	* Adds a timer and returns a unique handle.
@@ -6658,7 +6719,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 
 	* @return handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
-	export function delay(delay: number, repeat: boolean, callback: any): hash
+	export function delay(delay: number, repeat: boolean, callback: any): any
 
 	/**
 	* Get information about timer.
@@ -6673,14 +6734,14 @@ Time interval.
 true = repeat timer until cancel, false = one-shot timer.
 
 	*/
-	export function get_info(handle: hash): LuaMultiReturn<[any, any]>
+	export function get_info(handle: any): LuaMultiReturn<[any, any]>
 
 	/**
 	* Manual triggering a callback for a timer.
 	* @param handle  the timer handle returned by timer.delay()
 	* @return true  if the timer was active, false if the timer is already cancelled / complete
 	*/
-	export function trigger(handle: hash): boolean
+	export function trigger(handle: any): boolean
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
