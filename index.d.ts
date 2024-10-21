@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.3 (e4aaff11f49c941fde1dd93883cf69c6b8abebe4)
+// DEFOLD. stable version 1.9.4 (512763fd375633fd67197225e61fe90a5929166b)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -3921,7 +3921,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
-	* @param request_id  a number between [0,-255]. It will be sent back in the response for identification, 0 by default
+	* @param request_id  a number in range [0,255]. It will be sent back in the response for identification, 0 by default
 	*/
 	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number): void
 
@@ -6707,7 +6707,7 @@ declare namespace timer {
 	* If you want a timer that triggers on each frame, set delay to 0.0f and repeat to true.
 	* Timers created within a script will automatically die when the script is deleted.
 	* @param delay  time interval in seconds
-	* @param repeat  true = repeat timer until cancel, false = one-shot timer
+	* @param repeating  true = repeat timer until cancel, false = one-shot timer
 	* @param callback  timer callback function
 
 `self`
@@ -6719,7 +6719,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 
 	* @return handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
-	export function delay(delay: number, repeat: boolean, callback: any): any
+	export function delay(delay: number, repeating: boolean, callback: any): any
 
 	/**
 	* Get information about timer.
@@ -6748,6 +6748,19 @@ true = repeat timer until cancel, false = one-shot timer.
 
 
 declare namespace vmath {
+
+	/**
+	* Clamp input value to be in range of [min, max]. In case if input value has vector3|vector4 type
+	* return new vector3|vector4 with clamped value at every vector's element.
+	* Min/max arguments can be vector3|vector4. In that case clamp excuted per every vector's element
+	* @param value  Input value or vector of values
+	* @param min  Min value(s) border
+	* @param max  Max value(s) border
+	* @return clamped_value  Clamped value or vector
+	*/
+	export function clamp(value: number, min: number, max: number): number
+	export function clamp(value: vmath.vector3, min: vmath.vector3, max: vmath.vector3): vmath.vector3
+	export function clamp(value: vmath.vector4, min: vmath.vector4, max: vmath.vector4): vmath.vector4
 
 	/**
 	* Calculates the conjugate of a quaternion. The result is a
@@ -6878,11 +6891,14 @@ declare namespace vmath {
 	export function matrix4_axis_angle(v: vmath.vector3, angle: number): vmath.matrix4
 
 	/**
-	* The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
-	* @param q  quaternion to create matrix from
-	* @return m  matrix represented by quaternion
+	* Creates a new matrix constructed from separate
+	* translation vector, roation quaternion and scale vector
+	* @param translation  translation
+	* @param rotation  rotation
+	* @param scale  scale
+	* @return matrix  new matrix4
 	*/
-	export function matrix4_from_quat(q: vmath.quaternion): vmath.matrix4
+	export function matrix4_compose(translation: any, rotation: vmath.quaternion, scale: vmath.vector3): vmath.matrix4
 
 	/**
 	* Constructs a frustum matrix from the given values. The left, right,
@@ -6935,6 +6951,13 @@ declare namespace vmath {
 	export function matrix4_perspective(fov: number, aspect: number, near: number, far: number): vmath.matrix4
 
 	/**
+	* The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
+	* @param q  quaternion to create matrix from
+	* @return m  matrix represented by quaternion
+	*/
+	export function matrix4_quat(q: vmath.quaternion): vmath.matrix4
+
+	/**
 	* The resulting matrix describes a rotation around the x-axis
 	* by the specified angle.
 	* @param angle  angle in radians around x-axis
@@ -6957,6 +6980,29 @@ declare namespace vmath {
 	* @return m  matrix from rotation around z-axis
 	*/
 	export function matrix4_rotation_z(angle: number): vmath.matrix4
+
+	/**
+	* Creates a new matrix constructed from scale vector
+	* @param scale  scale
+	* @return matrix  new matrix4
+	*/
+	export function matrix4_scale(scale: vmath.vector3): vmath.matrix4
+
+	/**
+	* creates a new matrix4 from uniform scale
+	* @param scale  scale
+	* @return matrix  new matrix4
+	*/
+	export function matrix4_scale(scale: number): vmath.matrix4
+
+	/**
+	* Creates a new matrix4 from three scale components
+	* @param scale_x  scale along X axis
+	* @param scale_y  sclae along Y axis
+	* @param scale_z  scale along Z asis
+	* @return matrix  new matrix4
+	*/
+	export function matrix4_scale(scale_x: number, scale_y: number, scale_z: number): vmath.matrix4
 
 	/**
 	* The resulting matrix describes a translation of a point
@@ -7070,6 +7116,14 @@ declare namespace vmath {
 	* @return q  quaternion representing the rotation from first to second vector
 	*/
 	export function quat_from_to(v1: vmath.vector3, v2: vmath.vector3): vmath.quaternion
+
+	/**
+	* Creates a new quaternion with the components set
+	* according to the supplied parameter values.
+	* @param matrix  source matrix4
+	* @return q  new quaternion
+	*/
+	export function quat_matrix4(matrix: vmath.matrix4): vmath.quaternion
 
 	/**
 	* The resulting quaternion describes a rotation of `angle`
