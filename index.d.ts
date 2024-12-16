@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.5 (d01194cf0fb576b516a1dca6af6f643e9e590051)
+// DEFOLD. stable version 1.9.6 (4035511f1e258a47b77798a2005c024609ed2c67)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -2371,6 +2371,31 @@ declare namespace gui {
 	export let SIZE_MODE_MANUAL: any
 
 	/**
+	* box type
+	*/
+	export let TYPE_BOX: any
+
+	/**
+	* custom type
+	*/
+	export let TYPE_CUSTOM: any
+
+	/**
+	* particlefx type
+	*/
+	export let TYPE_PARTICLEFX: any
+
+	/**
+	* pie type
+	*/
+	export let TYPE_PIE: any
+
+	/**
+	* text type
+	*/
+	export let TYPE_TEXT: any
+
+	/**
 	* This starts an animation of a node property according to the specified parameters.
 	* If the node property is already being animated, that animation will be canceled and
 	* replaced by the new one. Note however that several different node properties
@@ -2912,6 +2937,21 @@ index into array property (1 based)
 	* @return clones  a table mapping node ids to the corresponding nodes
 	*/
 	export function get_tree(node: node): any
+
+	/**
+	* gets the node type
+	* @param node  node from which to get the type
+	* @return type  type
+
+- `gui.TYPE_BOX`
+- `gui.TYPE_TEXT`
+- `gui.TYPE_PIE`
+- `gui.TYPE_PARTICLEFX`
+- `gui.TYPE_CUSTOM`
+
+	* @return subtype  id of the custom type
+	*/
+	export function get_type(node: node): LuaMultiReturn<[any, any, any]>
 
 	/**
 	* Returns `true` if a node is visible and `false` if it's not.
@@ -4215,7 +4255,6 @@ declare namespace profiler {
 To stop recording, switch to a different mode such as `MODE_PAUSE` or `MODE_RUN`.
 You can also use the `view_recorded_frame` function to display a recorded frame. Doing so stops the recording as well.
 Every time you switch to recording mode the recording buffer is cleared.
-The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mode.
 	*/
 	export function set_ui_mode(mode: any): void
 
@@ -4771,6 +4810,22 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	* @param depth  depth mask
 	*/
 	export function set_depth_mask(depth: boolean): void
+
+	/**
+	* Set or remove listener. Currenly only only two type of events can arrived:
+	* `render.CONTEXT_EVENT_CONTEXT_LOST` - when rendering context lost. Rending paused and all graphics resources become invalid.
+	* `render.CONTEXT_EVENT_CONTEXT_RESTORED` - when rendering context was restored. Rendering still paused and graphics resources still
+	* invalid but can be reloaded.
+	* @param callback  A callback that receives all render related events.
+Pass `nil` if want to remove listener.
+
+`self`
+The render script
+`event_type`
+Rendering event. Possible values: `render.CONTEXT_EVENT_CONTEXT_LOST`, `render.CONTEXT_EVENT_CONTEXT_RESTORED`
+
+	*/
+	export function set_listener(callback: any): void
 
 	/**
 	* Sets the scale and units used to calculate depth values.
@@ -5735,6 +5790,12 @@ declare namespace sys {
 	* This message can only be sent to the designated `@system` socket.
 	*/
 	export type reboot = "reboot"
+
+	/**
+	* Resume rendering.
+	* This message can only be sent to the designated `@system` socket.
+	*/
+	export type resume_rendering = "resume_rendering"
 
 	/**
 	* Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
@@ -6825,6 +6886,17 @@ declare namespace vmath {
 	export function dot(v1: vmath.vector3 | vmath.vector4, v2: vmath.vector3 | vmath.vector4): number
 
 	/**
+	* Converts euler angles (x, y, z) in degrees into a quaternion
+	* The error is guaranteed to be less than 0.001.
+	* If the first argument is vector3, its values are used as x, y, z angles.
+	* @param x  rotation around x-axis in degrees or vector3 with euler angles in degrees
+	* @param y  rotation around y-axis in degrees
+	* @param z  rotation around z-axis in degrees
+	* @return q  quaternion describing an equivalent rotation (231 (YZX) rotation sequence)
+	*/
+	export function euler_to_quat(x: number | vmath.vector3, y: number, z: number): vmath.quaternion
+
+	/**
 	* The resulting matrix is the inverse of the supplied matrix.
 	* ⚠ For ortho-normal matrices, e.g. regular object transformation,
 	* use `vmath.ortho_inv()` instead.
@@ -7174,6 +7246,18 @@ declare namespace vmath {
 	export function quat_rotation_z(angle: number): vmath.quaternion
 
 	/**
+	* Converts a quaternion into euler angles (r0, r1, r2), based on YZX rotation order.
+	* To handle gimbal lock (singularity at r1 ~ +/- 90 degrees), the cut off is at r0 = +/- 88.85 degrees, which snaps to +/- 90.
+	* The provided quaternion is expected to be normalized.
+	* The error is guaranteed to be less than +/- 0.02 degrees
+	* @param q  source quaternion
+	* @return x  euler angle x in degrees
+	* @return y  euler angle y in degrees
+	* @return z  euler angle z in degrees
+	*/
+	export function quat_to_euler(q: vmath.quaternion): LuaMultiReturn<[number, number, number]>
+
+	/**
 	* Returns a new vector from the supplied vector that is
 	* rotated by the rotation described by the supplied
 	* quaternion.
@@ -7339,6 +7423,13 @@ declare namespace camera {
 	* @return cameras  a table with all camera URLs
 	*/
 	export function get_cameras(): any
+
+	/**
+	* get enabled
+	* @param camera  camera id
+	* @return flag  true if the camera is enabled
+	*/
+	export function get_enabled(camera: any): any
 
 	/**
 	* get far z
