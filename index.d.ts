@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.6 (11d2cd3a9be17b2fc5a2cb5cea59bbfb4af1ca96)
+// DEFOLD. stable version 1.9.7 (a1ae95286a1b2677ed3fda6785816e76df4ee8a2)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -98,6 +98,191 @@ declare function hash_to_hex(h: hash): string
 */
 declare function pprint(v: any): void
 
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+
+declare namespace liveupdate {
+
+	/**
+	* LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH
+	*/
+	export let LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: any
+
+	/**
+	* LIVEUPDATE_ENGINE_VERSION_MISMATCH
+	*/
+	export let LIVEUPDATE_ENGINE_VERSION_MISMATCH: any
+
+	/**
+	* LIVEUPDATE_FORMAT_ERROR
+	*/
+	export let LIVEUPDATE_FORMAT_ERROR: any
+
+	/**
+	* LIVEUPDATE_INVAL
+	*/
+	export let LIVEUPDATE_INVAL: any
+
+	/**
+	* LIVEUPDATE_INVALID_HEADER
+	*/
+	export let LIVEUPDATE_INVALID_HEADER: any
+
+	/**
+	* LIVEUPDATE_INVALID_RESOURCE
+	*/
+	export let LIVEUPDATE_INVALID_RESOURCE: any
+
+	/**
+	* LIVEUPDATE_IO_ERROR
+	*/
+	export let LIVEUPDATE_IO_ERROR: any
+
+	/**
+	* LIVEUPDATE_MEM_ERROR
+	*/
+	export let LIVEUPDATE_MEM_ERROR: any
+
+	/**
+	* LIVEUPDATE_OK
+	*/
+	export let LIVEUPDATE_OK: any
+
+	/**
+	* LIVEUPDATE_SCHEME_MISMATCH
+	*/
+	export let LIVEUPDATE_SCHEME_MISMATCH: any
+
+	/**
+	* LIVEUPDATE_SIGNATURE_MISMATCH
+	*/
+	export let LIVEUPDATE_SIGNATURE_MISMATCH: any
+
+	/**
+	* LIVEUPDATE_UNKNOWN
+	*/
+	export let LIVEUPDATE_UNKNOWN: any
+
+	/**
+	* LIVEUPDATE_VERSION_MISMATCH
+	*/
+	export let LIVEUPDATE_VERSION_MISMATCH: any
+
+	/**
+	* Adds a resource mount to the resource system.
+	* The mounts are persisted between sessions.
+	* After the mount succeeded, the resources are available to load. (i.e. no reboot required)
+	* @param name  Unique name of the mount
+	* @param uri  The uri of the mount, including the scheme. Currently supported schemes are 'zip' and 'archive'.
+	* @param priority  Priority of mount. Larger priority takes prescedence
+	* @param callback  Callback after the asynchronous request completed
+	* @return result  The result of the request
+	*/
+	export function add_mount(name: string, uri: string, priority: any, callback: any): number
+
+	/**
+	* Return a reference to the Manifest that is currently loaded.
+	* @return manifest_reference  reference to the Manifest that is currently loaded
+	*/
+	export function get_current_manifest(): number
+
+	/**
+	* Get an array of the current mounts
+	* This can be used to determine if a new mount is needed or not
+	* @return mounts  Array of mounts
+	*/
+	export function get_mounts(): any
+
+	/**
+	* Is any liveupdate data mounted and currently in use?
+	* This can be used to determine if a new manifest or zip file should be downloaded.
+	* @return bool  true if a liveupdate archive (any format) has been loaded
+	*/
+	export function is_using_liveupdate_data(): any
+
+	/**
+	* Remove a mount the resource system.
+	* The remaining mounts are persisted between sessions.
+	* Removing a mount does not affect any loaded resources.
+	* @param name  Unique name of the mount
+	* @return result  The result of the call
+	*/
+	export function remove_mount(name: string): number
+
+	/**
+	* Stores a zip file and uses it for live update content. The contents of the
+	* zip file will be verified against the manifest to ensure file integrity.
+	* It is possible to opt out of the resource verification using an option passed
+	* to this function.
+	* The path is stored in the (internal) live update location.
+	* @param path  the path to the original file on disc
+	* @param callback  the callback function
+executed after the storage has completed
+
+`self`
+The current object.
+`status`
+the status of the store operation (See liveupdate.store_manifest)
+
+	* @param options  optional table with extra parameters. Supported entries:
+
+`verify`: if archive should be verified as well as stored (defaults to true)
+
+	*/
+	export function store_archive(path: string, callback: any, options?: any): void
+
+	/**
+	* Create a new manifest from a buffer. The created manifest is verified
+	* by ensuring that the manifest was signed using the bundled public/private
+	* key-pair during the bundle process and that the manifest supports the current
+	* running engine version. Once the manifest is verified it is stored on device.
+	* The next time the engine starts (or is rebooted) it will look for the stored
+	* manifest before loading resources. Storing a new manifest allows the
+	* developer to update the game, modify existing resources, or add new
+	* resources to the game through LiveUpdate.
+	* @param manifest_buffer  the binary data that represents the manifest
+	* @param callback  the callback function
+executed once the engine has attempted to store the manifest.
+
+`self`
+The current object.
+`status`
+the status of the store operation:
+
+
+- `liveupdate.LIVEUPDATE_OK`
+- `liveupdate.LIVEUPDATE_INVALID_RESOURCE`
+- `liveupdate.LIVEUPDATE_VERSION_MISMATCH`
+- `liveupdate.LIVEUPDATE_ENGINE_VERSION_MISMATCH`
+- `liveupdate.LIVEUPDATE_SIGNATURE_MISMATCH`
+- `liveupdate.LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH`
+- `liveupdate.LIVEUPDATE_FORMAT_ERROR`
+
+	*/
+	export function store_manifest(manifest_buffer: string, callback: any): void
+
+	/**
+	* add a resource to the data archive and runtime index. The resource will be verified
+	* internally before being added to the data archive.
+	* @param manifest_reference  The manifest to check against.
+	* @param data  The resource data that should be stored.
+	* @param hexdigest  The expected hash for the resource,
+retrieved through collectionproxy.missing_resources.
+	* @param callback  The callback
+function that is executed once the engine has been attempted to store
+the resource.
+
+`self`
+The current object.
+`hexdigest`
+The hexdigest of the resource.
+`status`
+Whether or not the resource was successfully stored.
+
+	*/
+	export function store_resource(manifest_reference: number, data: string, hexdigest: string, callback: any): void
+
+}
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -3935,6 +4120,7 @@ end
 	* do not intersect with ray casts.
 	* Which collision objects to hit is filtered by their collision groups and can be configured
 	* through `groups`.
+	* NOTE: Ray casts will ignore collision objects that contain the starting point of the ray. This is a limitation in Box2D.
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
@@ -3958,6 +4144,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	* - If an object is hit, the result will be reported via a ray_cast_response message.
 	* - If there is no object hit, the result will be reported via a ray_cast_missed message.
 	* 
+	* NOTE: Ray casts will ignore collision objects that contain the starting point of the ray. This is a limitation in Box2D.
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
@@ -5179,6 +5366,23 @@ optional flag to determine wether or not the resource should take over ownership
 	* @return path  Returns the buffer resource path
 	*/
 	export function create_buffer(path: string, table?: any): hash
+
+	/**
+	* Creates a sound data resource
+	* Supported formats are .oggc and .wavc
+	* @param path  the path to the resource. Must not already exist.
+	* @param options  A table containing parameters for the text. Supported entries:
+
+`data`
+The raw data of the file. May be partial, but must include the header of the file
+`filesize`
+If the file is partial, it must also specify the full size of the complete file.
+`partial`
+Is the data not representing the full file, but just the initial chunk?
+
+	* @return path_hash  the resulting path hash to the resource
+	*/
+	export function create_sound_data(path: string, options?: any): hash
 
 	/**
 	* Creates a new texture resource that can be used in the same way as any texture created during build time.
