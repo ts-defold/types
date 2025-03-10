@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.7 (868769ba7a3458db12d149188bf3be80a339a85c)
+// DEFOLD. stable version 1.9.8 (a9247e38b24ba1c1ed5913c4049d9a4083a314a7)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -6780,11 +6780,14 @@ The response data. Contains the fields:
 
 `status`: the status of the response
 `response`: the response data (if not saved on disc)
-`headers`: all the returned headers
+`headers`: all the returned headers (if status is 200 or 206)
 `path`: the stored path (if saved to disc)
 `error`: if any unforeseen errors occurred (e.g. file I/O)
 `bytes_received`: the amount of bytes received/sent for a request, only if option `report_progress` is true
 `bytes_total`: the total amount of bytes for a request, only if option `report_progress` is true
+`range_start`: the start offset into the requested file
+`range_end`: the end offset into the requested file (inclusive)
+`document_size`: the full size of the requested file
 
 	* @param headers  optional table with custom headers
 	* @param post_data  optional data to send
@@ -7798,7 +7801,7 @@ declare namespace collectionfactory {
 	* @param scale  uniform scaling to apply to the newly spawned collection (must be greater than 0).
 	* @return ids  a table mapping the id:s from the collection to the new instance id:s
 	*/
-	export function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): any
+	export function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number | vmath.vector3): any
 
 	/**
 	* This returns status of the collection factory.
@@ -8082,7 +8085,7 @@ declare namespace label {
 	* @param url  the label that should have a constant set
 	* @param text  the text
 	*/
-	export function set_text(url: string | hash | url, text: string): void
+	export function set_text(url: string | hash | url, text: string | number): void
 
 	/**
 	* The leading of the label. This value is used to scale the line spacing of text.
