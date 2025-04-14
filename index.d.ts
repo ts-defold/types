@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.9.8 (67542769598a1b794877c96f740f3f527f63f491)
+// DEFOLD. stable version 1.10.0 (591eb496d52f4140bc2c7de547131f1b9408b9b4)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -491,10 +491,18 @@ declare namespace b2d.body {
 	export function apply_torque(body: any, torque: number): void
 
 	/**
-	* Print the body representation to the log output
+	* You can disable sleeping on this body. If you disable sleeping, the body will be woken.
 	* @param body  body
+	* @param enable  if false, the body will never sleep, and consume more CPU
 	*/
-	export function dump(body: any): void
+	export function enable_sleep(body: any, enable: any): void
+
+	/**
+	* Get the angle in radians.
+	* @param body  body
+	* @return angle  the current world rotation angle in radians.
+	*/
+	export function get_angle(body: any): number
 
 	/**
 	* Get the angular damping of the body.
@@ -516,13 +524,6 @@ declare namespace b2d.body {
 	* @return scale  the scale
 	*/
 	export function get_gravity_scale(body: any): number
-
-	/**
-	* Get the rotational inertia of the body about the local origin.
-	* @param body  body
-	* @return inertia  the rotational inertia, usually in kg-m^2.
-	*/
-	export function get_inertia(body: any): number
 
 	/**
 	* Get the linear damping of the body.
@@ -559,7 +560,7 @@ declare namespace b2d.body {
 	* @param body  body
 	* @return center  Get the local position of the center of mass.
 	*/
-	export function get_local_center(body: any): vmath.vector3
+	export function get_local_center_of_mass(body: any): vmath.vector3
 
 	/**
 	* Gets a local point relative to the body's origin given a world point.
@@ -585,18 +586,18 @@ declare namespace b2d.body {
 	export function get_mass(body: any): number
 
 	/**
-	* Get the next body in the world's body list.
-	* @param body  body
-	* @return body  the next body
-	*/
-	export function get_next(body: any): any
-
-	/**
 	* Get the world body origin position.
 	* @param body  body
 	* @return position  the world position of the body's origin.
 	*/
 	export function get_position(body: any): vmath.vector3
+
+	/**
+	* Get the rotational inertia of the body about the local origin.
+	* @param body  body
+	* @return inertia  the rotational inertia, usually in kg-m^2.
+	*/
+	export function get_rotational_inertia(body: any): number
 
 	/**
 	* Get the type of this body.
@@ -613,18 +614,11 @@ declare namespace b2d.body {
 	export function get_world(body: any): any
 
 	/**
-	* Get the angle in radians.
-	* @param body  body
-	* @return angle  the current world rotation angle in radians.
-	*/
-	export function get_world_center(body: any): number
-
-	/**
 	* Get the world position of the center of mass.
 	* @param body  body
 	* @return center  Get the world position of the center of mass.
 	*/
-	export function get_world_center(body: any): vmath.vector3
+	export function get_world_center_of_mass(body: any): vmath.vector3
 
 	/**
 	* Get the world coordinates of a point given the local coordinates.
@@ -675,7 +669,7 @@ declare namespace b2d.body {
 	* @param body  body
 	* @return enabled  true if the body is allowed to sleep
 	*/
-	export function is_sleeping_allowed(body: any): any
+	export function is_sleeping_enabled(body: any): any
 
 	/**
 	* This resets the mass properties to the sum of the mass properties of the fixtures.
@@ -758,13 +752,6 @@ declare namespace b2d.body {
 	* @param velocity  the new linear velocity of the center of mass.
 	*/
 	export function set_linear_velocity(body: any, velocity: vmath.vector3): void
-
-	/**
-	* You can disable sleeping on this body. If you disable sleeping, the body will be woken.
-	* @param body  body
-	* @param enable  if false, the body will never sleep, and consume more CPU
-	*/
-	export function set_sleeping_allowed(body: any, enable: any): void
 
 	/**
 	* Set the position of the body's origin and rotation.
@@ -2013,6 +2000,11 @@ declare namespace graphics {
 	export let TEXTURE_TYPE_2D_ARRAY: any
 
 	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_TYPE_3D: any
+
+	/**
 	* 
 	*/
 	export let TEXTURE_TYPE_CUBE_MAP: any
@@ -2021,6 +2013,11 @@ declare namespace graphics {
 	* 
 	*/
 	export let TEXTURE_TYPE_IMAGE_2D: any
+
+	/**
+	* May be nil if the graphics driver doesn't support ...
+	*/
+	export let TEXTURE_TYPE_IMAGE_3D: any
 
 	/**
 	* 
@@ -3873,8 +3870,8 @@ declare namespace physics {
 	export type apply_force = "apply_force"
 
 	/**
-	* See physics.set_listener.
-	* This message is sent to a function specified in physics.set_listener
+	* See physics.set_event_listener.
+	* This message is sent to a function specified in physics.set_event_listener
 	* when two collision objects collide.
 	* This message only reports that a collision has occurred and will be sent once per frame and per colliding pair.
 	* For more detailed information, check for the contact_point_event.
@@ -3893,8 +3890,8 @@ declare namespace physics {
 	export type collision_response = "collision_response"
 
 	/**
-	* See physics.set_listener.
-	* This message is sent to a function specified in physics.set_listener when
+	* See physics.set_event_listener.
+	* This message is sent to a function specified in physics.set_event_listener when
 	* a collision object has contact points with another collision object.
 	* Since multiple contact points can occur for two colliding objects, this event can be sent
 	* multiple times in the same frame for the same two colliding objects. To only be notified once
@@ -4153,6 +4150,29 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number): void
 
 	/**
+	* sets a physics world event listener. If a function is set, physics messages will no longer be sent to on_message.
+	* @param callback  A callback that receives an information about all the physics interactions in this physics world.
+
+`self`
+The calling script
+`event`
+The type of event. Can be one of these messages:
+
+
+- contact_point_event
+- collision_event
+- trigger_event
+- ray_cast_response
+- ray_cast_missed
+
+
+`data`
+The callback value data is a table that contains event-related data. See the documentation for details on the messages.
+
+	*/
+	export function set_event_listener(callback: any): void
+
+	/**
 	* Set the gravity in runtime. The gravity change is not global, it will only affect
 	* the collection that the function is called from.
 	* Note: For 2D physics the z component of the gravity vector will be ignored.
@@ -4190,29 +4210,6 @@ end
 Note: The `collide_connected` field cannot be updated/changed after a connection has been made.
 	*/
 	export function set_joint_properties(collisionobject: string | hash | url, joint_id: string | hash, properties: any): void
-
-	/**
-	* sets a physics world event listener. If a function is set, physics messages will no longer be sent.
-	* @param callback  A callback that receives information about all the physics interactions in this physics world.
-
-`self`
-The calling script
-`event`
-The type of event. Can be one of these messages:
-
-
-- contact_point_event
-- collision_event
-- trigger_event
-- ray_cast_response
-- ray_cast_missed
-
-
-`data`
-The callback value data is a table that contains event-related data. See the documentation for details on the messages.
-
-	*/
-	export function set_listener(callback: any): void
 
 	/**
 	* Sets or clears the masking of a group (maskbit) in a collision object.
@@ -4289,21 +4286,21 @@ end
 
 	/**
 	* This message is sent back to the sender of a ray_cast_request, or to the physics world listener
-	* if it is set (see physics.set_listener), if the ray didn't hit any collision object.
+	* if it is set (see physics.set_event_listener), if the ray didn't hit any collision object.
 	* See physics.raycast_async for examples of how to use it.
 	*/
 	export type ray_cast_missed = "ray_cast_missed"
 
 	/**
 	* This message is sent back to the sender of a ray_cast_request, or to the physics world listener
-	* if it is set (see physics.set_listener), if the ray hits a collision object.
+	* if it is set (see physics.set_event_listener), if the ray hits a collision object.
 	* See physics.raycast_async for examples of how to use it.
 	*/
 	export type ray_cast_response = "ray_cast_response"
 
 	/**
-	* See physics.set_listener.
-	* This message is sent to a function specified in physics.set_listener
+	* See physics.set_event_listener.
+	* This message is sent to a function specified in physics.set_event_listener
 	* when a collision object interacts with another collision object and one of them is a trigger.
 	* This message only reports that an interaction actually happened and will be sent once per colliding pair and frame.
 	* For more detailed information, check for the contact_point_event.
@@ -4358,6 +4355,11 @@ declare namespace profiler {
 	export let VIEW_MODE_MINIMIZED: any
 
 	/**
+	* logs the current frame to the console
+	*/
+	export function dump_frame(): void
+
+	/**
 	* Creates and shows or hides and destroys the on-sceen profiler ui
 	* The profiler is a real-time tool that shows the numbers of milliseconds spent
 	* in each scope per frame as well as counters. The profiler is very useful for
@@ -4408,8 +4410,8 @@ declare namespace profiler {
 	export function get_memory_usage(): number
 
 	/**
-	* Send a text to the profiler
-	* @param text  the string to send to the profiler
+	* Send a text to the connected profiler
+	* @param text  the string to send to the connected profiler
 	*/
 	export function log_text(text: string): void
 
@@ -5399,14 +5401,18 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
-- `graphics.TEXTURE_TYPE_CUBE_MAP`
 - `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
 The width of the texture (in pixels). Must be larger than 0.
 `height`
 The width of the texture (in pixels). Must be larger than 0.
+`depth`
+The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
 `format`
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
@@ -5467,6 +5473,11 @@ Creating an empty texture with no buffer data is not supported as a core feature
 
 	* @param buffer  optional buffer of precreated pixel data
 	* @return path  The path to the resource.
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D ~= nil then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
 	export function create_texture(path: string, table: any, buffer?: buffer): hash
 
@@ -5489,6 +5500,9 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
 - `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
@@ -5496,6 +5510,8 @@ The texture type. Supported values:
 The width of the texture (in pixels). Must be larger than 0.
 `height`
 The width of the texture (in pixels). Must be larger than 0.
+`depth`
+The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
 `format`
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
@@ -5527,6 +5543,12 @@ These constants might not be available on the device:
 - `graphics.TEXTURE_FORMAT_R32F`
 - `graphics.TEXTURE_FORMAT_RG32F`
 
+You can test if the device supports these values by checking if a specific enum is nil or not:
+`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- it is safe to use this format
+end
+`
+
 
 `flags`
 Texture creation flags that can be used to dictate how the texture is created. Supported values:
@@ -5535,12 +5557,6 @@ Texture creation flags that can be used to dictate how the texture is created. S
 - `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
 - `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
 - `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
-
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
-    -- it is safe to use this format
-end
-`
 
 
 `max_mipmaps`
@@ -5554,10 +5570,14 @@ Creating an empty texture with no buffer data is not supported as a core feature
 - `COMPRESSION_TYPE_BASIS_UASTC`
 
 	* @param buffer  optional buffer of precreated pixel data
-	* @return path  The path to the resource.
 	* @return request_id  The request id for the async request.
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D ~= nil then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
-	export function create_texture_async(path: string, table: any, buffer?: buffer): LuaMultiReturn<[hash, any]>
+	export function create_texture_async(path: string, table: any, buffer?: buffer): any
 
 	/**
 	* Constructor-like function with two purposes:
@@ -5678,7 +5698,7 @@ width of the texture
 `height`
 height of the texture
 `depth`
-depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
+depth of the texture (i.e 1 for a 2D texture, 6 for a cube map, number of slices for an array texture and the actual depth of a 3D texture)
 `mipmaps`
 number of mipmaps of the texture
 `flags`
@@ -5688,9 +5708,11 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
-- `graphics.TEXTURE_TYPE_IMAGE_2D`
-- `graphics.TEXTURE_TYPE_CUBE_MAP`
 - `graphics.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 	*/
 	export function get_texture_info(path: any): any
@@ -5888,6 +5910,9 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
 - `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
@@ -5935,6 +5960,8 @@ end
 optional x offset of the texture (in pixels)
 `y`
 optional y offset of the texture (in pixels)
+`z`
+optional z offset of the texture (in pixels). Only applies to 3D textures
 `mipmap`
 optional mipmap to upload the data to
 `compression_type`
@@ -5946,6 +5973,11 @@ optional specify the compression type for the data in the buffer object that hol
 
 	* @param buffer  The buffer of precreated pixel data
 ⚠ To update a cube map texture you need to pass in six times the amount of data via the buffer, since a cube map has six sides!
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D ~= nil then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
 	export function set_texture(path: hash | string, table: any, buffer: buffer): void
 
@@ -6543,6 +6575,12 @@ declare namespace window {
 	export function get_dim_mode(): any
 
 	/**
+	* This returns the content scale of the current display.
+	* @return scale  The display scale
+	*/
+	export function get_display_scale(): number
+
+	/**
 	* This returns the current lock state of the mouse cursor
 	* @return state  The lock state
 	*/
@@ -6601,6 +6639,26 @@ The callback value `data` is a table which currently holds these values
 	* @param flag  The lock state for the mouse cursor
 	*/
 	export function set_mouse_lock(flag: boolean): void
+
+	/**
+	* Sets the window position.
+	* @param x  Horizontal position of window
+	* @param y  Vertical position of window
+	*/
+	export function set_position(x: number, y: number): void
+
+	/**
+	* Sets the window size. Works on desktop platforms only.
+	* @param width  Width of window
+	* @param height  Height of window
+	*/
+	export function set_size(width: number, height: number): void
+
+	/**
+	* Sets the window title. Works on desktop platforms.
+	* @param title  The title, encoded as UTF-8
+	*/
+	export function set_title(title: string): void
 
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
