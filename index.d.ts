@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.10.0 (591eb496d52f4140bc2c7de547131f1b9408b9b4)
+// DEFOLD. stable version 1.10.1 (2783cc609cd52bc5ac92ec9e35b9b854f5f07882)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -5371,7 +5371,7 @@ optional flag to determine wether or not the resource should take over ownership
 
 	/**
 	* Creates a sound data resource
-	* Supported formats are .oggc and .wavc
+	* Supported formats are .oggc, .opusc and .wavc
 	* @param path  the path to the resource. Must not already exist.
 	* @param options  A table containing parameters for the text. Supported entries:
 
@@ -5894,7 +5894,7 @@ optional flag to determine wether or not the resource should take over ownership
 	export function set_buffer(path: hash | string, buffer: buffer, table?: any): void
 
 	/**
-	* Update internal sound resource (wavc/oggc) with new data
+	* Update internal sound resource (wavc/oggc/opusc) with new data
 	* @param path  The path to the resource
 	* @param buffer  A lua string containing the binary sound data
 	*/
@@ -8221,6 +8221,14 @@ declare namespace model {
 	export function cancel(url: string | hash | url): void
 
 	/**
+	* Get AABB of the whole model in local coordinate space.
+	* AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector4`.
+	* @param url  the model
+	* @return aabb  A table containing AABB of the model. If model has no meshes - return vmath.vector3(0,0,0) for min and max fields.
+	*/
+	export function get_aabb(url: string | hash | url): any
+
+	/**
 	* Gets the id of the game object that corresponds to a model skeleton bone.
 	* The returned game object can be used for parenting and transform queries.
 	* This function has complexity `O(n)`, where `n` is the number of bones in the model skeleton.
@@ -8230,6 +8238,14 @@ declare namespace model {
 	* @return id  id of the game object
 	*/
 	export function get_go(url: string | hash | url, bone_id: string | hash): hash
+
+	/**
+	* Get AABB of all meshes.
+	* AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector4`.
+	* @param url  the model
+	* @return aabb  A table containing info about all AABB in the format 
+	*/
+	export function get_mesh_aabb(url: string | hash | url): any
 
 	/**
 	* Get the enabled state of a mesh
