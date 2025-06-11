@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.10.2 (f56fcca509a9fa5350bf55f18d8c6087295a8cef)
+// DEFOLD. stable version 1.10.2 (7a0e23b3fcab4c5db82f2b32f5d8ac5df9467c9d)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
