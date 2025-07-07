@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.10.2 (7a0e23b3fcab4c5db82f2b32f5d8ac5df9467c9d)
+// DEFOLD. stable version 1.10.3 (1c76521bb8b08c63ef619aa8a5ab563dddf7b3cf)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 
@@ -74,70 +74,18 @@ declare namespace vmath {
 
 declare namespace liveupdate {
 
-	/**
-	* LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH
-	*/
-	export let LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: any
 
-	/**
-	* LIVEUPDATE_ENGINE_VERSION_MISMATCH
-	*/
-	export let LIVEUPDATE_ENGINE_VERSION_MISMATCH: any
 
-	/**
-	* LIVEUPDATE_FORMAT_ERROR
-	*/
-	export let LIVEUPDATE_FORMAT_ERROR: any
 
-	/**
-	* LIVEUPDATE_INVAL
-	*/
-	export let LIVEUPDATE_INVAL: any
 
-	/**
-	* LIVEUPDATE_INVALID_HEADER
-	*/
-	export let LIVEUPDATE_INVALID_HEADER: any
 
-	/**
-	* LIVEUPDATE_INVALID_RESOURCE
-	*/
-	export let LIVEUPDATE_INVALID_RESOURCE: any
 
-	/**
-	* LIVEUPDATE_IO_ERROR
-	*/
-	export let LIVEUPDATE_IO_ERROR: any
 
-	/**
-	* LIVEUPDATE_MEM_ERROR
-	*/
-	export let LIVEUPDATE_MEM_ERROR: any
 
-	/**
-	* LIVEUPDATE_OK
-	*/
-	export let LIVEUPDATE_OK: any
 
-	/**
-	* LIVEUPDATE_SCHEME_MISMATCH
-	*/
-	export let LIVEUPDATE_SCHEME_MISMATCH: any
 
-	/**
-	* LIVEUPDATE_SIGNATURE_MISMATCH
-	*/
-	export let LIVEUPDATE_SIGNATURE_MISMATCH: any
 
-	/**
-	* LIVEUPDATE_UNKNOWN
-	*/
-	export let LIVEUPDATE_UNKNOWN: any
 
-	/**
-	* LIVEUPDATE_VERSION_MISMATCH
-	*/
-	export let LIVEUPDATE_VERSION_MISMATCH: any
 
 	/**
 	* Adds a resource mount to the resource system.
@@ -149,7 +97,7 @@ declare namespace liveupdate {
 	* @param callback  Callback after the asynchronous request completed
 	* @return result  The result of the request
 	*/
-	export function add_mount(name: string, uri: string, priority: any, callback: any): number
+	export function add_mount(name: string, uri: string, priority: number, callback: any): number
 
 	/**
 	* Return a reference to the Manifest that is currently loaded.
@@ -169,7 +117,7 @@ declare namespace liveupdate {
 	* This can be used to determine if a new manifest or zip file should be downloaded.
 	* @return bool  true if a liveupdate archive (any format) has been loaded
 	*/
-	export function is_using_liveupdate_data(): any
+	export function is_using_liveupdate_data(): boolean
 
 	/**
 	* Remove a mount the resource system.
