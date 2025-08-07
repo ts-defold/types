@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run build && npm run check",
-    "build": "type-gen",
+    "build": "xtgen -m global -o ./",
     "check": "tsc --noEmit"
   },
   "ts-defold": {
@@ -27,9 +27,9 @@
     "lua-types": "^2.10.1"
   },
   "devDependencies": {
-    "@ts-defold/type-gen": "^0.5.7",
-    "typescript": "5.7.2",
-    "typescript-to-lua": "~1.29.0"
+    "tsd-ext-type-gen": "^2.0.0",
+    "typescript": "5.8.2",
+    "typescript-to-lua": "~1.31.0"
   },
   "peerDependencies": {
     "typescript-to-lua": "^1.10.0"
