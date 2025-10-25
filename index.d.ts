@@ -3,8 +3,35 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.11.0 (7c81792859a6da7f7401c0ac37a4cc83bb500ff6)
+// DEFOLD. stable version 1.11.1 (758dfc0ea71dca26d169fddd0c5a1bc6dd0be4b3)
 
+/**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -34,33 +61,6 @@ Lua tables is undefined):
 ```
  */
 declare function pprint(...v: any[]): void;
-/**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
@@ -547,6 +547,20 @@ export function set_metadata(buf: buffer, metadata_name: hash | string, values: 
 
 declare namespace camera {
 /**
+ * Computes zoom so the original display area covers the entire window while preserving aspect ratio.
+Equivalent to using max(window_width/width, window_height/height).
+ */
+export const ORTHO_MODE_AUTO_COVER: number;
+/**
+ * Computes zoom so the original display area (game.project width/height) fits inside the window
+while preserving aspect ratio. Equivalent to using min(window_width/width, window_height/height).
+ */
+export const ORTHO_MODE_AUTO_FIT: number;
+/**
+ * Uses the manually set orthographic zoom value (camera.set_orthographic_zoom).
+ */
+export const ORTHO_MODE_FIXED: number;
+/**
  * Gets the effective aspect ratio of the camera. If auto aspect ratio is enabled,
 returns the aspect ratio calculated from the current render target dimensions.
 Otherwise returns the manually set aspect ratio.
@@ -599,6 +613,13 @@ export function get_fov(camera: url | number | undefined): number;
  */
 export function get_near_z(camera: url | number | undefined): number;
 /**
+ * get orthographic zoom mode
+ * @param camera camera id
+ * @returns one of camera.ORTHO_MODE_FIXED, camera.ORTHO_MODE_AUTO_FIT or
+camera.ORTHO_MODE_AUTO_COVER
+ */
+export function get_orthographic_mode(camera: url | number | undefined): number;
+/**
  * get orthographic zoom
  * @param camera camera id
  * @returns the zoom level when the camera uses orthographic projection.
@@ -650,6 +671,12 @@ export function set_fov(camera: url | number | undefined, fov: number): void;
  * @param near_z the near z.
  */
 export function set_near_z(camera: url | number | undefined, near_z: number): void;
+/**
+ * set orthographic zoom mode
+ * @param camera camera id
+ * @param mode camera.ORTHO_MODE_FIXED, camera.ORTHO_MODE_AUTO_FIT or camera.ORTHO_MODE_AUTO_COVER
+ */
+export function set_orthographic_mode(camera: url | number | undefined, mode: number): void;
 /**
  * set orthographic zoom
  * @param camera camera id
@@ -1643,6 +1670,7 @@ local s = go.get_scale_uniform("x")
 export function get_scale_uniform(id?: string | hash | url): number;
 /**
  * The function will return the world position calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_position to retrieve the position relative to the parent.
  * @param id optional id of the game object instance to get the world position for, by default the instance of the calling script
  * @returns instance world position
@@ -1659,6 +1687,7 @@ local p = go.get_world_position("x")
 export function get_world_position(id?: string | hash | url): vmath.vector3;
 /**
  * The function will return the world rotation calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_rotation to retrieve the rotation relative to the parent.
  * @param id optional id of the game object instance to get the world rotation for, by default the instance of the calling script
  * @returns instance world rotation
@@ -1675,6 +1704,7 @@ local r = go.get_world_rotation("x")
 export function get_world_rotation(id?: string | hash | url): vmath.quaternion;
 /**
  * The function will return the world 3D scale factor calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_scale to retrieve the 3D scale factor relative to the parent.
 This vector is derived by decomposing the transformation matrix and should be used with care.
 For most cases it should be fine to use go.get_world_scale_uniform instead.
@@ -1693,6 +1723,7 @@ local s = go.get_world_scale("x")
 export function get_world_scale(id?: string | hash | url): vmath.vector3;
 /**
  * The function will return the world scale factor calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_scale_uniform to retrieve the scale factor relative to the parent.
  * @param id optional id of the game object instance to get the world scale for, by default the instance of the calling script
  * @returns instance world scale factor
@@ -1709,6 +1740,7 @@ local s = go.get_world_scale_uniform("x")
 export function get_world_scale_uniform(id?: string | hash | url): number;
 /**
  * The function will return the world transform matrix calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
  * @param id optional id of the game object instance to get the world transform for, by default the instance of the calling script
  * @returns instance world transform
  * @example Get the world transform of the game object instance the script is attached to:
@@ -2214,6 +2246,26 @@ end
  */
 export function update(this: LuaUserdata, dt: number): void;
 /**
+ * Recalculates and updates the cached world transform immediately for the target instance
+and its ancestors (parent chain up to the collection root). Descendants (children) are
+not updated by this function.
+If no id is provided, the instance of the calling script is used.
+⚠ Use this after changing local transform mid-frame when you need the
+new world transform right away (e.g. before end-of-frame updates). Note that child
+instances will still have last-frame world transforms until the regular update.
+ * @param id optional id of the game object instance to update
+ * @example Update this game object's world transform:
+```lua
+go.update_world_transform()
+```
+
+Update another game object's world transform:
+```lua
+go.update_world_transform("/other")
+```
+ */
+export function update_world_transform(id?: string | hash | url): void;
+/**
  * ⚠ The function uses world transformation calculated at the end of previous frame.
  * @param position position which need to be converted
  * @param url url of the game object which coordinate system convert to
@@ -2415,7 +2467,7 @@ export const TEXTURE_FORMAT_RGBA_16BPP: number;
 /**
  * May be nil if the graphics driver doesn't support it
  */
-export let TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
+export const TEXTURE_FORMAT_RGBA_ASTC_4X4: number;
 /**
  * May be nil if the graphics driver doesn't support it
  */
@@ -3344,6 +3396,12 @@ export function get_layer(node: node): hash;
  * @returns layout id
  */
 export function get_layout(): hash;
+/**
+ * Returns a table mapping each layout id hash to a vector3(width, height, 0). For the default layout,
+the current scene resolution is returned. If a layout name is not present in the Display Profiles (or when
+no display profiles are assigned), the width/height pair is 0.
+ */
+export function get_layouts(): LuaMap<hash, vmath.vector3>;
 /**
  * Returns the leading value for a text node.
  * @param node node from where to get the leading
@@ -4279,6 +4337,14 @@ export function set_inner_radius(node: node, radius: number): void;
  * @param layer layer id
  */
 export function set_layer(node: node, layer: string | hash): void;
+/**
+ * Applies a named layout on the GUI scene. This re-applies per-layout node descriptors
+and, if a matching Display Profile exists, updates the scene resolution. Emits
+the "layout_changed" message to the scene script when the layout actually changes.
+ * @param layout the layout id to apply
+ * @returns true if the layout exists in the scene and was applied, false otherwise
+ */
+export function set_layout(layout: string | hash): boolean;
 /**
  * Sets the leading value for a text node. This value is used to
 scale the line spacing of text.
@@ -6238,6 +6304,18 @@ export const FRUSTUM_PLANES_ALL: number;
 export const FRUSTUM_PLANES_SIDES: number;
 export const RENDER_TARGET_DEFAULT: number;
 /**
+ * Depth sort far-to-near (default; good for transparent passes).
+ */
+export const SORT_BACK_TO_FRONT: number;
+/**
+ * Depth sort near-to-far (good for opaque passes to reduce overdraw).
+ */
+export const SORT_FRONT_TO_BACK: number;
+/**
+ * No per-call sorting; draw entries in insertion order.
+ */
+export const SORT_NONE: number;
+/**
  * Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
 color attachments, all buffers will be cleared with the same value.
  * @param buffers table with keys specifying which buffers to clear and values set to clear values. Available keys are:
@@ -6405,6 +6483,8 @@ render.FRUSTUM_PLANES_ALL : All 6 sides of the frustum.
 
 `constants`
 constant_buffer optional constants to use while rendering
+`sort_order`
+int How to sort draw order for world-ordered entries. Default uses the renderer's preferred world sorting (back-to-front).
 
  * @example ```lua
 function init(self)
@@ -7527,6 +7607,7 @@ export function create_atlas(path: string, table: { texture: string | hash; anim
 												height: number;
 												pivot_x: number;
 												pivot_y: number;
+												rotated: boolean;
 												vertices: number[] | LuaSet<number>;
 												uvs: number[] | LuaSet<number>;
 												indices: number[] | LuaSet<number>;
@@ -7671,7 +7752,7 @@ These constants might not be available on the device:
 `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 `graphics.TEXTURE_FORMAT_RGB_ETC1`
 `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 `graphics.TEXTURE_FORMAT_RGB_BC1`
 `graphics.TEXTURE_FORMAT_RGBA_BC3`
 `graphics.TEXTURE_FORMAT_R_BC4`
@@ -7841,7 +7922,7 @@ These constants might not be available on the device:
 `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 `graphics.TEXTURE_FORMAT_RGB_ETC1`
 `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 `graphics.TEXTURE_FORMAT_RGB_BC1`
 `graphics.TEXTURE_FORMAT_RGBA_BC3`
 `graphics.TEXTURE_FORMAT_R_BC4`
@@ -7883,6 +7964,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 `COMPRESSION_TYPE_BASIS_UASTC`
 
  * @param buffer optional buffer of precreated pixel data
+ * @param callback callback function when texture is created (self, request_id, resource)
  * @example Create a texture resource asyncronously with a buffer and a callback
 ```lua
 function callback(self, request_id, resource)
@@ -7955,7 +8037,7 @@ function init(self)
 end
 ```
  */
-export function create_texture_async(path: string | hash, table: { type: number; width: number; height: number; depth: number; format: number; flags: number; max_mipmaps?: number; compression_type?: number }, buffer?: buffer): LuaMultiReturn<[hash, number]>;
+export function create_texture_async(path: string | hash, table: { type: number; width: number; height: number; depth: number; format: number; flags: number; max_mipmaps?: number; compression_type?: number }, buffer: buffer, callback?: (this: any, request_id: number, resource: hash) => void): LuaMultiReturn<[hash, number]>;
 /**
  * Constructor-like function with two purposes:
 
@@ -8516,7 +8598,7 @@ These constants might not be available on the device:
 - `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 - `graphics.TEXTURE_FORMAT_RGB_ETC1`
 - `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 - `graphics.TEXTURE_FORMAT_RGB_BC1`
 - `graphics.TEXTURE_FORMAT_RGBA_BC3`
 - `graphics.TEXTURE_FORMAT_R_BC4`
@@ -9610,6 +9692,10 @@ number sound gain between 0 and 1, default is 1. The final gain of the sound wil
 number sound pan between -1 and 1, default is 0. The final pan of the sound will be an addition of this pan and the sound pan.
 `speed`
 number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. The final speed of the sound will be a multiplication of this speed and the sound speed.
+`start_time`
+number start playback offset (seconds). Optional, mutually exclusive with `start_frame`.
+`start_frame`
+number start playback offset (frames/samples). Optional, mutually exclusive with `start_time`. If both are provided, `start_frame` is used.
 
  * @param complete_function function to call when the sound has finished playing or stopped manually via sound.stop.
 
@@ -9647,7 +9733,7 @@ function init(self)
 end
 ```
  */
-export function play(url: string | hash | url, play_properties?: { delay?: number; gain?: number; pan?: number; speed?: number }, complete_function?: (this: any, message_id: hash, message: { play_id: number }, sender: url,) => void): number;
+export function play(url: string | hash | url, play_properties?: { delay?: number; gain?: number; pan?: number; speed?: number; start_time?: number; start_frame?: number }, complete_function?: (this: any, message_id: hash, message: { play_id: number }, sender: url,) => void): number;
 /**
  * Set gain on all active playing voices of a sound.
  * @param url the sound to set the gain of
@@ -10040,8 +10126,8 @@ print(my_file_path) --> /home/foobar/.local/share/my_game/my_file
 -- Android package name: com.foobar.packagename
 print(my_file_path) --> /data/data/0/com.foobar.packagename/files/my_file
 
--- iOS: /var/mobile/Containers/Data/Application/123456AB-78CD-90DE-12345678ABCD/my_game/my_file
-print(my_file_path) --> /var/containers/Bundle/Applications/123456AB-78CD-90DE-12345678ABCD/my_game.app
+-- iOS: my_game.app
+print(my_file_path) --> /var/mobile/Containers/Data/Application/123456AB-78CD-90DE-12345678ABCD/my_game/my_file
 
 -- HTML5 path inside the IndexedDB: /data/.my_game/my_file or /.my_game/my_file
 print(my_file_path) --> /data/.my_game/my_file
