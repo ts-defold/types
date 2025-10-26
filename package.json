@@ -29,7 +29,7 @@
   "devDependencies": {
     "tsd-ext-type-gen": "^2.0.0",
     "typescript": "5.8.2",
-    "typescript-to-lua": "~1.31.0"
+    "typescript-to-lua": "~1.32.0"
   },
   "peerDependencies": {
     "typescript-to-lua": "^1.10.0"
