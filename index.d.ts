@@ -3,7 +3,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.11.1 (758dfc0ea71dca26d169fddd0c5a1bc6dd0be4b3)
+// DEFOLD. stable version 1.11.2 (a6d86c0083f00ee6c3709478ff3b33deff5e6d19)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -3062,9 +3062,9 @@ end
  */
 export function animate(node: node, property: string | number, to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion, easing: number | vmath.vector3 | vmath.vector4 | vmath.quaternion | ReturnType<typeof vmath.vector>, duration: number, delay?: number, complete_function?: (this: any, node: node,) => void, playback?: number): void;
 /**
- * If an animation of the specified node is currently running (started by `gui.animate`), it will immediately be canceled.
+ * If one or more animations of the specified node is currently running (started by `gui.animate`), they will immediately be canceled.
  * @param node node that should have its animation canceled
- * @param property property for which the animation should be canceled
+ * @param property optional property for which the animation should be canceled
 
 `"position"`
 `"rotation"`
@@ -3089,10 +3089,21 @@ local pos = vmath.vector3(100, 100, 0)
 gui.animate(node, "position", pos, go.EASING_LINEAR, 2)
 ...
 -- cancel animation of the x component.
-gui.cancel_animation(node, "position.x")
+gui.cancel_animations(node, "position.x")
+```
+
+Cancels all property animations on a node in a single call:
+```lua
+local node = gui.get_node("my_node")
+-- animate to new position and scale
+gui.animate(node, "position", vmath.vector3(100, 100, 0), go.EASING_LINEAR, 5)
+gui.animate(node, "scale", vmath.vector3(0.5), go.EASING_LINEAR, 5)
+...
+-- cancel positioning and scaling at once
+gui.cancel_animations(node)
 ```
  */
-export function cancel_animation(node: node, property: string | number): void;
+export function cancel_animations(node: node, property?: undefined | string | number): void;
 /**
  * Cancels any running flipbook animation on the specified node.
  * @param node node cancel flipbook animation for
@@ -11575,6 +11586,9 @@ print(vec - vmath.vector4(2.0)) --> vmath.vector4(-1, 0, 1, 2)
  */
 export function vector4(x: number, y: number, z: number, w: number): vmath.vector4;
 }declare namespace vmath {
+export function clamp(value: number, min: number | vmath.vector3 | vmath.vector4, max: number | vmath.vector3 | vmath.vector4): number;
+export function clamp(value: vmath.vector3, min: number | vmath.vector3 | vmath.vector4, max: number | vmath.vector3 | vmath.vector4): vmath.vector3;
+export function clamp(value: vmath.vector4, min: number | vmath.vector3 | vmath.vector4, max: number | vmath.vector3 | vmath.vector4): vmath.vector4;
 export type matrix4 = number & {
 		/**
 			 * Multiplication Operator for Matrix4
@@ -11603,6 +11617,12 @@ export type matrix4 = number & {
 		m33: number;
 		m34: number;
 	};
+export function mul_per_elem(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3;
+export function mul_per_elem(v1: vmath.vector4, v2: vmath.vector4): vmath.vector4;
+export function normalize(v1: vmath.vector3): vmath.vector3;
+export function normalize(v1: vmath.vector4): vmath.vector4;
+export function normalize(v1: vmath.quaternion): vmath.quaternion;
+export function normalize(v1: vmath.vector): vmath.vector;
 export type quaternion = number & {
 		/**
 			 * Multiplication Operator for Matrix4
@@ -11614,6 +11634,8 @@ export type quaternion = number & {
 		z: number;
 		w: number;
 	};
+export function slerp(t: number, v1: vmath.vector3, v2: vmath.vector3): vmath.vector3;
+export function slerp(t: number, v1: vmath.vector4, v2: vmath.vector4): vmath.vector4;
 export type vector = number & { [key: number]: number };
 export type vector3 = number & {
 		/**
