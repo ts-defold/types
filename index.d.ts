@@ -3,7 +3,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.11.2 (a6d86c0083f00ee6c3709478ff3b33deff5e6d19)
+// DEFOLD. stable version 1.11.2 (cddb6eb43c32e4930257fcbbb30f19cf28deb081)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
