@@ -3,7 +3,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.11.2 (cddb6eb43c32e4930257fcbbb30f19cf28deb081)
+// DEFOLD. stable version 1.12.1 (16c6fd602f32de4814660672c38ce3ccbbc1fb59)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -638,6 +638,48 @@ export function get_projection(camera: url | number | undefined): vmath.matrix4;
  */
 export function get_view(camera: url | number | undefined): vmath.matrix4;
 /**
+ * Converts a screen-space 2D point with view depth to a 3D world point.
+z is the view depth in world units measured from the camera plane along the camera forward axis.
+If a camera isn't specified, the last enabled camera is used.
+ * @param pos Screen-space position (x, y) with z as view depth in world units
+ * @param camera optional camera id
+ * @returns the world coordinate
+ * @example Place objects at the touch point with a random Z position, keeping them within the visible view zone.
+```lua
+ function on_input(self, action_id, action)
+     if action_id == hash("touch") then
+         if action.pressed then
+             local percpective_camera = msg.url("#perspective_camera")
+             local random_z = math.random(camera.get_near_z(percpective_camera) + 0.01, camera.get_far_z(percpective_camera) - 0.01)
+             local world_position = camera.screen_to_world(vmath.vector3(action.screen_x, action.screen_y, random_z), percpective_camera)
+             go.set_position(world_position, "/go1")
+         end
+     end
+ end
+```
+ */
+export function screen_to_world(pos: vmath.vector3, camera?: url | number | undefined): vmath.vector3;
+/**
+ * Converts 2D screen coordinates (x,y) to the 3D world-space point on the camera's near plane for that pixel.
+If a camera isn't specified, the last enabled camera is used.
+ * @param x X coordinate on screen.
+ * @param y Y coordinate on screen.
+ * @param camera optional camera id
+ * @returns the world coordinate on the camera near plane
+ * @example Place objects at the touch point.
+```lua
+ function on_input(self, action_id, action)
+     if action_id == hash("touch") then
+         if action.pressed then
+             local world_position = camera.screen_xy_to_world(action.screen_x, action.screen_y)
+             go.set_position(world_position, "/go1")
+         end
+     end
+ end
+```
+ */
+export function screen_xy_to_world(x: number, y: number, camera?: url | number | undefined): vmath.vector3;
+/**
  * Sets the manual aspect ratio for the camera. This value is only used when
 auto aspect ratio is disabled. To disable auto aspect ratio and use this
 manual value, call camera.set_auto_aspect_ratio(camera, false).
@@ -683,6 +725,23 @@ export function set_orthographic_mode(camera: url | number | undefined, mode: nu
  * @param orthographic_zoom the zoom level when the camera uses orthographic projection.
  */
 export function set_orthographic_zoom(camera: url | number | undefined, orthographic_zoom: number): void;
+/**
+ * Converts a 3D world position to screen-space coordinates with view depth.
+Returns a vector3 where x and y are in screen pixels and z is the view depth in world units
+measured from the camera plane along the camera forward axis. The returned z can be used with
+camera.screen_to_world to reconstruct the world position on the same pixel ray.
+If a camera isn't specified, the last enabled camera is used.
+ * @param world_pos World-space position
+ * @param camera optional camera id
+ * @returns Screen position (x,y in pixels, z is view depth)
+ * @example Convert go position into screen pisition
+```lua
+ go.update_world_transform("/go1")
+ local world_pos = go.get_world_position("/go1")
+ local screen_pos = camera.world_to_screen(world_pos)
+```
+ */
+export function world_to_screen(world_pos: vmath.vector3, camera?: url | number | undefined): vmath.vector3;
 }
 
 declare namespace collectionfactory {
@@ -1133,9 +1192,25 @@ export function unload(url?: string | hash | url): void;
 
 declare namespace font {
 /**
- * Asynchronoously adds more glyphs to a .fontc resource
- * @param path The path to the .fontc resource
- * @param text A string with unique unicode characters to be loaded
+ * associates a ttf resource to a .fontc file.
+ * @param fontc The path to the .fontc resource
+ * @param ttf The path to the .ttf resource
+ * @example ```lua
+local font_hash = hash("/assets/fonts/roboto.fontc")
+local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
+font.add_font(font_hash, ttf_hash)
+```
+ */
+export function add_font(fontc: string | hash, ttf: string | hash): void;
+/**
+ * Gets information about a font, such as the associated font files
+ * @param fontc The path to the .fontc resource
+ */
+export function get_info(fontc: string | hash): { path: hash, fonts: { path: string, path_hash: hash }[] };
+/**
+ * prepopulates the font glyph cache with rasterised glyphs
+ * @param fontc The path to the .fontc resource
+ * @param text The text to layout
  * @param callback (optional) A callback function that is called after the request is finished
 
 `self`
@@ -1149,26 +1224,24 @@ string `nil` if the request was successful
 
  * @returns Returns the asynchronous request id
  * @example ```lua
--- Add glyphs
-local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (self, request, result, errstring)
-        -- make a note that all the glyphs are loaded
-        -- and we're ready to present the text
-        self.dialog_text_ready = true
+local font_hash = hash("/assets/fonts/roboto.fontc")
+font.prewarm_text(font_hash, "Some text", function (self, request_id, result, errstring)
+        -- cache is warm, show the text!
     end)
 ```
-
-```lua
--- Remove glyphs
-local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
+ */
+export function prewarm_text(fontc: string | hash, text: string, callback?: ((this: any, request_id: any, result: any, errstring: any) => void)): number;
+/**
+ * associates a ttf resource to a .fontc file
+ * @param fontc The path to the .fontc resource
+ * @param ttf The path to the .ttf resource
+ * @example ```lua
+local font_hash = hash("/assets/fonts/roboto.fontc")
+local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
+font.remove_font(font_hash, ttf_hash)
 ```
  */
-export function add_glyphs(path: string | hash, text: string, callback?: ((this: any, request_id: any, result: any, errstring: any) => void)): number;
-/**
- * Removes glyphs from the font
- * @param path The path to the .fontc resource
- * @param text A string with unique unicode characters to be removed
- */
-export function remove_glyphs(path: string | hash, text: string): void;
+export function remove_font(fontc: string | hash, ttf: string | hash): void;
 }
 
 declare namespace go {
@@ -1767,6 +1840,13 @@ end
  */
 export function init(this: LuaUserdata): void;
 /**
+ * This is a callback-function, which is called by the engine at the end of the frame to update the state of a script
+component. Use it to make final adjustments to the game object instance.
+ * @param this reference to the script state to be used for storing data
+ * @param dt the time-step of the frame update
+ */
+export function late_update(this: LuaUserdata, dt: number): void;
+/**
  * This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
 It can be used to take action on the input, e.g. move the instance according to the input.
 For an instance to obtain user input, it must first acquire input focus
@@ -2311,8 +2391,10 @@ export type input_message = {
 		gamepad?: number;
 		touch?: touch_input[];
 	};
+export type late_update = (this: any, dt: number) => void;
 export type on_input = (this: any, action_id: hash, action: go.input_message) => void;
 export type on_message = (this: any, message_id: hash, message: object, sender: url) => void;
+export type on_reload = (this: any) => void;
 export type touch_input = {
 		id: number;
 		pressed: boolean;
@@ -2926,6 +3008,22 @@ export const RESULT_OUT_OF_RESOURCES: number;
  * The texture id already exists when trying to use gui.new_texture().
  */
 export const RESULT_TEXTURE_ALREADY_EXISTS: number;
+/**
+ * Safe area mode that applies insets on all edges.
+ */
+export const SAFE_AREA_BOTH: number;
+/**
+ * Safe area mode that applies insets only on the long edges.
+ */
+export const SAFE_AREA_LONG: number;
+/**
+ * Safe area mode that ignores safe area insets.
+ */
+export const SAFE_AREA_NONE: number;
+/**
+ * Safe area mode that applies insets only on the short edges.
+ */
+export const SAFE_AREA_SHORT: number;
 /**
  * The size of the node is determined by the currently assigned texture.
  */
@@ -3718,6 +3816,7 @@ export function new_text_node(pos: vmath.vector3 | vmath.vector4, text: string):
 `"rgb"` - RGB
 `"rgba"` - RGBA
 `"l"` - LUMINANCE
+`"astc"` - ASTC compressed format
 
  * @param buffer texture data
  * @param flip flip texture vertically
@@ -3746,6 +3845,16 @@ function init(self)
          end
      end
 end
+```How to create a texture using .astc format
+
+```lua
+local path = "/assets/images/logo_4x4.astc"
+local buffer = sys.load_resource(path)
+local n = gui.new_box_node(pos, vmath.vector3(size, size, 0))
+-- size is read from the .astc buffer
+-- flip is not supported
+gui.new_texture(path, 0, 0, "astc", buffer, false)
+gui.set_texture(n, path)
 ```
  */
 export function new_texture(texture_id: string | hash, width: number, height: number, type: string | number, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>;
@@ -4459,6 +4568,17 @@ The rotation is expressed as a quaternion
  */
 export function set_rotation(node: node, rotation: vmath.quaternion | vmath.vector4): void;
 /**
+ * Sets how the safe area is applied to this gui scene.
+ * @param mode safe area mode
+
+`gui.SAFE_AREA_NONE`
+`gui.SAFE_AREA_LONG`
+`gui.SAFE_AREA_SHORT`
+`gui.SAFE_AREA_BOTH`
+
+ */
+export function set_safe_area_mode(mode: number): void;
+/**
  * Sets the scaling of the supplied node.
  * @param node node to set the scale for
  * @param scale new scale
@@ -4554,6 +4674,7 @@ export function set_texture(node: node, texture: string | hash): void;
   `"rgb"` - RGB
   `"rgba"` - RGBA
   `"l"` - LUMINANCE
+  `"astc"` - ASTC compressed format
 
  * @param buffer texture data
  * @param flip flip texture vertically
@@ -4691,6 +4812,7 @@ export type final = (this: any) => void;
 export type init = (this: any) => void;
 export type on_input = (this: any, action_id: hash, action: go.input_message) => void;
 export type on_message = (this: any, message_id: hash, message: object, sender: url) => void;
+export type on_reload = (this: any) => void;
 export type update = (this: any, dt: number) => void;
 }
 
@@ -4788,7 +4910,7 @@ function init(self)
 end
 ```
  */
-export function request(url: string, method: string, callback: ((this: any, id: any, response: any) => void), headers?: { [key: string]: string | number }, post_data?: string, options?: { timeout?: number; path?: string; ignore_cache?: boolean; chunked_transfer?: boolean; report_progress?: boolean }): void;
+export function request(url: string, method: string, callback: ((this: any, id: any, response: any) => void), headers?: { [key: string]: string | number }, post_data?: string, options?: { timeout?: number; path?: string; ignore_cache?: boolean; chunked_transfer?: boolean; report_progress?: boolean; proxy?: string }): void;
 }
 
 declare namespace image {
@@ -4808,6 +4930,24 @@ export const TYPE_RGB: number;
  * RGBA image type
  */
 export const TYPE_RGBA: number;
+/**
+ * get the header of an .astc buffer
+ * @param buffer .astc file data buffer
+ * @example How to get the block size and dimensions from a .astc file
+```lua
+local s = sys.load_resource("/assets/cat.astc")
+local header = image.get_astc_header(s)
+pprint(s)
+```
+ */
+export function get_astc_header(buffer: string): {
+						width: number;
+						height: number;
+						depth: number;
+						block_size_x: number;
+						block_size_y: number;
+						block_size_z: number;
+					} | undefined;
 /**
  * Load image (PNG or JPEG) from buffer.
  * @param buffer image data buffer
@@ -5882,7 +6022,7 @@ end
  */
 export function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: hash[] | LuaSet<hash>, request_id?: number): void;
 /**
- * sets a physics world event listener. If a function is set, physics messages will no longer be sent to on_message.
+ * Only one physics world event listener can be set at a time.
  * @param callback A callback that receives an information about all the physics interactions in this physics world.
 
 `self`
@@ -6655,7 +6795,7 @@ function update(self, dt)
 end
 ```
  */
-export function enable_texture(binding: number | string | hash, handle_or_name: number | string | hash, buffer_type?: any | typeof graphics.BUFFER_TYPE_COLOR1_BIT | typeof graphics.BUFFER_TYPE_COLOR2_BIT | typeof graphics.BUFFER_TYPE_COLOR3_BIT | typeof graphics.BUFFER_TYPE_DEPTH_BIT | typeof graphics.BUFFER_TYPE_STENCIL_BIT): void;
+export function enable_texture(binding: number | string | hash, handle_or_name: number | string | hash, buffer_type?: typeof graphics.BUFFER_TYPE_COLOR0_BIT | typeof graphics.BUFFER_TYPE_COLOR1_BIT | typeof graphics.BUFFER_TYPE_COLOR2_BIT | typeof graphics.BUFFER_TYPE_COLOR3_BIT | typeof graphics.BUFFER_TYPE_DEPTH_BIT | typeof graphics.BUFFER_TYPE_STENCIL_BIT): void;
 /**
  * Returns the logical window height that is set in the "game.project" settings.
 Note that the actual window pixel size can change, either by device constraints
@@ -9909,7 +10049,7 @@ export const REQUEST_STATUS_ERROR_NOT_FOUND: number;
  */
 export const REQUEST_STATUS_FINISHED: number;
 /**
- * deserializes buffer into a lua table
+ * This function will raise a Lua error if an error occurs while deserializing the buffer.
  * @param buffer buffer to deserialize from
  * @example Deserialize a lua table that was previously serialized:
 ```lua
@@ -9981,6 +10121,7 @@ end
 export function get_application_info(app_string: string): {installed: boolean};
 /**
  * The path from which the application is run.
+This function will raise a Lua error if unable to get the application support path.
  * @returns path to application executable
  * @example Find a path where we can store data (the example path is on the macOS platform):
 ```lua
@@ -10005,6 +10146,17 @@ print(application_path) --> http://www.foobar.com/my_game
 ```
  */
 export function get_application_path(): string;
+/**
+ * Get boolean config value from the game.project configuration file with optional default value
+ * @param key key to get value for. The syntax is SECTION.KEY
+ * @param default_value (optional) default value to return if the value does not exist
+ * @returns config value as a boolean. default_value if the config key does not exist. false if no default value was supplied.
+ * @example Get user config value
+```lua
+local vsync = sys.get_config_boolean("display.vsync", false)
+```
+ */
+export function get_config_boolean(key: string, default_value?: boolean): boolean;
 /**
  * Get integer config value from the game.project configuration file with optional default value
  * @param key key to get value for. The syntax is SECTION.KEY
@@ -10118,6 +10270,7 @@ end
 export function get_ifaddrs(): { name: string, address: string | undefined, mac: string | undefined, up: boolean, running: boolean }[];
 /**
  * The save-file path is operating system specific and is typically located under the user's home directory.
+This function will raise a Lua error if unable to get the save file path.
  * @param application_id user defined id of the application, which helps define the location of the save-file
  * @param file_name file-name to get path for
  * @returns path to save-file
@@ -10161,6 +10314,7 @@ end
 export function get_sys_info(options?: { ignore_secure: boolean }): {device_model?: string, manufacturer?: string, system_name: string, system_version: string, api_version: string, language: string, device_language: string, territory: string, gmt_offset: number, device_ident?: string, user_agent?: string};
 /**
  * If the file exists, it must have been created by `sys.save` to be loaded.
+This function will raise a Lua error if an error occurs while loading the file.
  * @param filename file to read from
  * @example Load data that was previously saved, e.g. an earlier game session:
 ```lua
@@ -10335,23 +10489,22 @@ Additionally, the total number of rows that any one table may contain is limited
 (i.e. a 16 bit range). When tables are used to represent arrays, the values of
 keys are permitted to fall within a 32 bit range, supporting sparse arrays, however
 the limit on the total number of rows remains in effect.
+This function will raise a Lua error if an error occurs while saving the table.
  * @param filename file to write to
  * @param table lua table to save
- * @returns a boolean indicating if the table could be saved or not
  * @example Save data:
 ```lua
 local my_table = {}
 table.insert(my_table, "my_value")
 local my_file_path = sys.get_save_file("my_game", "my_file")
-if not sys.save(my_file_path, my_table) then
-  -- Alert user that the data could not be saved
-end
+sys.save(my_file_path, my_table)
 ```
  */
-export function save(filename: string, table: object): boolean;
+export function save(filename: string, table: object): void;
 /**
  * The buffer can later deserialized by `sys.deserialize`.
-This method has all the same limitations as `sys.save`.
+This function has all the same limitations as `sys.save`.
+This function will raise a Lua error if an error occurs while serializing the table.
  * @param table lua table to serialize
  * @returns serialized data buffer
  * @example Serialize table:
@@ -10370,6 +10523,21 @@ sys.set_connectivity_host("www.google.com")
 ```
  */
 export function set_connectivity_host(host: string): void;
+/**
+ * Enables engine throttling.
+ * @param enable true if throttling should be enabled
+ * @param cooldown the time period to do update + render for (seconds)
+ * @example Disable throttling
+```lua
+sys.set_engine_throttle(false)
+```
+
+Enable throttling
+```lua
+sys.set_engine_throttle(true, 1.5)
+```
+ */
+export function set_engine_throttle(enable: boolean, cooldown: number): void;
 /**
  * Set the Lua error handler function.
 The error handler is a function which is called whenever a lua runtime error occurs.
@@ -10403,6 +10571,15 @@ end
 ```
  */
 export function set_error_handler(error_handler: (source: string, message: string, traceback: string,) => void): void;
+/**
+ * Disables rendering
+ * @param enable true if throttling should be enabled
+ * @example Disable rendering
+```lua
+sys.set_render_enable(false)
+```
+ */
+export function set_render_enable(enable: boolean): void;
 /**
  * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
 the "game.project" settings but set in run-time. If `Vsync` checked in "game.project", the rate will
@@ -11600,22 +11777,22 @@ export type matrix4 = number & {
 		c1: vmath.vector4;
 		c2: vmath.vector4;
 		c3: vmath.vector4;
+		m00: number;
 		m01: number;
 		m02: number;
 		m03: number;
-		m04: number;
+		m10: number;
 		m11: number;
 		m12: number;
 		m13: number;
-		m14: number;
+		m20: number;
 		m21: number;
 		m22: number;
 		m23: number;
-		m24: number;
+		m30: number;
 		m31: number;
 		m32: number;
 		m33: number;
-		m34: number;
 	};
 export function mul_per_elem(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3;
 export function mul_per_elem(v1: vmath.vector4, v2: vmath.vector4): vmath.vector4;
@@ -11762,6 +11939,36 @@ export function get_display_scale(): number;
  */
 export function get_mouse_lock(): boolean;
 /**
+ * This returns the safe area rectangle (x, y, width, height) and the inset
+values relative to the window edges. On platforms without a safe area,
+this returns the full window size and zero insets.
+ * @returns safe area data
+
+`safe_area`
+table table containing these keys:
+
+
+number `x`
+number `y`
+number `width`
+number `height`
+number `inset_left`
+number `inset_top`
+number `inset_right`
+number `inset_bottom`
+
+ */
+export function get_safe_area(): {
+						x: number,
+						y: number,
+						width: number,
+						height: number,
+						inset_left: number,
+						inset_top: number,
+						inset_right: number,
+						inset_bottom: number,
+						};
+/**
  * This returns the current window size (width and height).
  * @returns The window width & The window height
  */
@@ -11778,7 +11985,7 @@ This function has no effect on platforms that does not support dimming.
  */
 export function set_dim_mode(mode: number): void;
 /**
- * Sets a window event listener.
+ * Sets a window event listener. Only one window event listener can be set at a time.
  * @param callback A callback which receives info about window events. Pass an empty function or `nil` if you no longer wish to receive callbacks.
 
 `self`
