@@ -3,7 +3,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.14.0 (a81dbb0478e8b73931dc2d671563204f6ac0ef82)
+// DEFOLD. stable version 1.14.0 (d295ed4edff2e49072719835713e625f409849f1)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
